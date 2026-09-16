@@ -73,54 +73,44 @@
       transition: background 0.3s ease, color 0.3s ease;
     }
 
-    /* Ambient Dynamic Glowing Pastel Lights */
+    /* Ultra-Optimized Ambient Static Background (Zero GPU Load, Zero Battery Drain) */
     .ambient-bg {
       position: fixed;
       inset: 0;
       overflow: hidden;
       z-index: -1;
       pointer-events: none;
+      contain: strict;
     }
 
     .ambient-orb {
       position: absolute;
       border-radius: 50%;
-      filter: blur(80px);
-      mix-blend-mode: multiply;
-      will-change: transform;
+      pointer-events: none;
+      transform: translateZ(0);
     }
 
     .orb-1 {
-      top: -5%;
-      left: 10%;
-      width: 450px;
-      height: 450px;
-      background: radial-gradient(circle, #cbd5e1 0%, #94a3b8 40%, rgba(203, 213, 225, 0) 70%);
-      opacity: 0.45;
-      animation: floatOrb 20s ease-in-out infinite alternate;
+      top: -10%;
+      left: -5%;
+      width: 480px;
+      height: 480px;
+      background: radial-gradient(circle, rgba(203, 213, 225, 0.4) 0%, rgba(241, 245, 249, 0.12) 50%, transparent 70%);
     }
 
     .orb-2 {
-      bottom: 10%;
+      bottom: 5%;
       right: -10%;
-      width: 480px;
-      height: 480px;
-      background: radial-gradient(circle, #f1f5f9 0%, #e2e8f0 45%, rgba(255, 255, 255, 0) 70%);
-      opacity: 0.5;
-      animation: floatOrb 25s ease-in-out infinite alternate-reverse;
-    }
-
-    @keyframes floatOrb {
-      0% { transform: translate(0px, 0px) scale(1); }
-      50% { transform: translate(40px, 30px) scale(1.08); }
-      100% { transform: translate(-30px, 50px) scale(0.95); }
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(226, 232, 240, 0.45) 0%, rgba(248, 250, 252, 0.12) 50%, transparent 70%);
     }
 
     /* Apple Glass Panels */
     .glass-panel {
       background: var(--glass-panel-bg) !important;
-      backdrop-filter: blur(28px) saturate(190%) !important;
-      -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
+      backdrop-filter: blur(10px) !important; contain: content;
+      -webkit-backdrop-filter: blur(10px) !important; contain: content;
       border: 1px solid var(--glass-panel-border) !important;
       border-bottom: 1px solid var(--glass-panel-border-bottom) !important;
       box-shadow: var(--glass-panel-shadow) !important;
@@ -135,25 +125,20 @@
 
     /* Apple Neutral Icon Capsules */
     .glass-icon-box {
-      background: rgba(255, 255, 255, 0.75) !important;
-      backdrop-filter: blur(16px) !important;
-      -webkit-backdrop-filter: blur(16px) !important;
-      border: 1px solid rgba(255, 255, 255, 0.92) !important;
-      border-bottom: 1px solid rgba(203, 213, 225, 0.6) !important;
-      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04), inset 0 1px 1px #ffffff !important;
+      background: rgba(255, 255, 255, 0.88) !important;
+      border: 1px solid rgba(203, 213, 225, 0.6) !important;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03) !important;
       color: #334155 !important;
-      transition: all 0.2s ease;
+      transition: transform 0.15s ease, background 0.15s ease;
     }
 
     /* Glass Inputs */
     .glass-input {
       background: var(--glass-input-bg) !important;
       border: 1px solid var(--glass-input-border) !important;
-      backdrop-filter: blur(16px) !important;
-      -webkit-backdrop-filter: blur(16px) !important;
       color: #0f172a !important;
       box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
-      transition: all 0.2s ease;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
     }
     .glass-input:focus {
       background: #ffffff !important;
@@ -194,8 +179,8 @@
     /* Apple Glass Navigation Bar */
     nav.fixed-bottom {
       background: var(--nav-bg) !important;
-      backdrop-filter: blur(32px) saturate(200%) !important;
-      -webkit-backdrop-filter: blur(32px) saturate(200%) !important;
+      backdrop-filter: blur(14px) !important;
+      -webkit-backdrop-filter: blur(14px) !important;
       border-top: 1px solid var(--nav-border) !important;
       box-shadow: var(--nav-shadow) !important;
     }
@@ -252,9 +237,11 @@
       --nav-border: rgba(255, 255, 255, 0.18);
       --nav-shadow: 0 -10px 30px rgba(0, 0, 0, 0.6);
     }
-    html.dark .ambient-orb {
-      mix-blend-mode: screen;
-      opacity: 0.5;
+    html.dark .orb-1 {
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 50%, transparent 70%);
+    }
+    html.dark .orb-2 {
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 50%, transparent 70%);
     }
     html.dark .glass-icon-box {
       background: rgba(255, 255, 255, 0.08) !important;
