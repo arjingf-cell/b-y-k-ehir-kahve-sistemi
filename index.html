@@ -47,19 +47,19 @@
        Özel olarak iPhone 16 Pro (6.3" Display) için optimize edilmiştir
        ======================================================== */
     :root {
-      --bg-gradient: radial-gradient(circle at 20% 15%, #f8fafc 0%, #f1f5f9 50%, #ffffff 100%);
+      --bg-gradient: radial-gradient(circle at 15% 15%, #f8fafc 0%, #f1f5f9 45%, #ffffff 85%, #f1f5f9 100%);
       --text-main: #0f172a;
       --text-sub: #334155;
       --text-muted: #64748b;
-      --glass-panel-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.82) 0%, rgba(255, 255, 255, 0.56) 100%);
-      --glass-panel-border: rgba(255, 255, 255, 0.9);
-      --glass-panel-border-bottom: rgba(203, 213, 225, 0.55);
-      --glass-panel-shadow: 0 10px 30px -4px rgba(15, 23, 42, 0.05), inset 0 1.5px 1px 0 #ffffff;
-      --glass-input-bg: rgba(255, 255, 255, 0.88);
+      --glass-panel-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.84) 0%, rgba(255, 255, 255, 0.58) 100%);
+      --glass-panel-border: rgba(255, 255, 255, 0.95);
+      --glass-panel-border-bottom: rgba(203, 213, 225, 0.65);
+      --glass-panel-shadow: 0 12px 32px -4px rgba(15, 23, 42, 0.06), 0 4px 12px -2px rgba(15, 23, 42, 0.03), inset 0 1.5px 1px 0 #ffffff;
+      --glass-input-bg: rgba(255, 255, 255, 0.85);
       --glass-input-border: #cbd5e1;
-      --nav-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.84) 0%, rgba(248, 250, 252, 0.95) 100%);
+      --nav-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.86) 0%, rgba(248, 250, 252, 0.96) 100%);
       --nav-border: rgba(255, 255, 255, 0.92);
-      --nav-shadow: 0 -8px 24px rgba(15, 23, 42, 0.05);
+      --nav-shadow: 0 -10px 30px rgba(15, 23, 42, 0.06), inset 0 1px 1px 0 rgba(255, 255, 255, 0.8);
     }
 
     body {
@@ -73,14 +73,13 @@
       transition: background 0.3s ease, color 0.3s ease;
     }
 
-    /* Ultra-Optimized Ambient Static Background (Zero GPU Load, Zero Battery Drain) */
+    /* Premium Apple Luminous Ambient Glass Background (Static, Zero Thermal Strain) */
     .ambient-bg {
       position: fixed;
       inset: 0;
       overflow: hidden;
       z-index: -1;
       pointer-events: none;
-      contain: strict;
     }
 
     .ambient-orb {
@@ -91,26 +90,37 @@
     }
 
     .orb-1 {
-      top: -10%;
-      left: -5%;
+      top: -8%;
+      left: -6%;
       width: 480px;
       height: 480px;
-      background: radial-gradient(circle, rgba(203, 213, 225, 0.4) 0%, rgba(241, 245, 249, 0.12) 50%, transparent 70%);
+      background: radial-gradient(circle, rgba(203, 213, 225, 0.65) 0%, rgba(226, 232, 240, 0.35) 45%, transparent 70%);
+      filter: blur(40px);
     }
 
     .orb-2 {
-      bottom: 5%;
-      right: -10%;
-      width: 500px;
-      height: 500px;
-      background: radial-gradient(circle, rgba(226, 232, 240, 0.45) 0%, rgba(248, 250, 252, 0.12) 50%, transparent 70%);
+      bottom: 8%;
+      right: -8%;
+      width: 520px;
+      height: 520px;
+      background: radial-gradient(circle, rgba(226, 232, 240, 0.7) 0%, rgba(241, 245, 249, 0.35) 45%, transparent 70%);
+      filter: blur(40px);
     }
 
-    /* Apple Glass Panels */
+    .orb-3 {
+      top: 40%;
+      left: 25%;
+      width: 380px;
+      height: 380px;
+      background: radial-gradient(circle, rgba(241, 245, 249, 0.75) 0%, rgba(226, 232, 240, 0.25) 50%, transparent 70%);
+      filter: blur(45px);
+    }
+
+    /* Apple Frosted Glass Panels */
     .glass-panel {
       background: var(--glass-panel-bg) !important;
-      backdrop-filter: blur(10px) !important; contain: content;
-      -webkit-backdrop-filter: blur(10px) !important; contain: content;
+      backdrop-filter: blur(24px) saturate(185%) !important;
+      -webkit-backdrop-filter: blur(24px) saturate(185%) !important;
       border: 1px solid var(--glass-panel-border) !important;
       border-bottom: 1px solid var(--glass-panel-border-bottom) !important;
       box-shadow: var(--glass-panel-shadow) !important;
@@ -125,20 +135,25 @@
 
     /* Apple Neutral Icon Capsules */
     .glass-icon-box {
-      background: rgba(255, 255, 255, 0.88) !important;
-      border: 1px solid rgba(203, 213, 225, 0.6) !important;
-      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03) !important;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.62) 100%) !important;
+      backdrop-filter: blur(16px) !important;
+      -webkit-backdrop-filter: blur(16px) !important;
+      border: 1px solid rgba(255, 255, 255, 0.95) !important;
+      border-bottom: 1px solid rgba(203, 213, 225, 0.65) !important;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04), inset 0 1px 1px #ffffff !important;
       color: #334155 !important;
-      transition: transform 0.15s ease, background 0.15s ease;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     /* Glass Inputs */
     .glass-input {
       background: var(--glass-input-bg) !important;
+      backdrop-filter: blur(14px) !important;
+      -webkit-backdrop-filter: blur(14px) !important;
       border: 1px solid var(--glass-input-border) !important;
       color: #0f172a !important;
-      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
-      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(15, 23, 42, 0.02);
+      transition: all 0.2s ease;
     }
     .glass-input:focus {
       background: #ffffff !important;
@@ -179,8 +194,8 @@
     /* Apple Glass Navigation Bar */
     nav.fixed-bottom {
       background: var(--nav-bg) !important;
-      backdrop-filter: blur(14px) !important;
-      -webkit-backdrop-filter: blur(14px) !important;
+      backdrop-filter: blur(28px) saturate(190%) !important;
+      -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
       border-top: 1px solid var(--nav-border) !important;
       box-shadow: var(--nav-shadow) !important;
     }
@@ -223,34 +238,45 @@
 
     /* Dark Mode Fallback */
     html.dark {
-      --bg-gradient: radial-gradient(circle at 10% 15%, #09090b 0%, #000000 55%, #050505 100%);
+      --bg-gradient: radial-gradient(circle at 12% 15%, #0d0f17 0%, #000000 55%, #050508 100%);
       --text-main: #f8fafc;
       --text-sub: #cbd5e1;
       --text-muted: #94a3b8;
-      --glass-panel-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%), rgba(15, 23, 42, 0.65);
-      --glass-panel-border: rgba(255, 255, 255, 0.16);
-      --glass-panel-border-bottom: rgba(255, 255, 255, 0.08);
-      --glass-panel-shadow: 0 14px 35px 0 rgba(0, 0, 0, 0.5);
-      --glass-input-bg: rgba(2, 6, 23, 0.65);
-      --glass-input-border: rgba(255, 255, 255, 0.15);
-      --nav-bg: linear-gradient(180deg, rgba(15, 23, 42, 0.75) 0%, rgba(2, 6, 23, 0.92) 100%);
-      --nav-border: rgba(255, 255, 255, 0.18);
-      --nav-shadow: 0 -10px 30px rgba(0, 0, 0, 0.6);
+      --glass-panel-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.11) 0%, rgba(255, 255, 255, 0.03) 100%), rgba(12, 14, 20, 0.72);
+      --glass-panel-border: rgba(255, 255, 255, 0.18);
+      --glass-panel-border-bottom: rgba(255, 255, 255, 0.07);
+      --glass-panel-shadow: 0 16px 40px 0 rgba(0, 0, 0, 0.75), inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.22);
+      --glass-input-bg: rgba(18, 20, 28, 0.75);
+      --glass-input-border: rgba(255, 255, 255, 0.16);
+      --nav-bg: linear-gradient(180deg, rgba(16, 18, 26, 0.85) 0%, rgba(4, 5, 8, 0.96) 100%);
+      --nav-border: rgba(255, 255, 255, 0.16);
+      --nav-shadow: 0 -10px 35px rgba(0, 0, 0, 0.8), inset 0 1px 1px 0 rgba(255, 255, 255, 0.15);
     }
     html.dark .orb-1 {
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 50%, transparent 70%);
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.03) 45%, transparent 70%);
+      filter: blur(45px);
     }
     html.dark .orb-2 {
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 50%, transparent 70%);
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 45%, transparent 70%);
+      filter: blur(45px);
+    }
+    html.dark .orb-3 {
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 65%);
+      filter: blur(50px);
     }
     html.dark .glass-icon-box {
-      background: rgba(255, 255, 255, 0.08) !important;
-      border: 1px solid rgba(255, 255, 255, 0.18) !important;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.04) 100%) !important;
+      backdrop-filter: blur(16px) !important;
+      -webkit-backdrop-filter: blur(16px) !important;
+      border: 1px solid rgba(255, 255, 255, 0.2) !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.25) !important;
       color: #f1f5f9 !important;
     }
     html.dark .glass-fab {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.08) 100%) !important;
-      border: 2px solid rgba(255, 255, 255, 0.3) !important;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0.08) 100%) !important;
+      border: 3.5px solid rgba(255, 255, 255, 0.35) !important;
+      box-shadow: 0 14px 35px rgba(0, 0, 0, 0.7), inset 0 2px 2px rgba(255, 255, 255, 0.45) !important;
       color: #ffffff !important;
     }
 
@@ -402,6 +428,7 @@
   <div class="ambient-bg">
     <div class="ambient-orb orb-1"></div>
     <div class="ambient-orb orb-2"></div>
+    <div class="ambient-orb orb-3"></div>
   </div>
 
       <!-- ========================================================================= -->
