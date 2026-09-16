@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgDark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0e0e11" />
+      <stop offset="100%" stop-color="#050507" />
+    </linearGradient>
+  </defs>
+
+  <!-- Black Apple Squircle Base -->
+  <rect width="512" height="512" rx="115" fill="url(#bgDark)" />
+  <rect width="504" height="504" x="4" y="4" rx="111" fill="none" stroke="#ffffff" stroke-opacity="0.12" stroke-width="3" />
+
+  <!-- Ultra-Minimal White Ince Belli Turkish Tea Silhouette -->
+  <g fill="none" stroke="#ffffff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
+    
+    <!-- Steam Curves -->
+    <path d="M240,118 Q232,103 248,90 T240,75" stroke="#ffffff" stroke-opacity="0.85" stroke-width="9" />
+    <path d="M272,118 Q264,103 280,90 T272,75" stroke="#ffffff" stroke-opacity="0.7" stroke-width="8" />
+
+    <!-- Ince Belli Tea Glass Outer Contour -->
+    <!-- Top Rim (186,145) to (326,145) -->
+    <!-- Waist at (213,260) and (299,260) -->
+    <!-- Base at (193,365) and (319,365) -->
+    <path d="M186,145 
+             C190,205 207,240 213,260 
+             C219,280 190,330 193,365 
+             Q256,373 319,365 
+             C322,330 293,280 299,260 
+             C305,240 322,205 326,145 
+             Q256,140 186,145 Z" 
+          stroke="#ffffff" stroke-width="12" fill="none" />
+
+    <!-- Delicate Tea Level Line at Waist -->
+    <path d="M219,280 Q256,284 293,280" stroke="#ffffff" stroke-opacity="0.45" stroke-width="8" />
+
+    <!-- Saucer (Çay Tabağı) -->
+    <path d="M145,382 C210,402 302,402 367,382" stroke="#ffffff" stroke-width="12" />
+  </g>
+</svg>
