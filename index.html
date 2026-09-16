@@ -35,6 +35,8 @@
 
   <!-- FontAwesome 6 Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Supabase Client via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <!-- Chart.js via CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -5579,9 +5581,368 @@
       }
     }
 
+    
+    // =========================================================================
+    // SUPABASE BULUT VERİTABANI ENTEGRASYONU
+    // =========================================================================
+    const SUPABASE_URL = 'https://zxpzaefolghypbzrgtxg.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_hIJv7izMIW0HPTz0kWSZgg_d3Vd4vSF';
+    let supabaseClient = null;
+    let isSupabaseSyncing = false;
+
+    function initSupabase() {
+      try {
+        if (window.supabase && typeof window.supabase.createClient === 'function') {
+          supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+          setCloudStatus('connected', 'Bulut Veritabanı Bağlı');
+        } else {
+          console.warn('Supabase JS kütüphanesi yüklenemedi.');
+          setCloudStatus('offline', 'Yerel Mod');
+        }
+      } catch (err) {
+        console.warn('Supabase başlatma hatası:', err);
+        setCloudStatus('offline', 'Yerel Mod');
+      }
+    }
+
+    function setCloudStatus(status, tooltip) {
+      const btn = document.getElementById('btnCloudSync');
+      const icon = document.getElementById('cloudSyncIcon');
+      const badge = document.getElementById('settingsCloudBadge');
+
+      if (!icon) return;
+
+      if (status === 'syncing') {
+        icon.className = 'fa-solid fa-arrows-rotate fa-spin text-xs';
+        if (btn) btn.title = tooltip || 'Senkronize ediliyor...';
+        if (badge) { badge.textContent = 'Eşitleniyor...'; }
+      } else if (status === 'connected') {
+        icon.className = 'fa-solid fa-cloud text-xs';
+        if (btn) btn.title = tooltip || 'Bulut Bağlı (Tıkla ve Eşitle)';
+        if (badge) { badge.textContent = 'Bağlı'; }
+      } else {
+        icon.className = 'fa-solid fa-cloud-slash text-xs opacity-60';
+        if (btn) btn.title = tooltip || 'Yerel Mod';
+        if (badge) { badge.textContent = 'Yerel'; }
+      }
+    }
+
+    async function loadDataFromSupabase(showToastMsg = false) {
+      if (!supabaseClient) return false;
+      setCloudStatus('syncing', 'Buluttan veriler alınıyor...');
+
+      try {
+        // 1. Önce tam sistem JSON snapshot tablosunu dene
+        const { data: stateRow, error: stateErr } = await supabaseClient
+          .from('app_state')
+          .select('state')
+          .eq('id', 'singleton_state')
+          .single();
+
+        if (!stateErr && stateRow && stateRow.state) {
+          appState = {
+            ...appState,
+            ...stateRow.state,
+            settings: { ...appState.settings, ...(stateRow.state.settings || {}) }
+          };
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+          if (typeof renderAll === 'function') renderAll();
+          else if (typeof updateAllUI === 'function') updateAllUI();
+          setCloudStatus('connected', 'Bulut Verileri Güncellendi');
+          if (showToastMsg) showToast('Buluttaki tüm veriler başarıyla yüklendi!');
+          return true;
+        }
+
+        // 2. Ayrı ayrı tabloları sorgula
+        const [
+          settingsRes, ciroRes, suppliersRes, supPaymentsRes,
+          personalExpensesRes, givenDebtsRes, kahveBorclariRes,
+          txRes, billRes, eodRes
+        ] = await Promise.allSettled([
+          supabaseClient.from('app_settings').select('*').single(),
+          supabaseClient.from('manual_daily_ciro').select('*'),
+          supabaseClient.from('coffee_suppliers').select('*'),
+          supabaseClient.from('supplier_payments').select('*'),
+          supabaseClient.from('personal_expenses').select('*'),
+          supabaseClient.from('given_debts').select('*'),
+          supabaseClient.from('kahve_borclari').select('*'),
+          supabaseClient.from('transactions').select('*'),
+          supabaseClient.from('bill_payments').select('*'),
+          supabaseClient.from('end_of_day_reports').select('*')
+        ]);
+
+        let hasData = false;
+
+        if (settingsRes.status === 'fulfilled' && settingsRes.value.data) {
+          const s = settingsRes.value.data;
+          appState.settings = {
+            cafeName: s.cafe_name || appState.settings.cafeName,
+            rentAmount: Number(s.rent_amount || 0),
+            rentDueDay: Number(s.rent_due_day || 15),
+            landlordNotes: s.landlord_notes || '',
+            lastAutoEODChecked: s.last_auto_eod_checked || null
+          };
+          hasData = true;
+        }
+
+        if (ciroRes.status === 'fulfilled' && Array.isArray(ciroRes.value.data) && ciroRes.value.data.length > 0) {
+          appState.manualDailyCiro = {};
+          ciroRes.value.data.forEach(r => {
+            appState.manualDailyCiro[r.date] = Number(r.amount);
+          });
+          hasData = true;
+        }
+
+        if (suppliersRes.status === 'fulfilled' && Array.isArray(suppliersRes.value.data) && suppliersRes.value.data.length > 0) {
+          appState.coffeeSuppliers = suppliersRes.value.data.map(s => ({
+            id: s.id,
+            name: s.name,
+            phone: s.phone || '',
+            createdAt: s.created_at
+          }));
+          hasData = true;
+        }
+
+        if (supPaymentsRes.status === 'fulfilled' && Array.isArray(supPaymentsRes.value.data) && supPaymentsRes.value.data.length > 0) {
+          appState.supplierPayments = supPaymentsRes.value.data.map(p => ({
+            id: p.id,
+            supplierId: p.supplier_id,
+            amount: Number(p.amount),
+            date: p.date,
+            method: p.method || 'Nakit',
+            notes: p.notes || ''
+          }));
+          hasData = true;
+        }
+
+        if (personalExpensesRes.status === 'fulfilled' && Array.isArray(personalExpensesRes.value.data) && personalExpensesRes.value.data.length > 0) {
+          appState.personalExpenses = personalExpensesRes.value.data.map(e => ({
+            id: e.id,
+            category: e.category,
+            amount: Number(e.amount),
+            date: e.date,
+            notes: e.notes || ''
+          }));
+          hasData = true;
+        }
+
+        if (givenDebtsRes.status === 'fulfilled' && Array.isArray(givenDebtsRes.value.data) && givenDebtsRes.value.data.length > 0) {
+          appState.givenDebts = givenDebtsRes.value.data.map(d => ({
+            id: d.id,
+            personName: d.person_name,
+            phone: d.phone || '',
+            amount: Number(d.amount),
+            paidAmount: Number(d.paid_amount || 0),
+            date: d.date,
+            notes: d.notes || ''
+          }));
+          hasData = true;
+        }
+
+        if (kahveBorclariRes.status === 'fulfilled' && Array.isArray(kahveBorclariRes.value.data) && kahveBorclariRes.value.data.length > 0) {
+          appState.kahveBorclari = kahveBorclariRes.value.data.map(k => ({
+            id: k.id,
+            supplierName: k.supplier_name,
+            debtAmount: Number(k.debt_amount),
+            phone: k.phone || '',
+            notes: k.notes || '',
+            updatedAt: k.updated_at
+          }));
+          hasData = true;
+        }
+
+        if (txRes.status === 'fulfilled' && Array.isArray(txRes.value.data) && txRes.value.data.length > 0) {
+          appState.transactions = txRes.value.data.map(t => ({
+            id: t.id,
+            type: t.type,
+            amount: Number(t.amount),
+            category: t.category,
+            paymentMethod: t.payment_method,
+            description: t.description || '',
+            date: t.date,
+            shiftDate: t.shift_date
+          }));
+          hasData = true;
+        }
+
+        if (billRes.status === 'fulfilled' && Array.isArray(billRes.value.data) && billRes.value.data.length > 0) {
+          appState.billPayments = billRes.value.data.map(b => ({
+            id: b.id,
+            type: b.type,
+            amount: Number(b.amount),
+            date: b.date,
+            notes: b.notes || ''
+          }));
+          hasData = true;
+        }
+
+        if (eodRes.status === 'fulfilled' && Array.isArray(eodRes.value.data) && eodRes.value.data.length > 0) {
+          appState.endOfDayReports = eodRes.value.data.map(r => ({
+            id: r.id,
+            date: r.date,
+            shiftDate: r.shift_date,
+            totalCiro: Number(r.total_ciro),
+            totalGelir: Number(r.total_gelir),
+            totalGider: Number(r.total_gider),
+            netKasa: Number(r.net_kasa),
+            closedAt: r.closed_at,
+            notes: r.notes || ''
+          }));
+          hasData = true;
+        }
+
+        if (hasData) {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+          if (typeof renderAll === 'function') renderAll();
+          else if (typeof updateAllUI === 'function') updateAllUI();
+          if (showToastMsg) showToast('Buluttaki verileriniz yüklendi!');
+        }
+        setCloudStatus('connected', 'Bulut Veritabanı Bağlı');
+        return true;
+      } catch (err) {
+        console.warn('Supabase veri çekme hatası (yerel veri aktif):', err);
+        setCloudStatus('offline', 'Yerel Mod');
+        return false;
+      }
+    }
+
+    let supabaseSyncTimeout = null;
+    function syncToSupabase(showToastMsg = false) {
+      if (!supabaseClient) return;
+      clearTimeout(supabaseSyncTimeout);
+      setCloudStatus('syncing', 'Buluta kaydediliyor...');
+
+      supabaseSyncTimeout = setTimeout(async () => {
+        try {
+          // 1. Snapshot tablosuna tam yedeği upsert et
+          await supabaseClient
+            .from('app_state')
+            .upsert({ id: 'singleton_state', state: appState, updated_at: new Date().toISOString() });
+
+          // 2. Ayrı tablolara da eş zamanlı aktar
+          // Ayarlar
+          await supabaseClient.from('app_settings').upsert({
+            id: 'default_settings',
+            cafe_name: appState.settings.cafeName,
+            rent_amount: appState.settings.rentAmount,
+            rent_due_day: appState.settings.rentDueDay,
+            landlord_notes: appState.settings.landlordNotes || '',
+            last_auto_eod_checked: appState.settings.lastAutoEODChecked,
+            updated_at: new Date().toISOString()
+          });
+
+          // Günlük Ciro Defteri
+          if (appState.manualDailyCiro) {
+            const ciroRows = Object.entries(appState.manualDailyCiro).map(([date, amount]) => ({
+              date,
+              amount: Number(amount),
+              updated_at: new Date().toISOString()
+            }));
+            if (ciroRows.length > 0) {
+              await supabaseClient.from('manual_daily_ciro').upsert(ciroRows);
+            }
+          }
+
+          // Toptancılar
+          if (appState.coffeeSuppliers && appState.coffeeSuppliers.length > 0) {
+            await supabaseClient.from('coffee_suppliers').upsert(appState.coffeeSuppliers.map(s => ({
+              id: s.id,
+              name: s.name,
+              phone: s.phone || '',
+              created_at: s.createdAt || new Date().toISOString()
+            })));
+          }
+
+          // Toptancı Ödemeleri
+          if (appState.supplierPayments && appState.supplierPayments.length > 0) {
+            await supabaseClient.from('supplier_payments').upsert(appState.supplierPayments.map(p => ({
+              id: p.id,
+              supplier_id: p.supplierId,
+              amount: Number(p.amount),
+              date: p.date,
+              method: p.method || 'Nakit',
+              notes: p.notes || ''
+            })));
+          }
+
+          // Kişisel Giderler
+          if (appState.personalExpenses && appState.personalExpenses.length > 0) {
+            await supabaseClient.from('personal_expenses').upsert(appState.personalExpenses.map(e => ({
+              id: e.id,
+              category: e.category,
+              amount: Number(e.amount),
+              date: e.date,
+              notes: e.notes || ''
+            })));
+          }
+
+          // Verilen Borçlar
+          if (appState.givenDebts && appState.givenDebts.length > 0) {
+            await supabaseClient.from('given_debts').upsert(appState.givenDebts.map(d => ({
+              id: d.id,
+              person_name: d.personName,
+              phone: d.phone || '',
+              amount: Number(d.amount),
+              paid_amount: Number(d.paidAmount || 0),
+              date: d.date,
+              notes: d.notes || ''
+            })));
+          }
+
+          // Kahve Borçları
+          if (appState.kahveBorclari && appState.kahveBorclari.length > 0) {
+            await supabaseClient.from('kahve_borclari').upsert(appState.kahveBorclari.map(k => ({
+              id: k.id,
+              supplier_name: k.supplierName,
+              debt_amount: Number(k.debtAmount),
+              phone: k.phone || '',
+              notes: k.notes || '',
+              updated_at: k.updatedAt || new Date().toISOString()
+            })));
+          }
+
+          // Kasa Hareketleri
+          if (appState.transactions && appState.transactions.length > 0) {
+            await supabaseClient.from('transactions').upsert(appState.transactions.map(t => ({
+              id: t.id,
+              type: t.type,
+              amount: Number(t.amount),
+              category: t.category,
+              payment_method: t.paymentMethod,
+              description: t.description || '',
+              date: t.date,
+              shift_date: t.shiftDate
+            })));
+          }
+
+          setCloudStatus('connected', 'Bulut Veritabanı Senkronize');
+          if (showToastMsg) showToast('Verileriniz Supabase bulutuna kaydedildi!');
+        } catch (syncErr) {
+          console.warn('Supabase bulut yedekleme hatası:', syncErr);
+          setCloudStatus('offline', 'Yerel Mod');
+        }
+      }, 400);
+    }
+
+    function manualSyncSupabase() {
+      showToast('Bulut eşitlemesi başlatılıyor...');
+      syncToSupabase(true);
+    }
+
+    function manualUploadToSupabase() {
+      syncToSupabase(true);
+    }
+
+    async function manualDownloadFromSupabase() {
+      const ok = await loadDataFromSupabase(true);
+      if (!ok) showToast('Buluttan veri alınamadı veya henüz veri yok.');
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
       initGlassTheme();
       loadDataFromStorage();
+      initSupabase();
+      loadDataFromSupabase();
       initDatetimeDefaults();
       checkAutoEndOfDayShift();
       updateAllUI();
@@ -5627,6 +5988,7 @@
     function saveDataToStorage() {
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+        syncToSupabase();
         // Whenever any data is saved to storage, refresh main screen cards
         updateMainScreenCards();
       } catch (err) {
