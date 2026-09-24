@@ -60,6 +60,7 @@ CREATE TABLE IF NOT EXISTS public.given_debts (
   paid_amount NUMERIC NOT NULL DEFAULT 0,
   date TEXT NOT NULL,
   notes TEXT DEFAULT '',
+  image_url TEXT DEFAULT '',
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
@@ -163,3 +164,73 @@ END $$;
 INSERT INTO public.app_settings (id, cafe_name, rent_amount, rent_due_day)
 VALUES ('default_settings', 'Huzur Kıraathanesi', 0, 15)
 ON CONFLICT (id) DO NOTHING;
+
+-- =============================================================================
+-- BORC GORSEL & FIS YEDEKLEME (MIGRATION & SUPABASE STORAGE AYARLARI)
+-- =============================================================================
+-- 1. Tablolar henüz hiç oluşturulmamışsa önce oluştur:
+CREATE TABLE IF NOT EXISTS public.given_debts (
+  id TEXT PRIMARY KEY,
+  person_name TEXT NOT NULL,
+  phone TEXT DEFAULT '',
+  amount NUMERIC NOT NULL DEFAULT 0,
+  paid_amount NUMERIC NOT NULL DEFAULT 0,
+  date TEXT NOT NULL,
+  notes TEXT DEFAULT '',
+  image_url TEXT DEFAULT '',
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS public.kahve_borclari (
+  id TEXT PRIMARY KEY,
+  supplier_name TEXT NOT NULL,
+  debt_amount NUMERIC NOT NULL DEFAULT 0,
+  phone TEXT DEFAULT '',
+  notes TEXT DEFAULT '',
+  image_url TEXT DEFAULT '',
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 2. Tablo zaten önceden oluşturulmuşsa image_url sütununu güvenle ekle:
+ALTER TABLE public.given_debts ADD COLUMN IF NOT EXISTS image_url TEXT DEFAULT '';
+ALTER TABLE public.kahve_borclari ADD COLUMN IF NOT EXISTS image_url TEXT DEFAULT '';
+
+-- 3. RLS ve Anon erişim izinleri:
+ALTER TABLE public.given_debts ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.kahve_borclari ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Anon Full Access on given_debts" ON public.given_debts;
+CREATE POLICY "Anon Full Access on given_debts" ON public.given_debts FOR ALL TO anon USING (true) WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Anon Full Access on kahve_borclari" ON public.kahve_borclari;
+CREATE POLICY "Anon Full Access on kahve_borclari" ON public.kahve_borclari FOR ALL TO anon USING (true) WITH CHECK (true);
+
+-- 4. Supabase Storage 'debt_images' Bucket (Varsa dokunmaz, yoksa oluşturur)
+INSERT INTO storage.buckets (id, name, public)
+VALUES ('debt_images', 'debt_images', true)
+ON CONFLICT (id) DO UPDATE SET public = true;
+
+-- Anonim kullanıcıların borç görseli yüklemesi ve görmesi için Storage Politikaları
+DROP POLICY IF EXISTS "Anon Debt Images Select" ON storage.objects;
+CREATE POLICY "Anon Debt Images Select" ON storage.objects
+FOR SELECT TO anon
+USING (bucket_id = 'debt_images');
+
+DROP POLICY IF EXISTS "Anon Debt Images Insert" ON storage.objects;
+CREATE POLICY "Anon Debt Images Insert" ON storage.objects
+FOR INSERT TO anon
+WITH CHECK (bucket_id = 'debt_images');
+
+DROP POLICY IF EXISTS "Anon Debt Images Update" ON storage.objects;
+CREATE POLICY "Anon Debt Images Update" ON storage.objects
+FOR UPDATE TO anon
+USING (bucket_id = 'debt_images')
+WITH CHECK (bucket_id = 'debt_images');
+
+DROP POLICY IF EXISTS "Anon Debt Images Delete" ON storage.objects;
+CREATE POLICY "Anon Debt Images Delete" ON storage.objects
+FOR DELETE TO anon
+USING (bucket_id = 'debt_images');
+
+

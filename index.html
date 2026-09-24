@@ -2194,6 +2194,50 @@
           <input type="text" id="givenDebtNotesInput" placeholder="Örn: 5 çay, 2 kahve, masa hesabı..." class="w-full glass-input rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-white">
         </div>
 
+        <!-- Borç Görseli / Fiş / Adisyon Yükleme Alanı -->
+        <div>
+          <label class="block text-[11px] font-semibold text-slate-700 dark:text-slate-200 mb-1 flex items-center justify-between">
+            <span class="flex items-center gap-1.5"><i class="fa-solid fa-camera text-blue-500"></i> Fiş / Görsel Ekle (İsteğe Bağlı)</span>
+            <span class="text-[9px] text-slate-400 font-normal">Supabase Bulut Yedekli</span>
+          </label>
+          <div class="relative">
+            <input type="file" id="givenDebtImageInput" accept="image/*" class="hidden" onchange="handleDebtImageSelected(event)">
+            
+            <div id="givenDebtImagePlaceholder" onclick="document.getElementById('givenDebtImageInput').click()"
+                 class="w-full border border-dashed border-slate-300 dark:border-white/20 hover:border-blue-400 dark:hover:border-blue-400/60 rounded-2xl p-3 flex items-center justify-center gap-2.5 cursor-pointer bg-slate-50/60 dark:bg-white/5 hover:bg-blue-50/50 dark:hover:bg-blue-950/20 transition group">
+              <div class="w-8 h-8 rounded-xl bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-300 flex items-center justify-center text-xs group-hover:scale-110 transition shadow-xs">
+                <i class="fa-solid fa-camera"></i>
+              </div>
+              <div class="text-left">
+                <span class="text-[11px] font-bold text-slate-800 dark:text-slate-200 block group-hover:text-blue-600 dark:group-hover:text-blue-400 transition">Görsel / Fiş Fotoğrafı Çek veya Seç</span>
+                <span class="text-[9px] text-slate-400">Adisyon, kağıt fiş veya dekont yükleyin (Supabase'e kaydedilir)</span>
+              </div>
+            </div>
+
+            <!-- Seçilen Görsel Önizleme -->
+            <div id="givenDebtImagePreviewContainer" class="hidden relative rounded-2xl overflow-hidden border border-slate-200/80 dark:border-white/15 bg-white/70 dark:bg-white/5 p-2.5 shadow-sm">
+              <div class="flex items-center gap-2.5">
+                <img id="givenDebtImagePreviewImg" src="" alt="Fiş Önizleme" class="w-14 h-14 object-cover rounded-xl border border-slate-200 dark:border-white/20 shadow-xs cursor-pointer hover:opacity-90 transition" onclick="openImageViewerModal(this.src, 'Fiş Önizleme')">
+                <div class="flex-1 min-w-0">
+                  <p id="givenDebtImageFileName" class="text-xs font-bold text-slate-800 dark:text-slate-200 truncate">gorsel.jpg</p>
+                  <p id="givenDebtImageFileSize" class="text-[10px] text-slate-400 font-mono">0 KB</p>
+                  <span class="inline-flex items-center gap-1 text-[9px] font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-1.5 py-0.5 rounded-md mt-0.5">
+                    <i class="fa-solid fa-circle-check text-[8px]"></i> Buluta Kaydedilecek
+                  </span>
+                </div>
+                <div class="flex items-center gap-1">
+                  <button type="button" onclick="document.getElementById('givenDebtImageInput').click()" class="w-7 h-7 rounded-xl bg-slate-100 dark:bg-white/10 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center justify-center active:scale-90 transition" title="Görseli Değiştir">
+                    <i class="fa-solid fa-arrows-rotate text-[10px]"></i>
+                  </button>
+                  <button type="button" onclick="removeGivenDebtSelectedImage()" class="w-7 h-7 rounded-xl bg-rose-100 dark:bg-rose-950/60 hover:bg-rose-200 text-rose-600 dark:text-rose-400 flex items-center justify-center active:scale-90 transition" title="Görseli Kaldır">
+                    <i class="fa-solid fa-trash-can text-[10px]"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="flex justify-end gap-2 pt-2">
           <button type="button" onclick="closeAddGivenDebtModal()" class="px-3 py-1.5 rounded-xl text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">
             Vazgeç
@@ -2249,6 +2293,50 @@
           <input type="text" id="editGivenDebtNotesInput" class="w-full glass-input rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-white">
         </div>
 
+        <!-- Borç Fiş / Görsel Düzenleme Alanı -->
+        <div>
+          <label class="block text-[11px] font-semibold text-slate-700 dark:text-slate-200 mb-1 flex items-center justify-between">
+            <span class="flex items-center gap-1.5"><i class="fa-solid fa-camera text-blue-500"></i> Fiş / Görsel</span>
+            <span class="text-[9px] text-slate-400 font-normal">Supabase Bulut Görseli</span>
+          </label>
+          <div class="relative">
+            <input type="file" id="editGivenDebtImageInput" accept="image/*" class="hidden" onchange="handleEditDebtImageSelected(event)">
+            
+            <div id="editGivenDebtImagePlaceholder" onclick="document.getElementById('editGivenDebtImageInput').click()"
+                 class="w-full border border-dashed border-slate-300 dark:border-white/20 hover:border-blue-400 dark:hover:border-blue-400/60 rounded-2xl p-2.5 flex items-center justify-center gap-2 cursor-pointer bg-slate-50/60 dark:bg-white/5 hover:bg-blue-50/50 dark:hover:bg-blue-950/20 transition group">
+              <div class="w-7 h-7 rounded-lg bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-300 flex items-center justify-center text-xs group-hover:scale-110 transition">
+                <i class="fa-solid fa-camera"></i>
+              </div>
+              <div class="text-left">
+                <span class="text-[11px] font-bold text-slate-800 dark:text-slate-200 block group-hover:text-blue-600 dark:group-hover:text-blue-400 transition">Fiş / Görsel Ekle</span>
+                <span class="text-[9px] text-slate-400">Yeni fotoğraf çekin veya galeriden seçin</span>
+              </div>
+            </div>
+
+            <!-- Kayıtlı / Seçilen Görsel Önizleme Kutusu -->
+            <div id="editGivenDebtImagePreviewContainer" class="hidden relative rounded-2xl overflow-hidden border border-slate-200/80 dark:border-white/15 bg-white/70 dark:bg-white/5 p-2.5 shadow-sm">
+              <div class="flex items-center gap-2.5">
+                <img id="editGivenDebtImagePreviewImg" src="" alt="Fiş Önizleme" class="w-14 h-14 object-cover rounded-xl border border-slate-200 dark:border-white/20 shadow-xs cursor-pointer hover:opacity-90 transition" onclick="openImageViewerModal(this.src, 'Kayıtlı Fiş')">
+                <div class="flex-1 min-w-0">
+                  <p id="editGivenDebtImageFileName" class="text-xs font-bold text-slate-800 dark:text-slate-200 truncate">Kayıtlı Fiş</p>
+                  <p id="editGivenDebtImageFileSize" class="text-[10px] text-slate-400 font-mono">Bulutta Kayıtlı</p>
+                  <span class="inline-flex items-center gap-1 text-[9px] font-semibold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/40 px-1.5 py-0.5 rounded-md mt-0.5 cursor-pointer" onclick="openImageViewerModal(document.getElementById('editGivenDebtImagePreviewImg').src, 'Fiş Detayı')">
+                    <i class="fa-solid fa-eye text-[8px]"></i> Büyüt / İncele
+                  </span>
+                </div>
+                <div class="flex items-center gap-1">
+                  <button type="button" onclick="document.getElementById('editGivenDebtImageInput').click()" class="w-7 h-7 rounded-xl bg-slate-100 dark:bg-white/10 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center justify-center active:scale-90 transition" title="Görseli Değiştir">
+                    <i class="fa-solid fa-arrows-rotate text-[10px]"></i>
+                  </button>
+                  <button type="button" onclick="removeEditDebtSelectedImage()" class="w-7 h-7 rounded-xl bg-rose-100 dark:bg-rose-950/60 hover:bg-rose-200 text-rose-600 dark:text-rose-400 flex items-center justify-center active:scale-90 transition" title="Görseli Kaldır">
+                    <i class="fa-solid fa-trash-can text-[10px]"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="flex justify-end gap-2 pt-2">
           <button type="button" onclick="closeEditGivenDebtModal()" class="px-3 py-1.5 rounded-xl text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">
             Vazgeç
@@ -2258,6 +2346,47 @@
           </button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: GÖRSEL / FİŞ ÖNİZLEME (IMAGE VIEWER) -->
+  <!-- ========================================================================= -->
+  <div id="imageViewerModal" class="fixed inset-0 z-[100] bg-black/80 backdrop-blur-xl hidden flex items-center justify-center p-4">
+    <div class="glass-panel w-full max-w-lg rounded-3xl p-4 sm:p-5 border-white/40 dark:border-white/20 shadow-2xl relative text-slate-900 dark:text-white flex flex-col max-h-[92vh]">
+      <!-- Header -->
+      <div class="flex items-center justify-between pb-3 border-b border-slate-200/60 dark:border-white/15 flex-shrink-0">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <div class="w-8 h-8 rounded-xl glass-icon-box flex items-center justify-center text-blue-600 dark:text-blue-400 flex-shrink-0">
+            <i class="fa-solid fa-receipt text-xs"></i>
+          </div>
+          <div class="min-w-0">
+            <h3 class="font-bold text-xs sm:text-sm text-slate-900 dark:text-white truncate" id="imageViewerModalTitle">Fiş / Görsel Detayı</h3>
+            <span class="text-[10px] text-slate-500 dark:text-slate-400 block truncate">Borç Belgesi & Fiş Kaydı</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-1.5 flex-shrink-0">
+          <a id="imageViewerDownloadBtn" href="#" download="borc_fisi.jpg" target="_blank" class="w-8 h-8 rounded-xl glass-icon-box flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white" title="İndir / Yeni Sekmede Aç">
+            <i class="fa-solid fa-arrow-down-to-bracket text-xs"></i>
+          </a>
+          <button type="button" onclick="closeImageViewerModal()" class="w-8 h-8 rounded-xl glass-icon-box flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white" title="Kapat">
+            <i class="fa-solid fa-xmark text-xs"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Image Body -->
+      <div class="flex-1 overflow-auto flex items-center justify-center p-2 my-2 bg-slate-950/20 dark:bg-black/40 rounded-2xl border border-white/30 dark:border-white/10 min-h-[220px]">
+        <img id="imageViewerModalImg" src="" alt="Borç Fiş Görseli" class="max-w-full max-h-[65vh] object-contain rounded-xl shadow-lg">
+      </div>
+
+      <!-- Footer -->
+      <div class="pt-2 flex items-center justify-between text-xs flex-shrink-0">
+        <span class="text-[10px] text-slate-400 flex items-center gap-1"><i class="fa-solid fa-cloud-arrow-up text-emerald-500"></i> Supabase Bulut Görseli</span>
+        <button type="button" onclick="closeImageViewerModal()" class="px-4 py-1.5 rounded-xl text-xs font-bold bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow transition active:scale-95">
+          Kapat
+        </button>
+      </div>
     </div>
   </div>
 
@@ -3771,6 +3900,222 @@
       }
     }
 
+    // =========================================================================
+    // PASTA VE HALKA GRAFİKLERİ İÇİN CANLI & RENKLİ RENK PALETİ
+    // =========================================================================
+    const VIBRANT_CHART_COLORS = [
+      '#3b82f6', // Parlak Mavi
+      '#10b981', // Canlı Zümrüt Yeşili
+      '#f59e0b', // Sıcak Kehribar Sarısı
+      '#ef4444', // Canlı Mercan Kırmızısı
+      '#8b5cf6', // Asil Menekşe Moru
+      '#06b6d4', // Turkuaz Camgöbeği
+      '#ec4899', // Parlak Pembe
+      '#f97316', // Parlak Turuncu
+      '#14b8a6', // Canlı Teal Yeşili
+      '#6366f1', // İndigo Mavi
+      '#84cc16', // Limon / Fıstık Yeşili
+      '#d946ef', // Canlı Fuşya
+      '#0284c7', // Gök Mavisi
+      '#e11d48', // Yakut Kırmızı
+      '#22c55e', // Çimen Yeşili
+      '#a855f7'  // Parlak Lavanta Moru
+    ];
+
+    function getVibrantChartColors(count) {
+      const colors = [];
+      for (let i = 0; i < count; i++) {
+        colors.push(VIBRANT_CHART_COLORS[i % VIBRANT_CHART_COLORS.length]);
+      }
+      return colors;
+    }
+
+    // =========================================================================
+    // BORÇ GÖRSEL & FİŞ İŞLEME (SUPABASE STORAGE & SIKIŞTIRMA)
+    // =========================================================================
+    let currentAddDebtImageBase64 = null;
+    let currentEditDebtImageBase64 = null;
+    let currentEditDebtImageRemoved = false;
+
+    // İstemci tarafında hızlı ve kaliteli resim optimizasyonu (Canvas)
+    function compressImageToDataUrl(file, maxWidth = 1200, maxHeight = 1200, quality = 0.78) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onerror = reject;
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onerror = reject;
+          img.onload = () => {
+            let width = img.width;
+            let height = img.height;
+            if (width > maxWidth || height > maxHeight) {
+              if (width > height) {
+                height = Math.round((height * maxWidth) / width);
+                width = maxWidth;
+              } else {
+                width = Math.round((width * maxHeight) / height);
+                height = maxHeight;
+              }
+            }
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+            const dataUrl = canvas.toDataURL('image/jpeg', quality);
+            resolve(dataUrl);
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // Supabase Storage 'debt_images' kovasına yükleme
+    async function uploadImageToSupabaseStorage(dataUrl, prefix = 'debt') {
+      if (!supabaseClient || !supabaseClient.storage) return null;
+      try {
+        const parts = dataUrl.split(',');
+        if (parts.length < 2) return null;
+        const mimeMatch = parts[0].match(/:(.*?);/);
+        const mime = mimeMatch ? mimeMatch[1] : 'image/jpeg';
+        const bstr = atob(parts[1]);
+        let n = bstr.length;
+        const u8arr = new Uint8Array(n);
+        while (n--) {
+          u8arr[n] = bstr.charCodeAt(n);
+        }
+        const blob = new Blob([u8arr], { type: mime });
+        const ext = mime.includes('png') ? 'png' : 'jpg';
+        const filePath = `${prefix}_${Date.now()}_${Math.random().toString(36).substring(2, 7)}.${ext}`;
+
+        const { data: uploadData, error: uploadErr } = await supabaseClient.storage
+          .from('debt_images')
+          .upload(filePath, blob, {
+            contentType: mime,
+            cacheControl: '3600',
+            upsert: true
+          });
+
+        if (uploadErr) {
+          console.warn('Supabase storage upload error:', uploadErr.message);
+          return null;
+        }
+
+        const { data: publicUrlData } = supabaseClient.storage
+          .from('debt_images')
+          .getPublicUrl(filePath);
+
+        return publicUrlData?.publicUrl || null;
+      } catch (err) {
+        console.warn('uploadImageToSupabaseStorage catch error:', err);
+        return null;
+      }
+    }
+
+    // Görsel Seçme / Kaldırma İşleyicileri (Borç Ekle)
+    async function handleDebtImageSelected(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      if (!file.type.startsWith('image/')) {
+        showToast('Lütfen sadece geçerli bir fotoğraf dosyası seçiniz.');
+        return;
+      }
+      try {
+        showToast('Görsel optimize ediliyor...');
+        const dataUrl = await compressImageToDataUrl(file);
+        currentAddDebtImageBase64 = dataUrl;
+
+        const prevImg = document.getElementById('givenDebtImagePreviewImg');
+        if (prevImg) prevImg.src = dataUrl;
+        if (document.getElementById('givenDebtImageFileName')) {
+          document.getElementById('givenDebtImageFileName').textContent = file.name || 'borc_gorsel.jpg';
+        }
+        if (document.getElementById('givenDebtImageFileSize')) {
+          const sizeKb = Math.round((dataUrl.length * 3 / 4) / 1024);
+          document.getElementById('givenDebtImageFileSize').textContent = `~${sizeKb} KB (Optimize edildi)`;
+        }
+        document.getElementById('givenDebtImagePreviewContainer')?.classList.remove('hidden');
+        document.getElementById('givenDebtImagePlaceholder')?.classList.add('hidden');
+        showToast('Görsel eklendi.');
+      } catch (err) {
+        console.error('Görsel yükleme hatası:', err);
+        showToast('Görsel işlenirken bir sorun oluştu.');
+      }
+    }
+
+    function removeGivenDebtSelectedImage() {
+      currentAddDebtImageBase64 = null;
+      const inputEl = document.getElementById('givenDebtImageInput');
+      if (inputEl) inputEl.value = '';
+      document.getElementById('givenDebtImagePreviewContainer')?.classList.add('hidden');
+      document.getElementById('givenDebtImagePlaceholder')?.classList.remove('hidden');
+    }
+
+    // Görsel Seçme / Kaldırma İşleyicileri (Borç Düzenle)
+    async function handleEditDebtImageSelected(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      if (!file.type.startsWith('image/')) {
+        showToast('Lütfen sadece geçerli bir fotoğraf dosyası seçiniz.');
+        return;
+      }
+      try {
+        showToast('Görsel optimize ediliyor...');
+        const dataUrl = await compressImageToDataUrl(file);
+        currentEditDebtImageBase64 = dataUrl;
+        currentEditDebtImageRemoved = false;
+
+        const prevImg = document.getElementById('editGivenDebtImagePreviewImg');
+        if (prevImg) prevImg.src = dataUrl;
+        if (document.getElementById('editGivenDebtImageFileName')) {
+          document.getElementById('editGivenDebtImageFileName').textContent = file.name || 'yeni_gorsel.jpg';
+        }
+        if (document.getElementById('editGivenDebtImageFileSize')) {
+          const sizeKb = Math.round((dataUrl.length * 3 / 4) / 1024);
+          document.getElementById('editGivenDebtImageFileSize').textContent = `~${sizeKb} KB (Optimize edildi)`;
+        }
+        document.getElementById('editGivenDebtImagePreviewContainer')?.classList.remove('hidden');
+        document.getElementById('editGivenDebtImagePlaceholder')?.classList.add('hidden');
+        showToast('Görsel güncellendi.');
+      } catch (err) {
+        console.error('Görsel yükleme hatası:', err);
+        showToast('Görsel işlenirken bir sorun oluştu.');
+      }
+    }
+
+    function removeEditDebtSelectedImage() {
+      currentEditDebtImageBase64 = null;
+      currentEditDebtImageRemoved = true;
+      const inputEl = document.getElementById('editGivenDebtImageInput');
+      if (inputEl) inputEl.value = '';
+      document.getElementById('editGivenDebtImagePreviewContainer')?.classList.add('hidden');
+      document.getElementById('editGivenDebtImagePlaceholder')?.classList.remove('hidden');
+    }
+
+    // Tam Ekran Görsel İnceleme Modal Fonksiyonları
+    function openImageViewerModal(imageUrl, title = 'Fiş / Görsel Detayı') {
+      if (!imageUrl) return;
+      const modal = document.getElementById('imageViewerModal');
+      const img = document.getElementById('imageViewerModalImg');
+      const titleEl = document.getElementById('imageViewerModalTitle');
+      const downloadBtn = document.getElementById('imageViewerDownloadBtn');
+
+      if (img) img.src = imageUrl;
+      if (titleEl) titleEl.textContent = title;
+      if (downloadBtn) {
+        downloadBtn.href = imageUrl;
+      }
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeImageViewerModal() {
+      const modal = document.getElementById('imageViewerModal');
+      if (modal) modal.classList.add('hidden');
+      const img = document.getElementById('imageViewerModalImg');
+      if (img) img.src = '';
+    }
+
     function drawCoffeeExpensePieChart(supplierTotals, totalExpense) {
       const canvas = document.getElementById('coffeeExpensePieChart');
       if (!canvas || typeof Chart === 'undefined') return;
@@ -3782,10 +4127,7 @@
 
       const labels = [];
       const data = [];
-      const bgColors = [
-        '#0f172a', '#334155', '#475569', '#64748b', '#94a3b8',
-        '#cbd5e1', '#e2e8f0', '#1e293b'
-      ];
+      const bgColors = getVibrantChartColors(labels.length || 8);
 
       const suppliers = appState.coffeeSuppliers || [];
 
@@ -4046,10 +4388,7 @@
       const debts = appState.givenDebts || [];
       const labels = [];
       const data = [];
-      const bgColors = [
-        '#0f172a', '#334155', '#475569', '#64748b', '#94a3b8',
-        '#cbd5e1', '#e2e8f0', '#1e293b', '#64748b', '#0f172a'
-      ];
+      const bgColors = getVibrantChartColors(data.length || 10);
 
       debts.forEach(d => {
         const remaining = Math.max(0, (Number(d.amount) || 0) - (Number(d.paidAmount) || 0));
@@ -4150,6 +4489,15 @@
             </div>
 
             ${d.notes ? `<p class="text-[10px] text-slate-600 dark:text-slate-300 bg-slate-100/70 dark:bg-white/5 px-2.5 py-1 rounded-lg">Not: ${d.notes}</p>` : ''}
+
+            ${d.imageUrl ? `
+              <div class="pt-0.5">
+                <button type="button" onclick="openImageViewerModal('${encodeURI(d.imageUrl)}', '${escapeHtml(d.personName)} - Fiş / Görsel')" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-blue-50 dark:bg-blue-950/40 hover:bg-blue-100 dark:hover:bg-blue-900/50 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800/40 text-[10px] font-bold transition active:scale-95 shadow-xs">
+                  <img src="${encodeURI(d.imageUrl)}" alt="Fiş" class="w-4 h-4 rounded object-cover border border-blue-300 dark:border-blue-700">
+                  <span><i class="fa-solid fa-receipt text-[9px] mr-0.5"></i> Fişi / Görseli Gör</span>
+                </button>
+              </div>
+            ` : ''}
 
             <div class="flex items-center justify-between pt-1 border-t border-slate-200/60 dark:border-white/10 text-xs">
               <span class="text-[10px] text-slate-400">Tahsil: <b class="text-slate-900 dark:text-white font-mono">${formatCurrency(d.paidAmount || 0)}</b></span>
@@ -4259,6 +4607,7 @@
       document.getElementById('givenDebtAmountInput').value = '';
       document.getElementById('givenDebtDateInput').value = formatDateToISO(new Date());
       document.getElementById('givenDebtNotesInput').value = '';
+      removeGivenDebtSelectedImage();
 
       document.getElementById('addGivenDebtModal').classList.remove('hidden');
       setTimeout(() => document.getElementById('givenDebtAmountInput').focus(), 150);
@@ -4268,7 +4617,7 @@
       document.getElementById('addGivenDebtModal').classList.add('hidden');
     }
 
-    function handleAddGivenDebtSubmit(e) {
+    async function handleAddGivenDebtSubmit(e) {
       if (e) e.preventDefault();
       const personName = document.getElementById('givenDebtPersonSelect').value;
       const amount = parseFloat(document.getElementById('givenDebtAmountInput').value);
@@ -4281,11 +4630,19 @@
         return;
       }
 
+      let finalImageUrl = '';
+      if (currentAddDebtImageBase64) {
+        showToast('Görsel Supabase bulutuna yükleniyor...');
+        const uploadedUrl = await uploadImageToSupabaseStorage(currentAddDebtImageBase64, 'debt');
+        finalImageUrl = uploadedUrl || currentAddDebtImageBase64;
+      }
+
       let existing = (appState.givenDebts || []).find(d => (d.personName || '').toLowerCase() === personName.toLowerCase());
       if (existing) {
         existing.amount = (Number(existing.amount) || 0) + amount;
         existing.date = date;
         if (notes) existing.notes = (existing.notes ? existing.notes + ' • ' : '') + notes;
+        if (finalImageUrl) existing.imageUrl = finalImageUrl;
       } else {
         const newRecord = {
           id: 'gd_' + Date.now(),
@@ -4295,6 +4652,7 @@
           paidAmount: 0,
           date,
           notes: notes || 'Borç kaydı',
+          imageUrl: finalImageUrl || '',
           createdAt: new Date().toISOString()
         };
         if (!appState.givenDebts) appState.givenDebts = [];
@@ -4304,6 +4662,7 @@
       saveDataToStorage();
       closeAddGivenDebtModal();
       renderVerilenBorcSection();
+      if (typeof renderNavVerilenBorc === 'function') renderNavVerilenBorc();
       updateMainScreenCards();
       showToast(`${personName} için ${formatCurrency(amount)} borç kaydedildi.`);
     }
@@ -4360,6 +4719,29 @@
       document.getElementById('editGivenDebtDateInput').value = (d.date || '').substring(0, 10);
       document.getElementById('editGivenDebtNotesInput').value = d.notes || '';
 
+      currentEditDebtImageBase64 = null;
+      currentEditDebtImageRemoved = false;
+      const prevImgContainer = document.getElementById('editGivenDebtImagePreviewContainer');
+      const prevImg = document.getElementById('editGivenDebtImagePreviewImg');
+      const placeholder = document.getElementById('editGivenDebtImagePlaceholder');
+      const inputEl = document.getElementById('editGivenDebtImageInput');
+      if (inputEl) inputEl.value = '';
+
+      if (d.imageUrl) {
+        if (prevImg) prevImg.src = d.imageUrl;
+        if (document.getElementById('editGivenDebtImageFileName')) {
+          document.getElementById('editGivenDebtImageFileName').textContent = 'Kayıtlı Fiş / Görsel';
+        }
+        if (document.getElementById('editGivenDebtImageFileSize')) {
+          document.getElementById('editGivenDebtImageFileSize').textContent = 'Supabase Bulut Görseli';
+        }
+        if (prevImgContainer) prevImgContainer.classList.remove('hidden');
+        if (placeholder) placeholder.classList.add('hidden');
+      } else {
+        if (prevImgContainer) prevImgContainer.classList.add('hidden');
+        if (placeholder) placeholder.classList.remove('hidden');
+      }
+
       document.getElementById('editGivenDebtModal').classList.remove('hidden');
       setTimeout(() => document.getElementById('editGivenDebtAmountInput').focus(), 150);
     }
@@ -4368,7 +4750,7 @@
       document.getElementById('editGivenDebtModal').classList.add('hidden');
     }
 
-    function handleEditGivenDebtSubmit(e) {
+    async function handleEditGivenDebtSubmit(e) {
       if (e) e.preventDefault();
       const debtId = document.getElementById('editGivenDebtTargetId').value;
       const newName = document.getElementById('editGivenDebtPersonNameInput').value.trim();
@@ -4389,9 +4771,18 @@
       d.date = newDate;
       d.notes = newNotes;
 
+      if (currentEditDebtImageRemoved) {
+        d.imageUrl = '';
+      } else if (currentEditDebtImageBase64) {
+        showToast('Görsel güncelleniyor...');
+        const uploadedUrl = await uploadImageToSupabaseStorage(currentEditDebtImageBase64, 'debt');
+        d.imageUrl = uploadedUrl || currentEditDebtImageBase64;
+      }
+
       saveDataToStorage();
       closeEditGivenDebtModal();
       renderVerilenBorcSection();
+      if (typeof renderNavVerilenBorc === 'function') renderNavVerilenBorc();
       updateMainScreenCards();
       showToast('Borç kaydı başarıyla güncellendi.');
     }
@@ -5261,10 +5652,7 @@
 
       const labels = [];
       const data = [];
-      const bgColors = [
-        '#0f172a', '#334155', '#475569', '#64748b', '#94a3b8',
-        '#cbd5e1', '#e2e8f0', '#1e293b', '#64748b'
-      ];
+      const bgColors = getVibrantChartColors(labels.length || 8);
 
       Object.keys(catTotals).forEach(cat => {
         labels.push(cat);
@@ -5748,7 +6136,8 @@
             amount: Number(d.amount),
             paidAmount: Number(d.paid_amount || 0),
             date: d.date,
-            notes: d.notes || ''
+            notes: d.notes || '',
+            imageUrl: d.image_url || d.imageUrl || ''
           }));
           hasData = true;
         }
@@ -5899,7 +6288,8 @@
               amount: Number(d.amount),
               paid_amount: Number(d.paidAmount || 0),
               date: d.date,
-              notes: d.notes || ''
+              notes: d.notes || '',
+              image_url: d.imageUrl || ''
             })));
           }
 
@@ -7279,9 +7669,7 @@
         return;
       }
 
-      const colors = [
-        '#0f172a', '#334155', '#475569', '#64748b', '#94a3b8', '#cbd5e1', '#e2e8f0', '#1e293b', '#52525b', '#71717a'
-      ];
+      const colors = VIBRANT_CHART_COLORS;
       let startAngle = -Math.PI / 2;
       let legendHtml = '';
 
@@ -7368,6 +7756,11 @@
             <div class="space-y-0.5">
               <div class="flex items-center gap-2">
                 <span class="font-bold text-xs text-slate-900 dark:text-white">${escapeHtml(debt.personName)}</span>
+                ${debt.imageUrl ? `
+                  <button onclick="openImageViewerModal('${encodeURI(debt.imageUrl)}', '${escapeHtml(debt.personName)} - Fiş / Görsel')" title="Fiş Görselini İncele" class="px-2 py-0.5 rounded-lg bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 border border-blue-300/30 text-[9px] font-bold flex items-center gap-1 hover:bg-blue-100 dark:hover:bg-blue-900/50 active:scale-95 transition">
+                    <i class="fa-solid fa-receipt text-[8px]"></i> Fiş
+                  </button>
+                ` : ''}
                 ${debt.phone ? `<span class="text-[10px] text-slate-400"><i class="fa-solid fa-phone text-[9px]"></i> ${escapeHtml(debt.phone)}</span>` : ''}
               </div>
               <div class="text-[10px] text-slate-400 flex items-center gap-2">
