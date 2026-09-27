@@ -61,6 +61,7 @@ CREATE TABLE IF NOT EXISTS public.given_debts (
   date TEXT NOT NULL,
   notes TEXT DEFAULT '',
   image_url TEXT DEFAULT '',
+  images JSONB DEFAULT '[]'::jsonb,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
@@ -178,6 +179,7 @@ CREATE TABLE IF NOT EXISTS public.given_debts (
   date TEXT NOT NULL,
   notes TEXT DEFAULT '',
   image_url TEXT DEFAULT '',
+  images JSONB DEFAULT '[]'::jsonb,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
@@ -192,8 +194,9 @@ CREATE TABLE IF NOT EXISTS public.kahve_borclari (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 2. Tablo zaten önceden oluşturulmuşsa image_url sütununu güvenle ekle:
+-- 2. Tablo zaten önceden oluşturulmuşsa sütunları güvenle ekle:
 ALTER TABLE public.given_debts ADD COLUMN IF NOT EXISTS image_url TEXT DEFAULT '';
+ALTER TABLE public.given_debts ADD COLUMN IF NOT EXISTS images JSONB DEFAULT '[]'::jsonb;
 ALTER TABLE public.kahve_borclari ADD COLUMN IF NOT EXISTS image_url TEXT DEFAULT '';
 
 -- 3. RLS ve Anon erişim izinleri:
