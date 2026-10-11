@@ -236,4 +236,46 @@ CREATE POLICY "Anon Debt Images Delete" ON storage.objects
 FOR DELETE TO anon
 USING (bucket_id = 'debt_images');
 
+-- =============================================================================
+-- 12. VERİLEN BORÇ İŞLEMLERİ / TAHSİLAT GEÇMİŞİ (KALICI KAYITLAR)
+-- =============================================================================
+CREATE TABLE IF NOT EXISTS public.given_debt_transactions (
+  id TEXT PRIMARY KEY,
+  debt_id TEXT,
+  person_name TEXT NOT NULL,
+  amount NUMERIC NOT NULL DEFAULT 0,
+  type TEXT DEFAULT 'tahsilat', -- 'tahsilat', 'borc_ekleme'
+  remaining_amount NUMERIC DEFAULT 0,
+  date TEXT NOT NULL,
+  notes TEXT DEFAULT '',
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE public.given_debt_transactions ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Anon Full Access on given_debt_transactions" ON public.given_debt_transactions;
+CREATE POLICY "Anon Full Access on given_debt_transactions" ON public.given_debt_transactions FOR ALL TO anon USING (true) WITH CHECK (true);
+
+-- =============================================================================
+-- 13. KAHVE BORCU AYLIK VERİ VE DEVİR KAYITLARI
+-- =============================================================================
+ALTER TABLE public.kahve_borclari ADD COLUMN IF NOT EXISTS initial_debt NUMERIC DEFAULT 0;
+
+CREATE TABLE IF NOT EXISTS public.kahve_borcu_monthly (
+  id TEXT PRIMARY KEY,
+  supplier_name TEXT NOT NULL,
+  period_key TEXT NOT NULL,
+  initial_debt NUMERIC DEFAULT 0,
+  paid_amount NUMERIC DEFAULT 0,
+  borrowed_amount NUMERIC DEFAULT 0,
+  current_debt NUMERIC DEFAULT 0,
+  notes TEXT DEFAULT '',
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE public.kahve_borcu_monthly ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Anon Full Access on kahve_borcu_monthly" ON public.kahve_borcu_monthly;
+CREATE POLICY "Anon Full Access on kahve_borcu_monthly" ON public.kahve_borcu_monthly FOR ALL TO anon USING (true) WITH CHECK (true);
+
+
 

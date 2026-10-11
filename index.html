@@ -1581,6 +1581,23 @@
     <!-- Scrollable Body -->
     <div class="glass-scroll flex-1 max-w-xl w-full mx-auto p-4 space-y-4 overflow-y-auto pb-28">
       
+      <!-- AYLIK RAPOR GÖRÜNTÜLE BUTONU (EN ÜSTTE) -->
+      <button type="button" onclick="openKahveGelirAylikRaporModal()" class="w-full p-3.5 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 hover:from-blue-700 hover:to-violet-700 text-white flex items-center justify-between shadow-lg shadow-indigo-500/25 active:scale-98 transition group">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center text-white text-base shadow-sm group-hover:scale-105 transition">
+            <i class="fa-solid fa-chart-column"></i>
+          </div>
+          <div class="text-left">
+            <span class="text-xs font-black block tracking-tight">Aylık Rapor Görüntüle</span>
+            <span class="text-[10px] text-blue-100 block">Günlük Ciro Sütun Grafiği & Ortalama Fark Analizi</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-1.5 bg-white/20 px-2.5 py-1 rounded-xl text-xs font-bold">
+          <span>İncele</span>
+          <i class="fa-solid fa-chevron-right text-[10px]"></i>
+        </div>
+      </button>
+      
       <!-- Dönem Seçici & Filtre (16 Eyl 2026 - 15 Eki 2026) -->
       <div class="p-3.5 rounded-2xl bg-white/80 dark:bg-white/10 border border-white/90 dark:border-white/15 flex items-center justify-between shadow-sm">
         <button onclick="changeDrawerPeriod(-1)" class="w-8 h-8 rounded-xl glass-icon-box flex items-center justify-center text-slate-700 dark:text-slate-300 hover:text-slate-900 active:scale-95" title="Önceki Dönem">
@@ -1771,6 +1788,23 @@
     <!-- Scrollable Body -->
     <div class="glass-scroll flex-1 max-w-xl w-full mx-auto p-4 space-y-4 overflow-y-auto pb-28">
       
+      <!-- AYLIK GİDERLERİ İNCELE BUTONU (EN ÜSTTE) -->
+      <button type="button" onclick="openKisiselGiderAylikInceleModal()" class="w-full p-3.5 rounded-2xl bg-gradient-to-r from-purple-600 via-pink-600 to-rose-600 hover:from-purple-700 hover:to-rose-700 text-white flex items-center justify-between shadow-lg shadow-purple-500/25 active:scale-98 transition group">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center text-white text-base shadow-sm group-hover:scale-105 transition">
+            <i class="fa-solid fa-chart-column"></i>
+          </div>
+          <div class="text-left">
+            <span class="text-xs font-black block tracking-tight">Aylık Giderleri İncele</span>
+            <span class="text-[10px] text-purple-100 block">Kalem Bazlı Sütun Grafiği (Çoktan Aza) & Sayfalama</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-1.5 bg-white/20 px-2.5 py-1 rounded-xl text-xs font-bold">
+          <span>İncele</span>
+          <i class="fa-solid fa-chevron-right text-[10px]"></i>
+        </div>
+      </button>
+
       <!-- En Üst Kutucuklar (16-15 Dönemi Kişisel Gider Toplamı) -->
       <div class="grid grid-cols-2 gap-2 text-center">
         <div class="p-3 rounded-2xl bg-white/80 dark:bg-white/10 border border-white/90 dark:border-white/15 shadow-sm">
@@ -2016,6 +2050,26 @@
         <div class="space-y-2 pt-1" id="verilenBorclarList">
           <!-- Borçlular dinamik buraya basılır -->
         </div>
+
+        <!-- EN SON YAPILAN İŞLEMLER (ÖDEME & TAHSİLAT LİSTESİ - AYLIK SIFIRLANMAZ) -->
+        <div class="mt-5 p-4 rounded-3xl bg-white/80 dark:bg-white/10 border border-white/90 dark:border-white/15 shadow-sm space-y-3">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xs">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+              </div>
+              <div>
+                <span class="text-xs font-black text-slate-900 dark:text-white block">En Son Yapılan İşlemler</span>
+                <span class="text-[9px] text-slate-500 dark:text-slate-400">Tahsilat & Ödeme Kayıtları (Aylık Sıfırlanmaz)</span>
+              </div>
+            </div>
+            <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-slate-200/70 dark:bg-white/10 text-slate-700 dark:text-slate-300" id="verilenBorcTxCountBadge">0 İşlem</span>
+          </div>
+
+          <div class="space-y-2 max-h-72 overflow-y-auto pr-1" id="verilenBorcTransactionsList">
+            <!-- Dinamik işlemler buraya basılır -->
+          </div>
+        </div>
       </div>
 
     </div>
@@ -2045,6 +2099,23 @@
     <!-- Scrollable Body -->
     <div class="glass-scroll flex-1 max-w-xl w-full mx-auto p-4 space-y-4 overflow-y-auto pb-28">
       
+      <!-- AYLIK VERİ GÖRÜNTÜLE BUTONU (EN ÜSTTE) -->
+      <button type="button" onclick="openKahveBorcuAylikVeriModal()" class="w-full p-3.5 rounded-2xl bg-gradient-to-r from-amber-600 via-orange-600 to-rose-600 hover:from-amber-700 hover:to-rose-700 text-white flex items-center justify-between shadow-lg shadow-orange-500/25 active:scale-98 transition group">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center text-white text-base shadow-sm group-hover:scale-105 transition">
+            <i class="fa-solid fa-calendar-days"></i>
+          </div>
+          <div class="text-left">
+            <span class="text-xs font-black block tracking-tight">Aylık Veri Görüntüle</span>
+            <span class="text-[10px] text-amber-100 block">Ay Başı vs Ay Sonu Borç, Ödenen & Alınan Sütun Grafiği</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-1.5 bg-white/20 px-2.5 py-1 rounded-xl text-xs font-bold">
+          <span>İncele</span>
+          <i class="fa-solid fa-chevron-right text-[10px]"></i>
+        </div>
+      </button>
+
       <!-- 2 Üst Özet Kartı (Toplam Kahve Borcu, Toptancı Sayısı) -->
       <div class="grid grid-cols-2 gap-2 text-center">
         <div class="p-3 rounded-2xl bg-white/80 dark:bg-white/10 border border-white/90 dark:border-white/15 shadow-sm">
@@ -3043,6 +3114,278 @@
     </div>
   </div>
 
+  <!-- ========================================================================= -->
+  <!-- MODAL: KAHVE GELİR AYLIK RAPOR & GÜNLÜK CİRO PERFORMANS ANALİZİ -->
+  <!-- ========================================================================= -->
+  <div id="modalKahveGelirAylikRapor" class="fixed inset-0 z-[60] bg-slate-100/95 dark:bg-slate-950/95 backdrop-blur-2xl text-slate-900 dark:text-white hidden flex flex-col overflow-hidden">
+    <!-- iOS Top Bar -->
+    <div class="sticky top-0 z-20 glass-panel border-b border-white/80 dark:border-white/10 px-4 py-3 flex items-center justify-between shadow-sm">
+      <button onclick="closeKahveGelirAylikRaporModal()" class="px-3 py-1.5 rounded-xl glass-icon-box flex items-center gap-1.5 text-xs font-bold active:scale-95 transition">
+        <i class="fa-solid fa-chevron-left text-[10px]"></i> Kapat
+      </button>
+      <div class="text-center">
+        <h3 class="font-black text-sm tracking-tight">Kahve Gelir Aylık Raporu</h3>
+        <span class="text-[10px] text-slate-500 dark:text-slate-400">Günlük Ciro & Performans Analizi</span>
+      </div>
+      <div class="w-14"></div>
+    </div>
+
+    <!-- Scrollable Body -->
+    <div class="glass-scroll flex-1 max-w-xl w-full mx-auto p-4 space-y-4 overflow-y-auto pb-28">
+      
+      <!-- Dönem Seçici (16-15 Dönemleri) -->
+      <div class="p-3.5 rounded-2xl bg-white/80 dark:bg-white/10 border border-white/90 dark:border-white/15 flex items-center justify-between shadow-sm">
+        <button onclick="changeKahveGelirReportPeriod(-1)" class="w-8 h-8 rounded-xl glass-icon-box flex items-center justify-center text-slate-700 dark:text-slate-300 hover:text-slate-900 active:scale-95" title="Önceki Dönem">
+          <i class="fa-solid fa-chevron-left text-xs"></i>
+        </button>
+        <div class="text-center">
+          <span class="text-[9px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-bold block">İncelenen Dönem</span>
+          <span class="text-sm font-black text-slate-900 dark:text-white" id="kahveGelirReportPeriodLabel">16 Eylül - 15 Ekim 2026</span>
+        </div>
+        <button onclick="changeKahveGelirReportPeriod(1)" class="w-8 h-8 rounded-xl glass-icon-box flex items-center justify-center text-slate-700 dark:text-slate-300 hover:text-slate-900 active:scale-95" title="Sonraki Dönem">
+          <i class="fa-solid fa-chevron-right text-xs"></i>
+        </button>
+      </div>
+
+      <!-- 4 Özet Kartı -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
+        <div class="p-3 rounded-2xl bg-white/80 dark:bg-white/10 border border-white/90 dark:border-white/15 shadow-sm">
+          <span class="text-[10px] text-slate-500 dark:text-slate-400 block font-medium">Toplam Ciro</span>
+          <span class="text-sm sm:text-base font-black font-mono text-slate-900 dark:text-white block mt-0.5" id="kahveGelirReportTotalCiro">0 ₺</span>
+          <span class="text-[9px] text-slate-400 block">Seçili Dönem</span>
+        </div>
+        <div class="p-3 rounded-2xl bg-white/80 dark:bg-white/10 border border-white/90 dark:border-white/15 shadow-sm">
+          <span class="text-[10px] text-slate-500 dark:text-slate-400 block font-medium">Veri Girilen Gün</span>
+          <span class="text-sm sm:text-base font-black font-mono text-slate-900 dark:text-white block mt-0.5" id="kahveGelirReportDayCount">0 Gün</span>
+          <span class="text-[9px] text-slate-400 block">Kayıtlı</span>
+        </div>
+        <div class="p-3 rounded-2xl bg-white/80 dark:bg-white/10 border border-white/90 dark:border-white/15 shadow-sm">
+          <span class="text-[10px] text-slate-500 dark:text-slate-400 block font-medium">Genel Günlük Ort.</span>
+          <span class="text-sm sm:text-base font-black font-mono text-emerald-600 dark:text-emerald-400 block mt-0.5" id="kahveGelirReportDailyAvg">0 ₺</span>
+          <span class="text-[9px] text-slate-400 block">Toplam / Gün</span>
+        </div>
+        <div class="p-3 rounded-2xl bg-white/80 dark:bg-white/10 border border-white/90 dark:border-white/15 shadow-sm">
+          <span class="text-[10px] text-slate-500 dark:text-slate-400 block font-medium">En Çok Ciro Çıkan</span>
+          <span class="text-xs sm:text-sm font-black text-indigo-600 dark:text-indigo-400 block mt-1 truncate" id="kahveGelirReportTopDay">--</span>
+          <span class="text-[9px] text-slate-400 block">Zirve Gün</span>
+        </div>
+      </div>
+
+      <!-- Sütun Grafiği: Günlere Göre Toplam Ciro Dağılımı -->
+      <div class="p-4 rounded-3xl bg-white/80 dark:bg-white/10 border border-white/90 dark:border-white/15 shadow-sm text-center">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400 block">Haftanın Günlerine Göre Ciro (Sütun Grafik)</span>
+          <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-400">Pzt - Paz Toplamları</span>
+        </div>
+        <div class="w-full h-56 relative flex items-center justify-center">
+          <canvas id="kahveGelirBarChart"></canvas>
+        </div>
+      </div>
+
+      <!-- En Çok Ciro Çıkan Günden En Aza Doğru Sıralı Liste & Ortalamadan Fark -->
+      <div class="space-y-2 pt-1">
+        <div class="flex items-center justify-between text-xs px-1 font-bold text-slate-700 dark:text-slate-300">
+          <span>Günlük Ciro Sıralaması & Ortalamadan Fark</span>
+          <span class="text-[10px] text-slate-400 font-normal">Çoktan Aza Sıralı</span>
+        </div>
+
+        <div class="space-y-2" id="kahveGelirDaysRankingList">
+          <!-- Gün sıralaması dinamik buraya basılır -->
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: KAHVE BORCU AYLIK VERİ GÖRÜNTÜLEME & DEVİR ANALİZİ -->
+  <!-- ========================================================================= -->
+  <div id="modalKahveBorcuAylikVeri" class="fixed inset-0 z-[60] bg-slate-100/95 dark:bg-slate-950/95 backdrop-blur-2xl text-slate-900 dark:text-white hidden flex flex-col overflow-hidden">
+    <!-- iOS Top Bar -->
+    <div class="sticky top-0 z-20 glass-panel border-b border-white/80 dark:border-white/10 px-4 py-3 flex items-center justify-between shadow-sm">
+      <button onclick="closeKahveBorcuAylikVeriModal()" class="px-3 py-1.5 rounded-xl glass-icon-box flex items-center gap-1.5 text-xs font-bold active:scale-95 transition">
+        <i class="fa-solid fa-chevron-left text-[10px]"></i> Kapat
+      </button>
+      <div class="text-center">
+        <h3 class="font-black text-sm tracking-tight">Kahve Borcu Aylık Dökümü</h3>
+        <span class="text-[10px] text-slate-500 dark:text-slate-400">Ay Başı vs Ay Sonu, Ödenen & Alınan</span>
+      </div>
+      <div class="w-14"></div>
+    </div>
+
+    <!-- Scrollable Body -->
+    <div class="glass-scroll flex-1 max-w-xl w-full mx-auto p-4 space-y-4 overflow-y-auto pb-28">
+      
+      <!-- Dönem Seçici -->
+      <div class="p-3.5 rounded-2xl bg-white/80 dark:bg-white/10 border border-white/90 dark:border-white/15 flex items-center justify-between shadow-sm">
+        <button onclick="changeKahveBorcuReportPeriod(-1)" class="w-8 h-8 rounded-xl glass-icon-box flex items-center justify-center text-slate-700 dark:text-slate-300 hover:text-slate-900 active:scale-95" title="Önceki Dönem">
+          <i class="fa-solid fa-chevron-left text-xs"></i>
+        </button>
+        <div class="text-center">
+          <span class="text-[9px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-bold block">İncelenen Dönem</span>
+          <span class="text-sm font-black text-slate-900 dark:text-white" id="kahveBorcuReportPeriodLabel">16 Eylül - 15 Ekim 2026</span>
+        </div>
+        <button onclick="changeKahveBorcuReportPeriod(1)" class="w-8 h-8 rounded-xl glass-icon-box flex items-center justify-center text-slate-700 dark:text-slate-300 hover:text-slate-900 active:scale-95" title="Sonraki Dönem">
+          <i class="fa-solid fa-chevron-right text-xs"></i>
+        </button>
+      </div>
+
+      <!-- 4 Üst Özet Kartı (Ay Başı Borç, Ödenen, Alınan, Güncel Borç) -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
+        <div class="p-3 rounded-2xl bg-white/80 dark:bg-white/10 border border-white/90 dark:border-white/15 shadow-sm">
+          <span class="text-[10px] text-slate-500 dark:text-slate-400 block font-medium">Ay Başı Borç</span>
+          <span class="text-sm font-black font-mono text-amber-600 dark:text-amber-400 block mt-0.5" id="kahveBorcuMonthlyInitialTotal">0 ₺</span>
+          <span class="text-[9px] text-slate-400 block">Dönem Başı</span>
+        </div>
+        <div class="p-3 rounded-2xl bg-white/80 dark:bg-white/10 border border-white/90 dark:border-white/15 shadow-sm">
+          <span class="text-[10px] text-slate-500 dark:text-slate-400 block font-medium">Toplam Ödenen</span>
+          <span class="text-sm font-black font-mono text-emerald-600 dark:text-emerald-400 block mt-0.5" id="kahveBorcuMonthlyPaidTotal">0 ₺</span>
+          <span class="text-[9px] text-slate-400 block">Ay İçi Verilen</span>
+        </div>
+        <div class="p-3 rounded-2xl bg-white/80 dark:bg-white/10 border border-white/90 dark:border-white/15 shadow-sm">
+          <span class="text-[10px] text-slate-500 dark:text-slate-400 block font-medium">Toplam Alınan</span>
+          <span class="text-sm font-black font-mono text-blue-600 dark:text-blue-400 block mt-0.5" id="kahveBorcuMonthlyBorrowedTotal">0 ₺</span>
+          <span class="text-[9px] text-slate-400 block">Yeni Borç</span>
+        </div>
+        <div class="p-3 rounded-2xl bg-white/80 dark:bg-white/10 border border-white/90 dark:border-white/15 shadow-sm">
+          <span class="text-[10px] text-slate-500 dark:text-slate-400 block font-medium">Güncel / Ay Sonu</span>
+          <span class="text-sm font-black font-mono text-rose-600 dark:text-rose-400 block mt-0.5" id="kahveBorcuMonthlyEndTotal">0 ₺</span>
+          <span class="text-[9px] text-slate-400 block">Kalan Borç</span>
+        </div>
+      </div>
+
+      <!-- Sütun Grafiği: Toptancı Başına Ay Başı vs Ay Sonu & Ödenen/Alınan -->
+      <div class="p-4 rounded-3xl bg-white/80 dark:bg-white/10 border border-white/90 dark:border-white/15 shadow-sm text-center">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400 block">Toptancı Borç Karşılaştırma Grafiği</span>
+          <div class="flex items-center gap-1">
+            <button type="button" onclick="navigateKahveBorcuMonthlyChart(-1)" class="w-7 h-7 rounded-lg glass-icon-box flex items-center justify-center text-xs active:scale-90 transition">
+              <i class="fa-solid fa-chevron-left text-[10px]"></i>
+            </button>
+            <span class="text-[10px] font-mono font-bold px-1.5 text-slate-500 dark:text-slate-400" id="kahveBorcuMonthlyChartPageBadge">1 / 1</span>
+            <button type="button" onclick="navigateKahveBorcuMonthlyChart(1)" class="w-7 h-7 rounded-lg glass-icon-box flex items-center justify-center text-xs active:scale-90 transition">
+              <i class="fa-solid fa-chevron-right text-[10px]"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Lejant -->
+        <div class="flex flex-wrap items-center justify-center gap-3 text-[10px] font-bold text-slate-600 dark:text-slate-300 mb-2">
+          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block"></span> Ay Başı</span>
+          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span> Ödenen</span>
+          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-blue-500 inline-block"></span> Alınan</span>
+          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block"></span> Güncel/Son</span>
+        </div>
+
+        <div class="w-full h-64 relative flex items-center justify-center">
+          <canvas id="kahveBorcuMonthlyChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Sütun Grafiklerinin Altında Detaylı Toptancı Kartları Listesi -->
+      <div class="space-y-2 pt-1">
+        <div class="flex items-center justify-between text-xs px-1 font-bold text-slate-700 dark:text-slate-300">
+          <span>Kime Ne Kadar Ödendi & Ne Kadar Alındı</span>
+          <span class="text-[10px] text-slate-400 font-normal" id="kahveBorcuMonthlyListBadge">0 Toptancı</span>
+        </div>
+
+        <div class="space-y-2.5" id="kahveBorcuMonthlyDetailsList">
+          <!-- Dinamik toptancı hareketleri buraya basılır -->
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: KİŞİSEL GİDERLER AYLIK İNCELEME & KALEM BAZLI SÜTUN GRAFİĞİ -->
+  <!-- ========================================================================= -->
+  <div id="modalKisiselGiderAylikIncele" class="fixed inset-0 z-[60] bg-slate-100/95 dark:bg-slate-950/95 backdrop-blur-2xl text-slate-900 dark:text-white hidden flex flex-col overflow-hidden">
+    <!-- iOS Top Bar -->
+    <div class="sticky top-0 z-20 glass-panel border-b border-white/80 dark:border-white/10 px-4 py-3 flex items-center justify-between shadow-sm">
+      <button onclick="closeKisiselGiderAylikInceleModal()" class="px-3 py-1.5 rounded-xl glass-icon-box flex items-center gap-1.5 text-xs font-bold active:scale-95 transition">
+        <i class="fa-solid fa-chevron-left text-[10px]"></i> Kapat
+      </button>
+      <div class="text-center">
+        <h3 class="font-black text-sm tracking-tight">Kişisel Giderleri İncele</h3>
+        <span class="text-[10px] text-slate-500 dark:text-slate-400">Kalem Bazlı Sütun Grafiği & Çoktan Aza Sıralama</span>
+      </div>
+      <div class="w-14"></div>
+    </div>
+
+    <!-- Scrollable Body -->
+    <div class="glass-scroll flex-1 max-w-xl w-full mx-auto p-4 space-y-4 overflow-y-auto pb-28">
+      
+      <!-- Dönem Seçici -->
+      <div class="p-3.5 rounded-2xl bg-white/80 dark:bg-white/10 border border-white/90 dark:border-white/15 flex items-center justify-between shadow-sm">
+        <button onclick="changeKisiselGiderReportPeriod(-1)" class="w-8 h-8 rounded-xl glass-icon-box flex items-center justify-center text-slate-700 dark:text-slate-300 hover:text-slate-900 active:scale-95" title="Önceki Dönem">
+          <i class="fa-solid fa-chevron-left text-xs"></i>
+        </button>
+        <div class="text-center">
+          <span class="text-[9px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-bold block">İncelenen Dönem</span>
+          <span class="text-sm font-black text-slate-900 dark:text-white" id="kisiselGiderReportPeriodLabel">16 Eylül - 15 Ekim 2026</span>
+        </div>
+        <button onclick="changeKisiselGiderReportPeriod(1)" class="w-8 h-8 rounded-xl glass-icon-box flex items-center justify-center text-slate-700 dark:text-slate-300 hover:text-slate-900 active:scale-95" title="Sonraki Dönem">
+          <i class="fa-solid fa-chevron-right text-xs"></i>
+        </button>
+      </div>
+
+      <!-- 3 Özet Kartı -->
+      <div class="grid grid-cols-3 gap-2 text-center">
+        <div class="p-3 rounded-2xl bg-white/80 dark:bg-white/10 border border-white/90 dark:border-white/15 shadow-sm">
+          <span class="text-[10px] text-slate-500 dark:text-slate-400 block font-medium">Toplam Harcama</span>
+          <span class="text-sm sm:text-base font-black font-mono text-purple-600 dark:text-purple-400 block mt-0.5" id="kisiselGiderReportTotal">0 ₺</span>
+          <span class="text-[9px] text-slate-400 block">Seçili Dönem</span>
+        </div>
+        <div class="p-3 rounded-2xl bg-white/80 dark:bg-white/10 border border-white/90 dark:border-white/15 shadow-sm">
+          <span class="text-[10px] text-slate-500 dark:text-slate-400 block font-medium">Kalem Sayısı</span>
+          <span class="text-sm sm:text-base font-black font-mono text-slate-900 dark:text-white block mt-0.5" id="kisiselGiderReportCatCount">0 Kalem</span>
+          <span class="text-[9px] text-slate-400 block">Gider Türü</span>
+        </div>
+        <div class="p-3 rounded-2xl bg-white/80 dark:bg-white/10 border border-white/90 dark:border-white/15 shadow-sm">
+          <span class="text-[10px] text-slate-500 dark:text-slate-400 block font-medium">En Çok Harcanan</span>
+          <span class="text-xs sm:text-sm font-black text-rose-600 dark:text-rose-400 block mt-1 truncate" id="kisiselGiderReportTopCat">--</span>
+          <span class="text-[9px] text-slate-400 block">Zirve Kalem</span>
+        </div>
+      </div>
+
+      <!-- Sütun Grafiği: Aynı Olan Gider Kalemleri Toplanır, Çoktan Aza Sıralanır, Sayfalama Tuşları Vardır -->
+      <div class="p-4 rounded-3xl bg-white/80 dark:bg-white/10 border border-white/90 dark:border-white/15 shadow-sm text-center">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400 block">Kalem Bazlı Harcama Dağılımı (Sütun Grafik)</span>
+          
+          <!-- Ekrana sığmadığında sağa sola ilerleme tuşları -->
+          <div class="flex items-center gap-1.5" id="kisiselGiderChartNavControls">
+            <button type="button" onclick="navigateKisiselGiderBarChart(-1)" class="w-7 h-7 rounded-lg glass-icon-box flex items-center justify-center text-xs active:scale-90 transition" title="Önceki Kalemler">
+              <i class="fa-solid fa-chevron-left text-[10px]"></i>
+            </button>
+            <span class="text-[10px] font-mono font-bold px-1.5 text-slate-500 dark:text-slate-400" id="kisiselGiderChartPageBadge">1 / 1</span>
+            <button type="button" onclick="navigateKisiselGiderBarChart(1)" class="w-7 h-7 rounded-lg glass-icon-box flex items-center justify-center text-xs active:scale-90 transition" title="Sonraki Kalemler">
+              <i class="fa-solid fa-chevron-right text-[10px]"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="w-full h-60 relative flex items-center justify-center">
+          <canvas id="kisiselGiderBarChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Çoktan Aza Sıralı Kalem Listesi & Harcama Detayları -->
+      <div class="space-y-2 pt-1">
+        <div class="flex items-center justify-between text-xs px-1 font-bold text-slate-700 dark:text-slate-300">
+          <span>Harcama Kalemleri Listesi (Çoktan Aza)</span>
+          <span class="text-[10px] text-slate-400 font-normal" id="kisiselGiderListBadge">0 Kalem</span>
+        </div>
+
+        <div class="space-y-2" id="kisiselGiderRankingList">
+          <!-- Dinamik kalemler buraya basılır -->
+        </div>
+      </div>
+
+    </div>
+  </div>
+
   <!-- Print Slip Area -->
   <div id="printArea" class="hidden p-6 max-w-sm mx-auto font-mono text-xs"></div>
 
@@ -3084,7 +3427,9 @@
       personalCategories: ['Kira', 'Market', 'Benzin', 'Kıyafet', 'Fatura', 'Sağlık', 'Mutfak', 'Diğer'],
       personalExpenses: [],
       givenDebts: [],
-      kahveBorclari: []
+      debtTransactions: [],
+      kahveBorclari: [],
+      kahveBorcuMonthly: []
     };
 
     let currentTxFilter = 'all';
@@ -4904,6 +5249,7 @@
 
       // Listeyi ve Grafiği Bas
       renderVerilenBorclarList();
+      renderVerilenBorcTransactions();
       try {
         drawVerilenBorcPieChart();
       } catch (err) {
@@ -5279,6 +5625,20 @@
       if (!d) return;
 
       d.paidAmount = (Number(d.paidAmount) || 0) + collectAmt;
+      const collectDateVal = (document.getElementById('collectDebtDateInput') && document.getElementById('collectDebtDateInput').value) ? document.getElementById('collectDebtDateInput').value : formatDateToISO(new Date());
+      const newTx = {
+        id: 'vbtx_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
+        debtId: d.id,
+        personName: d.personName,
+        amount: collectAmt,
+        remainingAmount: Math.max(0, (Number(d.amount) || 0) - (Number(d.paidAmount) || 0)),
+        date: collectDateVal,
+        timestamp: new Date().toISOString(),
+        type: 'tahsilat',
+        notes: 'Ödeme alındı'
+      };
+      if (!appState.debtTransactions) appState.debtTransactions = [];
+      appState.debtTransactions.unshift(newTx);
       saveDataToStorage();
       closeCollectGivenDebtModal();
       renderVerilenBorcSection();
@@ -6903,6 +7263,24 @@
             })));
           }
 
+          // Verilen Borç İşlemleri (Tahsilat / Ödeme Geçmişi)
+          if (appState.debtTransactions && appState.debtTransactions.length > 0) {
+            try {
+              await supabaseClient.from('given_debt_transactions').upsert(appState.debtTransactions.map(tx => ({
+                id: tx.id,
+                debt_id: tx.debtId,
+                person_name: tx.personName,
+                amount: Number(tx.amount || 0),
+                type: tx.type || 'tahsilat',
+                remaining_amount: Number(tx.remainingAmount || 0),
+                date: tx.date || formatDateToISO(new Date()),
+                notes: tx.notes || ''
+              })));
+            } catch (errTx) {
+              console.warn('given_debt_transactions upsert pas geçildi:', errTx);
+            }
+          }
+
           // Kasa Hareketleri
           if (appState.transactions && appState.transactions.length > 0) {
             await supabaseClient.from('transactions').upsert(appState.transactions.map(t => ({
@@ -6939,6 +7317,831 @@
       const ok = await loadDataFromSupabase(true);
       if (!ok) showToast('Buluttan veri alınamadı veya henüz veri yok.');
     }
+
+
+    // =========================================================================
+    // YENİ EKLENEN ÖZELLİKLER: AYLIK RAPORLAR, BORÇ GEÇMİŞİ & SÜTUN GRAFİKLERİ
+    // =========================================================================
+
+    // -------------------------------------------------------------------------
+    // 1. VERİLECEK BORÇ: EN SON YAPILAN İŞLEMLER (AYLIK SIFIRLANMAZ)
+    // -------------------------------------------------------------------------
+    function renderVerilenBorcTransactions() {
+      const container = document.getElementById('verilenBorcTransactionsList');
+      const countBadge = document.getElementById('verilenBorcTxCountBadge');
+      if (!container) return;
+
+      const txList = appState.debtTransactions || [];
+      if (countBadge) countBadge.textContent = `${txList.length} İşlem`;
+
+      if (txList.length === 0) {
+        container.innerHTML = `
+          <div class="p-4 rounded-2xl bg-white/50 dark:bg-white/5 border border-dashed border-slate-200 dark:border-white/10 text-center text-xs text-slate-400">
+            <i class="fa-solid fa-receipt text-lg block mb-1 opacity-50"></i>
+            Henüz yapılmış bir ödeme / tahsilat işlemi bulunmuyor.
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = txList.map(tx => {
+        const isTahsilat = tx.type === 'tahsilat';
+        const displayTime = tx.timestamp ? formatTransactionDateTime(tx.timestamp) : (tx.date || '');
+        return `
+          <div class="p-3 rounded-2xl bg-white/70 dark:bg-white/5 border border-white/80 dark:border-white/10 flex items-center justify-between text-xs transition hover:bg-white dark:hover:bg-white/10 shadow-sm">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-xl flex items-center justify-center text-xs ${isTahsilat ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' : 'bg-amber-500/10 text-amber-600 dark:text-amber-400'}">
+                <i class="fa-solid ${isTahsilat ? 'fa-arrow-down-left' : 'fa-hand-holding-dollar'}"></i>
+              </div>
+              <div>
+                <div class="flex items-center gap-1.5">
+                  <span class="font-black text-slate-900 dark:text-white">${escapeHtml(tx.personName)}</span>
+                  <span class="text-[9px] font-bold px-1.5 py-0.2 rounded-md ${isTahsilat ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400' : 'bg-amber-500/15 text-amber-600 dark:text-amber-400'}">${isTahsilat ? 'Ödeme Yapıldı' : 'Borç Eklendi'}</span>
+                </div>
+                <div class="flex items-center gap-2 text-[10px] text-slate-400 mt-0.5">
+                  <span><i class="fa-regular fa-clock mr-1"></i>${displayTime}</span>
+                  ${tx.remainingAmount !== undefined ? `<span>• Kalan: <b class="text-slate-600 dark:text-slate-300">${formatCurrency(tx.remainingAmount)}</b></span>` : ''}
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="font-mono font-black text-xs ${isTahsilat ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-900 dark:text-white'}">
+                ${isTahsilat ? '+' : ''}${formatCurrency(tx.amount)}
+              </span>
+              <button onclick="deleteDebtTransaction('${tx.id}')" class="w-6 h-6 rounded-lg glass-icon-box flex items-center justify-center text-[10px] text-rose-500 hover:text-rose-600 active:scale-90 transition" title="İşlemi Sil">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function deleteDebtTransaction(txId) {
+      if (!confirm('Bu ödeme işlem kaydını silmek istediğinize emin misiniz?')) return;
+      appState.debtTransactions = (appState.debtTransactions || []).filter(t => t.id !== txId);
+      saveDataToStorage();
+      renderVerilenBorcTransactions();
+      showToast('İşlem kaydı silindi.');
+    }
+
+    // -------------------------------------------------------------------------
+    // 2. KAHVE GELİR: AYLIK RAPOR GÖRÜNTÜLEME & GÜNLÜK CİRO ANALİZİ
+    // -------------------------------------------------------------------------
+    let currentKahveGelirReportOffset = 0;
+    let kahveGelirBarChartInstance = null;
+
+    function openKahveGelirAylikRaporModal() {
+      currentKahveGelirReportOffset = currentDrawerPeriodOffset;
+      document.getElementById('modalKahveGelirAylikRapor').classList.remove('hidden');
+      renderKahveGelirAylikRapor();
+    }
+
+    function closeKahveGelirAylikRaporModal() {
+      document.getElementById('modalKahveGelirAylikRapor').classList.add('hidden');
+      if (kahveGelirBarChartInstance) {
+        try { kahveGelirBarChartInstance.destroy(); } catch(e){}
+        kahveGelirBarChartInstance = null;
+      }
+    }
+
+    function changeKahveGelirReportPeriod(delta) {
+      currentKahveGelirReportOffset += delta;
+      renderKahveGelirAylikRapor();
+    }
+
+    function renderKahveGelirAylikRapor() {
+      const pInfo = getDrawerPeriodInfo(currentKahveGelirReportOffset);
+      const periodLabelEl = document.getElementById('kahveGelirReportPeriodLabel');
+      if (periodLabelEl) periodLabelEl.textContent = pInfo.label;
+
+      const dayNames = ['Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi', 'Pazar'];
+      const dayStats = dayNames.map((name, idx) => ({
+        name,
+        idx,
+        totalCiro: 0,
+        filledDaysCount: 0,
+        averageCiro: 0,
+        diffFromGeneralAvg: 0
+      }));
+
+      function getWeekDayIndex(dateObj) {
+        const jsDay = dateObj.getDay(); // 0: Pazar, 1: Pazartesi...
+        return jsDay === 0 ? 6 : jsDay - 1;
+      }
+
+      let totalPeriodCiro = 0;
+      let totalFilledDays = 0;
+
+      pInfo.days.forEach(d => {
+        const dISO = formatDateToISO(d);
+        const val = appState.manualDailyCiro ? appState.manualDailyCiro[dISO] : undefined;
+        const amount = (val !== undefined && val !== null && !isNaN(val)) ? Number(val) : 0;
+        if (amount > 0) {
+          const wIdx = getWeekDayIndex(d);
+          dayStats[wIdx].totalCiro += amount;
+          dayStats[wIdx].filledDaysCount += 1;
+          totalPeriodCiro += amount;
+          totalFilledDays += 1;
+        }
+      });
+
+      // Genel Günlük Ortalama = Aylık Ciro / Veri Girilen Gün Sayısı
+      const generalDailyAverage = totalFilledDays > 0 ? (totalPeriodCiro / totalFilledDays) : 0;
+
+      dayStats.forEach(st => {
+        st.averageCiro = st.filledDaysCount > 0 ? (st.totalCiro / st.filledDaysCount) : 0;
+        st.diffFromGeneralAvg = st.filledDaysCount > 0 ? (st.averageCiro - generalDailyAverage) : 0;
+      });
+
+      // 4 Özet Kartı
+      const elTotal = document.getElementById('kahveGelirReportTotalCiro');
+      const elDays = document.getElementById('kahveGelirReportDayCount');
+      const elAvg = document.getElementById('kahveGelirReportDailyAvg');
+      const elTop = document.getElementById('kahveGelirReportTopDay');
+
+      if (elTotal) elTotal.textContent = formatCurrency(totalPeriodCiro);
+      if (elDays) elDays.textContent = `${totalFilledDays} Gün Girildi`;
+      if (elAvg) elAvg.textContent = formatCurrency(generalDailyAverage);
+
+      const sortedStats = [...dayStats].sort((a, b) => b.totalCiro - a.totalCiro);
+      const topDay = sortedStats[0];
+      if (elTop) {
+        elTop.textContent = topDay && topDay.totalCiro > 0 ? `${topDay.name}` : '--';
+      }
+
+      // Sütun Grafiği Çiz
+      try {
+        drawKahveGelirBarChart(dayStats, generalDailyAverage);
+      } catch (err) {
+        console.warn('drawKahveGelirBarChart hatası:', err);
+      }
+
+      // Çoktan Aza Sıralı Liste Bas
+      renderKahveGelirDaysRankingList(sortedStats, generalDailyAverage);
+    }
+
+    function drawKahveGelirBarChart(dayStats, generalDailyAvg) {
+      const canvas = document.getElementById('kahveGelirBarChart');
+      if (!canvas || typeof Chart === 'undefined') return;
+
+      if (kahveGelirBarChartInstance) {
+        try { kahveGelirBarChartInstance.destroy(); } catch(e){}
+        kahveGelirBarChartInstance = null;
+      }
+
+      const isDark = document.documentElement.classList.contains('dark');
+      const labels = dayStats.map(s => s.name);
+      const data = dayStats.map(s => s.totalCiro);
+
+      // En yüksek güne özel vurgulu renk
+      const maxVal = Math.max(...data, 1);
+      const bgColors = data.map(v => {
+        if (v === maxVal && v > 0) return '#4f46e5'; // Zirve gün indigo
+        return isDark ? 'rgba(255, 255, 255, 0.75)' : 'rgba(30, 41, 59, 0.75)';
+      });
+
+      const ctx = canvas.getContext('2d');
+      kahveGelirBarChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [{
+            label: 'Toplam Ciro (₺)',
+            data,
+            backgroundColor: bgColors,
+            borderRadius: 8,
+            borderSkipped: false
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: { duration: 400 },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: function(ctx) {
+                  const stat = dayStats[ctx.dataIndex];
+                  return [
+                    ` Toplam: ${formatCurrency(ctx.raw || 0)}`,
+                    ` Gün Sayısı: ${stat.filledDaysCount} gün`,
+                    ` Günlük Ort: ${formatCurrency(stat.averageCiro)}`
+                  ];
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: {
+                font: { size: 10, family: 'Inter, Outfit, sans-serif' },
+                color: isDark ? '#94a3b8' : '#64748b'
+              }
+            },
+            y: {
+              grid: {
+                color: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'
+              },
+              ticks: {
+                font: { size: 9, family: 'monospace' },
+                color: isDark ? '#94a3b8' : '#64748b',
+                callback: function(val) { return val >= 1000 ? (val/1000) + 'k ₺' : val + ' ₺'; }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function renderKahveGelirDaysRankingList(sortedStats, generalDailyAverage) {
+      const container = document.getElementById('kahveGelirDaysRankingList');
+      if (!container) return;
+
+      if (sortedStats.every(s => s.totalCiro === 0)) {
+        container.innerHTML = `
+          <div class="p-4 rounded-2xl bg-white/50 dark:bg-white/5 border border-dashed border-slate-200 dark:border-white/10 text-center text-xs text-slate-400">
+            <i class="fa-regular fa-calendar-xmark text-lg block mb-1 opacity-50"></i>
+            Bu dönemde henüz girilmiş bir günlük ciro verisi bulunmuyor.
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = sortedStats.map((st, index) => {
+        const hasData = st.filledDaysCount > 0;
+        const diff = st.diffFromGeneralAvg;
+        const isPositive = diff > 0;
+        const isNeutral = Math.abs(diff) < 0.01;
+
+        let diffBadge = '';
+        if (!hasData) {
+          diffBadge = `<span class="text-[10px] text-slate-400">Giriş yok</span>`;
+        } else if (isNeutral) {
+          diffBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-200/70 dark:bg-white/10 text-slate-600 dark:text-slate-300">Ortalamaya Eşit</span>`;
+        } else if (isPositive) {
+          diffBadge = `
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+              <i class="fa-solid fa-arrow-up text-[9px]"></i> Ortalamadan +${formatCurrency(diff)} Fazla
+            </span>
+          `;
+        } else {
+          diffBadge = `
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center gap-1">
+              <i class="fa-solid fa-arrow-down text-[9px]"></i> Ortalamadan -${formatCurrency(Math.abs(diff))} Eksik
+            </span>
+          `;
+        }
+
+        const rankBadgeClass = index === 0 ? 'bg-amber-500 text-white shadow-sm' :
+                               index === 1 ? 'bg-slate-400 text-white' :
+                               index === 2 ? 'bg-amber-700 text-white' :
+                               'bg-slate-200 dark:bg-white/10 text-slate-700 dark:text-slate-300';
+
+        return `
+          <div class="p-3 rounded-2xl bg-white/70 dark:bg-white/5 border border-white/80 dark:border-white/10 flex items-center justify-between text-xs transition hover:bg-white dark:hover:bg-white/10 shadow-sm">
+            <div class="flex items-center gap-2.5">
+              <span class="w-6 h-6 rounded-lg flex items-center justify-center font-black text-[10px] ${rankBadgeClass}">
+                #${index + 1}
+              </span>
+              <div>
+                <span class="font-black text-slate-900 dark:text-white block">${st.name}</span>
+                <span class="text-[10px] text-slate-400">${hasData ? `${st.filledDaysCount} gün girildi • Günlük Ort: ${formatCurrency(st.averageCiro)}` : 'Veri yok'}</span>
+              </div>
+            </div>
+
+            <div class="text-right space-y-0.5">
+              <span class="font-mono font-black text-xs block text-slate-900 dark:text-white">${formatCurrency(st.totalCiro)}</span>
+              <div>${diffBadge}</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // -------------------------------------------------------------------------
+    // 3. KAHVE BORCU: AYLIK VERİ GÖRÜNTÜLEME & DEVİR KARŞILAŞTIRMASI
+    // -------------------------------------------------------------------------
+    let currentKahveBorcuReportOffset = 0;
+    let kahveBorcuMonthlyChartInstance = null;
+    let kahveBorcuMonthlyChartPage = 0;
+    const KAHVE_BORCU_MONTHLY_PAGE_SIZE = 5;
+
+    function openKahveBorcuAylikVeriModal() {
+      currentKahveBorcuReportOffset = currentDrawerPeriodOffset;
+      kahveBorcuMonthlyChartPage = 0;
+      document.getElementById('modalKahveBorcuAylikVeri').classList.remove('hidden');
+      renderKahveBorcuAylikVeri();
+    }
+
+    function closeKahveBorcuAylikVeriModal() {
+      document.getElementById('modalKahveBorcuAylikVeri').classList.add('hidden');
+      if (kahveBorcuMonthlyChartInstance) {
+        try { kahveBorcuMonthlyChartInstance.destroy(); } catch(e){}
+        kahveBorcuMonthlyChartInstance = null;
+      }
+    }
+
+    function changeKahveBorcuReportPeriod(delta) {
+      currentKahveBorcuReportOffset += delta;
+      kahveBorcuMonthlyChartPage = 0;
+      renderKahveBorcuAylikVeri();
+    }
+
+    function navigateKahveBorcuMonthlyChart(delta) {
+      kahveBorcuMonthlyChartPage += delta;
+      renderKahveBorcuAylikVeri(false);
+    }
+
+    function renderKahveBorcuAylikVeri(redrawFull = true) {
+      const pInfo = getDrawerPeriodInfo(currentKahveBorcuReportOffset);
+      const periodLabelEl = document.getElementById('kahveBorcuReportPeriodLabel');
+      if (periodLabelEl) periodLabelEl.textContent = pInfo.label;
+
+      const suppliers = appState.kahveBorclari || [];
+      const payments = appState.supplierPayments || [];
+
+      // Seçili dönem içindeki ödemeler
+      const periodPayments = payments.filter(p => {
+        const d = (p.date || '').substring(0, 10);
+        return d >= pInfo.startDateISO && d <= pInfo.endDateISO;
+      });
+
+      // Her toptancı için verileri birleştir
+      const supplierStats = suppliers.map(s => {
+        const supplierName = s.supplierName || 'İsimsiz Toptancı';
+        const currentDebt = Number(s.debtAmount || s.amount || 0);
+        
+        // Bu dönemde bu toptancıya yapılan ödemeler
+        const paidThisPeriod = periodPayments
+          .filter(p => (p.supplierId === s.id || (p.notes && p.notes.includes(supplierName))))
+          .reduce((sum, p) => sum + (Number(p.amount) || 0), 0);
+
+        // Ay başı borcu: s.initialDebt varsa o, yoksa s.debtAmount
+        const initialDebt = s.initialDebt !== undefined ? Number(s.initialDebt) : currentDebt;
+
+        // Ay başından beri alınan yeni borç:
+        // Formül: Güncel Borç = Ay Başı Borç - Ödenen + Alınan => Alınan = Güncel + Ödenen - Ay Başı
+        const borrowedThisPeriod = Math.max(0, currentDebt + paidThisPeriod - initialDebt);
+
+        return {
+          id: s.id,
+          supplierName,
+          phone: s.phone || '',
+          initialDebt,
+          paidThisPeriod,
+          borrowedThisPeriod,
+          currentDebt
+        };
+      });
+
+      // 4 Özet Kartı
+      let totalInitial = 0;
+      let totalPaid = 0;
+      let totalBorrowed = 0;
+      let totalEnd = 0;
+
+      supplierStats.forEach(st => {
+        totalInitial += st.initialDebt;
+        totalPaid += st.paidThisPeriod;
+        totalBorrowed += st.borrowedThisPeriod;
+        totalEnd += st.currentDebt;
+      });
+
+      const elInitial = document.getElementById('kahveBorcuMonthlyInitialTotal');
+      const elPaid = document.getElementById('kahveBorcuMonthlyPaidTotal');
+      const elBorrowed = document.getElementById('kahveBorcuMonthlyBorrowedTotal');
+      const elEnd = document.getElementById('kahveBorcuMonthlyEndTotal');
+
+      if (elInitial) elInitial.textContent = formatCurrency(totalInitial);
+      if (elPaid) elPaid.textContent = formatCurrency(totalPaid);
+      if (elBorrowed) elBorrowed.textContent = formatCurrency(totalBorrowed);
+      if (elEnd) elEnd.textContent = formatCurrency(totalEnd);
+
+      // Sütun Grafiği Çiz (Sayfalamalı)
+      try {
+        drawKahveBorcuMonthlyChart(supplierStats);
+      } catch (err) {
+        console.warn('drawKahveBorcuMonthlyChart hatası:', err);
+      }
+
+      // Detaylı Kartlar Listesi
+      renderKahveBorcuMonthlyDetails(supplierStats, totalPaid, totalBorrowed);
+    }
+
+    function drawKahveBorcuMonthlyChart(stats) {
+      const canvas = document.getElementById('kahveBorcuMonthlyChart');
+      if (!canvas || typeof Chart === 'undefined') return;
+
+      if (kahveBorcuMonthlyChartInstance) {
+        try { kahveBorcuMonthlyChartInstance.destroy(); } catch(e){}
+        kahveBorcuMonthlyChartInstance = null;
+      }
+
+      const totalItems = stats.length;
+      const totalPages = Math.max(1, Math.ceil(totalItems / KAHVE_BORCU_MONTHLY_PAGE_SIZE));
+      if (kahveBorcuMonthlyChartPage >= totalPages) kahveBorcuMonthlyChartPage = totalPages - 1;
+      if (kahveBorcuMonthlyChartPage < 0) kahveBorcuMonthlyChartPage = 0;
+
+      const pageBadge = document.getElementById('kahveBorcuMonthlyChartPageBadge');
+      if (pageBadge) pageBadge.textContent = `${kahveBorcuMonthlyChartPage + 1} / ${totalPages}`;
+
+      const startIdx = kahveBorcuMonthlyChartPage * KAHVE_BORCU_MONTHLY_PAGE_SIZE;
+      const pageItems = stats.slice(startIdx, startIdx + KAHVE_BORCU_MONTHLY_PAGE_SIZE);
+
+      const labels = pageItems.map(item => item.supplierName);
+      const dataInitial = pageItems.map(item => item.initialDebt);
+      const dataPaid = pageItems.map(item => item.paidThisPeriod);
+      const dataBorrowed = pageItems.map(item => item.borrowedThisPeriod);
+      const dataEnd = pageItems.map(item => item.currentDebt);
+
+      if (labels.length === 0) {
+        labels.push('Kayıt Yok');
+        dataInitial.push(0);
+        dataPaid.push(0);
+        dataBorrowed.push(0);
+        dataEnd.push(0);
+      }
+
+      const isDark = document.documentElement.classList.contains('dark');
+      const ctx = canvas.getContext('2d');
+      kahveBorcuMonthlyChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [
+            {
+              label: 'Ay Başı Borç',
+              data: dataInitial,
+              backgroundColor: '#f59e0b',
+              borderRadius: 6
+            },
+            {
+              label: 'Ödenen Borç',
+              data: dataPaid,
+              backgroundColor: '#10b981',
+              borderRadius: 6
+            },
+            {
+              label: 'Alınan Yeni Borç',
+              data: dataBorrowed,
+              backgroundColor: '#3b82f6',
+              borderRadius: 6
+            },
+            {
+              label: 'Güncel / Ay Sonu Borç',
+              data: dataEnd,
+              backgroundColor: '#f43f5e',
+              borderRadius: 6
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: { duration: 350 },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: function(ctx) {
+                  return ` ${ctx.dataset.label}: ${formatCurrency(ctx.raw || 0)}`;
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: {
+                font: { size: 10, family: 'Inter, Outfit, sans-serif' },
+                color: isDark ? '#94a3b8' : '#64748b'
+              }
+            },
+            y: {
+              grid: {
+                color: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'
+              },
+              ticks: {
+                font: { size: 9, family: 'monospace' },
+                color: isDark ? '#94a3b8' : '#64748b',
+                callback: function(v) { return v >= 1000 ? (v/1000) + 'k ₺' : v + ' ₺'; }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function renderKahveBorcuMonthlyDetails(stats, totalPaid, totalBorrowed) {
+      const container = document.getElementById('kahveBorcuMonthlyDetailsList');
+      const badge = document.getElementById('kahveBorcuMonthlyListBadge');
+      if (!container) return;
+
+      if (badge) badge.textContent = `${stats.length} Toptancı`;
+
+      if (stats.length === 0) {
+        container.innerHTML = `
+          <div class="p-4 rounded-2xl bg-white/50 dark:bg-white/5 border border-dashed border-slate-200 dark:border-white/10 text-center text-xs text-slate-400">
+            <i class="fa-solid fa-mug-hot text-lg block mb-1 opacity-50"></i>
+            Henüz kayıtlı bir toptancı borcu bulunmuyor.
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = stats.map(st => {
+        return `
+          <div class="p-3.5 rounded-2xl bg-white/70 dark:bg-white/5 border border-white/80 dark:border-white/10 space-y-2.5 transition hover:bg-white dark:hover:bg-white/10 shadow-sm">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-xl bg-orange-500/10 text-orange-600 dark:text-orange-400 flex items-center justify-center text-xs">
+                  <i class="fa-solid fa-truck"></i>
+                </div>
+                <div>
+                  <span class="font-black text-xs text-slate-900 dark:text-white block">${escapeHtml(st.supplierName)}</span>
+                  <span class="text-[10px] text-slate-400">${st.phone ? st.phone : 'Telefon kaydı yok'}</span>
+                </div>
+              </div>
+              <button onclick="promptEditInitialDebt('${st.id}', ${st.initialDebt})" class="px-2 py-1 rounded-lg glass-icon-box text-[10px] font-bold text-slate-600 dark:text-slate-300 hover:text-slate-900 active:scale-95 transition" title="Ay Başı Borcunu Belirle">
+                <i class="fa-solid fa-pen-to-square mr-1"></i> Ay Başı Düzenle
+              </button>
+            </div>
+
+            <!-- 4'lü Değer Matrisi -->
+            <div class="grid grid-cols-4 gap-1.5 text-center pt-1 border-t border-slate-200/60 dark:border-white/10">
+              <div class="p-1.5 rounded-xl bg-amber-500/10 dark:bg-amber-500/15">
+                <span class="text-[9px] text-amber-700 dark:text-amber-300 font-medium block">Ay Başı</span>
+                <span class="font-mono font-black text-[11px] text-amber-600 dark:text-amber-400 block mt-0.5">${formatCurrency(st.initialDebt)}</span>
+              </div>
+              <div class="p-1.5 rounded-xl bg-emerald-500/10 dark:bg-emerald-500/15">
+                <span class="text-[9px] text-emerald-700 dark:text-emerald-300 font-medium block">Ödenen</span>
+                <span class="font-mono font-black text-[11px] text-emerald-600 dark:text-emerald-400 block mt-0.5">${formatCurrency(st.paidThisPeriod)}</span>
+              </div>
+              <div class="p-1.5 rounded-xl bg-blue-500/10 dark:bg-blue-500/15">
+                <span class="text-[9px] text-blue-700 dark:text-blue-300 font-medium block">Alınan</span>
+                <span class="font-mono font-black text-[11px] text-blue-600 dark:text-blue-400 block mt-0.5">${formatCurrency(st.borrowedThisPeriod)}</span>
+              </div>
+              <div class="p-1.5 rounded-xl bg-rose-500/10 dark:bg-rose-500/15">
+                <span class="text-[9px] text-rose-700 dark:text-rose-300 font-medium block">Güncel Borç</span>
+                <span class="font-mono font-black text-[11px] text-rose-600 dark:text-rose-400 block mt-0.5">${formatCurrency(st.currentDebt)}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function promptEditInitialDebt(supplierId, currentInitial) {
+      const s = (appState.kahveBorclari || []).find(x => x.id === supplierId);
+      if (!s) return;
+      const input = prompt(`${s.supplierName} için Ay Başı Borç tutarını girin (₺):`, currentInitial || 0);
+      if (input === null) return;
+      const parsed = parseFloat(input);
+      if (isNaN(parsed) || parsed < 0) {
+        showToast('Lütfen geçerli bir tutar girin.');
+        return;
+      }
+      s.initialDebt = parsed;
+      saveDataToStorage();
+      renderKahveBorcuAylikVeri(true);
+      showToast(`${s.supplierName} ay başı borcu güncellendi.`);
+    }
+
+    // -------------------------------------------------------------------------
+    // 4. KİŞİSEL GİDERLER: AYLIK İNCELEME & KALEM BAZLI SÜTUN GRAFİĞİ
+    // -------------------------------------------------------------------------
+    let currentKisiselGiderReportOffset = 0;
+    let kisiselGiderBarChartInstance = null;
+    let kisiselGiderChartPage = 0;
+    const KISISEL_GIDER_PAGE_SIZE = 6;
+
+    function openKisiselGiderAylikInceleModal() {
+      currentKisiselGiderReportOffset = currentDrawerPeriodOffset;
+      kisiselGiderChartPage = 0;
+      document.getElementById('modalKisiselGiderAylikIncele').classList.remove('hidden');
+      renderKisiselGiderAylikIncele();
+    }
+
+    function closeKisiselGiderAylikInceleModal() {
+      document.getElementById('modalKisiselGiderAylikIncele').classList.add('hidden');
+      if (kisiselGiderBarChartInstance) {
+        try { kisiselGiderBarChartInstance.destroy(); } catch(e){}
+        kisiselGiderBarChartInstance = null;
+      }
+    }
+
+    function changeKisiselGiderReportPeriod(delta) {
+      currentKisiselGiderReportOffset += delta;
+      kisiselGiderChartPage = 0;
+      renderKisiselGiderAylikIncele();
+    }
+
+    function navigateKisiselGiderBarChart(delta) {
+      kisiselGiderChartPage += delta;
+      renderKisiselGiderAylikIncele(false);
+    }
+
+    function renderKisiselGiderAylikIncele(redrawFull = true) {
+      const pInfo = getDrawerPeriodInfo(currentKisiselGiderReportOffset);
+      const periodLabelEl = document.getElementById('kisiselGiderReportPeriodLabel');
+      if (periodLabelEl) periodLabelEl.textContent = pInfo.label;
+
+      const expenses = appState.personalExpenses || [];
+      // Seçili 16-15 dönemi harcamaları
+      const periodExpenses = expenses.filter(e => {
+        const d = (e.date || '').substring(0, 10);
+        return d >= pInfo.startDateISO && d <= pInfo.endDateISO;
+      });
+
+      // Aynı olan gider kalemleri sütun grafiği altında toplanır
+      const catMap = {};
+      let totalExpense = 0;
+
+      periodExpenses.forEach(e => {
+        const cat = e.category || 'Diğer';
+        const amt = Number(e.amount) || 0;
+        totalExpense += amt;
+
+        if (!catMap[cat]) {
+          catMap[cat] = {
+            category: cat,
+            totalAmount: 0,
+            count: 0,
+            items: []
+          };
+        }
+        catMap[cat].totalAmount += amt;
+        catMap[cat].count += 1;
+        catMap[cat].items.push(e);
+      });
+
+      // En çok harcanandan en aza doğru sırala
+      const sortedCategories = Object.values(catMap).sort((a, b) => b.totalAmount - a.totalAmount);
+
+      // 3 Özet Kartı
+      const elTotal = document.getElementById('kisiselGiderReportTotal');
+      const elCount = document.getElementById('kisiselGiderReportCatCount');
+      const elTop = document.getElementById('kisiselGiderReportTopCat');
+
+      if (elTotal) elTotal.textContent = formatCurrency(totalExpense);
+      if (elCount) elCount.textContent = `${sortedCategories.length} Kalem`;
+      if (elTop) {
+        elTop.textContent = sortedCategories[0] && sortedCategories[0].totalAmount > 0 ? sortedCategories[0].category : '--';
+      }
+
+      // Sütun Grafiği Çiz (Ekrana sığmadığında sağa sola sayfalama)
+      try {
+        drawKisiselGiderBarChart(sortedCategories, totalExpense);
+      } catch (err) {
+        console.warn('drawKisiselGiderBarChart hatası:', err);
+      }
+
+      // Detaylı Sıralı Kalem Listesi
+      renderKisiselGiderRankingList(sortedCategories, totalExpense);
+    }
+
+    function drawKisiselGiderBarChart(sortedCategories, totalExpense) {
+      const canvas = document.getElementById('kisiselGiderBarChart');
+      if (!canvas || typeof Chart === 'undefined') return;
+
+      if (kisiselGiderBarChartInstance) {
+        try { kisiselGiderBarChartInstance.destroy(); } catch(e){}
+        kisiselGiderBarChartInstance = null;
+      }
+
+      const totalItems = sortedCategories.length;
+      const totalPages = Math.max(1, Math.ceil(totalItems / KISISEL_GIDER_PAGE_SIZE));
+      if (kisiselGiderChartPage >= totalPages) kisiselGiderChartPage = totalPages - 1;
+      if (kisiselGiderChartPage < 0) kisiselGiderChartPage = 0;
+
+      const pageBadge = document.getElementById('kisiselGiderChartPageBadge');
+      if (pageBadge) pageBadge.textContent = `${kisiselGiderChartPage + 1} / ${totalPages}`;
+
+      const startIdx = kisiselGiderChartPage * KISISEL_GIDER_PAGE_SIZE;
+      const pageItems = sortedCategories.slice(startIdx, startIdx + KISISEL_GIDER_PAGE_SIZE);
+
+      const labels = pageItems.map(item => item.category);
+      const data = pageItems.map(item => item.totalAmount);
+
+      if (labels.length === 0) {
+        labels.push('Harcama Yok');
+        data.push(0);
+      }
+
+      const isDark = document.documentElement.classList.contains('dark');
+      const vibrantColors = [
+        '#8b5cf6', '#ec4899', '#f43f5e', '#f97316',
+        '#eab308', '#10b981', '#06b6d4', '#3b82f6'
+      ];
+      const bgColors = pageItems.map((_, i) => vibrantColors[(startIdx + i) % vibrantColors.length]);
+
+      const ctx = canvas.getContext('2d');
+      kisiselGiderBarChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [{
+            label: 'Toplam Harcama (₺)',
+            data,
+            backgroundColor: bgColors.length ? bgColors : '#8b5cf6',
+            borderRadius: 8,
+            borderSkipped: false
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: { duration: 350 },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: function(ctx) {
+                  const val = ctx.raw || 0;
+                  const pct = totalExpense > 0 ? ((val / totalExpense) * 100).toFixed(1) : 0;
+                  return [
+                    ` Tutar: ${formatCurrency(val)}`,
+                    ` Pay: %${pct}`
+                  ];
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: {
+                font: { size: 10, family: 'Inter, Outfit, sans-serif' },
+                color: isDark ? '#94a3b8' : '#64748b'
+              }
+            },
+            y: {
+              grid: {
+                color: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'
+              },
+              ticks: {
+                font: { size: 9, family: 'monospace' },
+                color: isDark ? '#94a3b8' : '#64748b',
+                callback: function(v) { return v >= 1000 ? (v/1000) + 'k ₺' : v + ' ₺'; }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function renderKisiselGiderRankingList(sortedCategories, totalExpense) {
+      const container = document.getElementById('kisiselGiderRankingList');
+      const badge = document.getElementById('kisiselGiderListBadge');
+      if (!container) return;
+
+      if (badge) badge.textContent = `${sortedCategories.length} Kalem`;
+
+      if (sortedCategories.length === 0) {
+        container.innerHTML = `
+          <div class="p-4 rounded-2xl bg-white/50 dark:bg-white/5 border border-dashed border-slate-200 dark:border-white/10 text-center text-xs text-slate-400">
+            <i class="fa-solid fa-receipt text-lg block mb-1 opacity-50"></i>
+            Bu dönemde yapılmış bir kişisel harcama bulunmuyor.
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = sortedCategories.map((item, index) => {
+        const pct = totalExpense > 0 ? ((item.totalAmount / totalExpense) * 100).toFixed(1) : 0;
+        return `
+          <div class="p-3.5 rounded-2xl bg-white/70 dark:bg-white/5 border border-white/80 dark:border-white/10 space-y-2 transition hover:bg-white dark:hover:bg-white/10 shadow-sm">
+            <div class="flex items-center justify-between text-xs">
+              <div class="flex items-center gap-2.5">
+                <span class="w-6 h-6 rounded-lg flex items-center justify-center font-black text-[10px] bg-purple-500/10 text-purple-600 dark:text-purple-400">
+                  #${index + 1}
+                </span>
+                <div>
+                  <span class="font-black text-slate-900 dark:text-white block">${escapeHtml(item.category)}</span>
+                  <span class="text-[10px] text-slate-400">${item.count} adet harcama kaydı</span>
+                </div>
+              </div>
+              <div class="text-right">
+                <span class="font-mono font-black text-xs block text-slate-900 dark:text-white">${formatCurrency(item.totalAmount)}</span>
+                <span class="text-[10px] font-bold text-purple-600 dark:text-purple-400">%${pct}</span>
+              </div>
+            </div>
+
+            <!-- İlerleme Çubuğu -->
+            <div class="w-full bg-slate-200/60 dark:bg-white/10 rounded-full h-1.5 overflow-hidden">
+              <div class="bg-gradient-to-r from-purple-500 to-pink-500 h-1.5 rounded-full" style="width: ${pct}%;"></div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // =========================================================================
+    // END OF YENİ EKLENEN ÖZELLİKLER
+    // =========================================================================
 
     window.addEventListener('DOMContentLoaded', () => {
       initGlassTheme();
@@ -6979,7 +8182,9 @@
             personalCategories: (Array.isArray(parsed.personalCategories) && parsed.personalCategories.length > 0) ? parsed.personalCategories : ['Kira', 'Market', 'Benzin', 'Kıyafet', 'Fatura', 'Sağlık', 'Mutfak', 'Diğer'],
             personalExpenses: parsed.personalExpenses || [],
             givenDebts: parsed.givenDebts || [],
-            kahveBorclari: parsed.kahveBorclari || []
+            debtTransactions: parsed.debtTransactions || [],
+            kahveBorclari: parsed.kahveBorclari || [],
+            kahveBorcuMonthly: parsed.kahveBorcuMonthly || []
           };
         }
       } catch (err) {
