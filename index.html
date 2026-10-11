@@ -3230,51 +3230,49 @@
         </button>
       </div>
 
-      <!-- 4 Üst Özet Kartı (Ay Başı Borç, Ödenen, Alınan, Güncel Borç) -->
+      <!-- 4 Üst Özet Kartı (Ay Başı, Ödenen, Ay Sonu, Net Değişim) -->
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
         <div class="p-3 rounded-2xl bg-white/80 dark:bg-white/10 border border-white/90 dark:border-white/15 shadow-sm">
-          <span class="text-[10px] text-slate-500 dark:text-slate-400 block font-medium">Ay Başı Borç</span>
+          <span class="text-[10px] text-slate-500 dark:text-slate-400 block font-medium">Toplam Ay Başı</span>
           <span class="text-sm font-black font-mono text-amber-600 dark:text-amber-400 block mt-0.5" id="kahveBorcuMonthlyInitialTotal">0 ₺</span>
           <span class="text-[9px] text-slate-400 block">Dönem Başı</span>
         </div>
         <div class="p-3 rounded-2xl bg-white/80 dark:bg-white/10 border border-white/90 dark:border-white/15 shadow-sm">
           <span class="text-[10px] text-slate-500 dark:text-slate-400 block font-medium">Toplam Ödenen</span>
           <span class="text-sm font-black font-mono text-emerald-600 dark:text-emerald-400 block mt-0.5" id="kahveBorcuMonthlyPaidTotal">0 ₺</span>
-          <span class="text-[9px] text-slate-400 block">Ay İçi Verilen</span>
+          <span class="text-[9px] text-slate-400 block">Ay Başından Beri</span>
         </div>
         <div class="p-3 rounded-2xl bg-white/80 dark:bg-white/10 border border-white/90 dark:border-white/15 shadow-sm">
-          <span class="text-[10px] text-slate-500 dark:text-slate-400 block font-medium">Toplam Alınan</span>
-          <span class="text-sm font-black font-mono text-blue-600 dark:text-blue-400 block mt-0.5" id="kahveBorcuMonthlyBorrowedTotal">0 ₺</span>
-          <span class="text-[9px] text-slate-400 block">Yeni Borç</span>
-        </div>
-        <div class="p-3 rounded-2xl bg-white/80 dark:bg-white/10 border border-white/90 dark:border-white/15 shadow-sm">
-          <span class="text-[10px] text-slate-500 dark:text-slate-400 block font-medium">Güncel / Ay Sonu</span>
+          <span class="text-[10px] text-slate-500 dark:text-slate-400 block font-medium">Toplam Ay Sonu</span>
           <span class="text-sm font-black font-mono text-rose-600 dark:text-rose-400 block mt-0.5" id="kahveBorcuMonthlyEndTotal">0 ₺</span>
           <span class="text-[9px] text-slate-400 block">Kalan Borç</span>
         </div>
+        <div class="p-3 rounded-2xl bg-white/80 dark:bg-white/10 border border-white/90 dark:border-white/15 shadow-sm">
+          <span class="text-[10px] text-slate-500 dark:text-slate-400 block font-medium">Net Değişim & Yüzde</span>
+          <span class="text-xs sm:text-sm font-black font-mono block mt-1 truncate" id="kahveBorcuMonthlyNetChange">--</span>
+          <span class="text-[9px] text-slate-400 block" id="kahveBorcuMonthlyNetChangeSub">Artış / Azalış</span>
+        </div>
       </div>
 
-      <!-- Sütun Grafiği: Toptancı Başına Ay Başı vs Ay Sonu & Ödenen/Alınan -->
+      <!-- Sütun Grafiği: Her Kişi İçin İki Sütun (Ay Başı ve Ay Sonu) -->
       <div class="p-4 rounded-3xl bg-white/80 dark:bg-white/10 border border-white/90 dark:border-white/15 shadow-sm text-center">
         <div class="flex items-center justify-between mb-2">
-          <span class="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400 block">Toptancı Borç Karşılaştırma Grafiği</span>
+          <span class="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400 block">Ay Başı vs Ay Sonu Borç Grafiği (İki Sütun)</span>
           <div class="flex items-center gap-1">
-            <button type="button" onclick="navigateKahveBorcuMonthlyChart(-1)" class="w-7 h-7 rounded-lg glass-icon-box flex items-center justify-center text-xs active:scale-90 transition">
+            <button type="button" onclick="navigateKahveBorcuMonthlyChart(-1)" class="w-7 h-7 rounded-lg glass-icon-box flex items-center justify-center text-xs active:scale-90 transition" title="Önceki Toptancılar">
               <i class="fa-solid fa-chevron-left text-[10px]"></i>
             </button>
             <span class="text-[10px] font-mono font-bold px-1.5 text-slate-500 dark:text-slate-400" id="kahveBorcuMonthlyChartPageBadge">1 / 1</span>
-            <button type="button" onclick="navigateKahveBorcuMonthlyChart(1)" class="w-7 h-7 rounded-lg glass-icon-box flex items-center justify-center text-xs active:scale-90 transition">
+            <button type="button" onclick="navigateKahveBorcuMonthlyChart(1)" class="w-7 h-7 rounded-lg glass-icon-box flex items-center justify-center text-xs active:scale-90 transition" title="Sonraki Toptancılar">
               <i class="fa-solid fa-chevron-right text-[10px]"></i>
             </button>
           </div>
         </div>
 
-        <!-- Lejant -->
-        <div class="flex flex-wrap items-center justify-center gap-3 text-[10px] font-bold text-slate-600 dark:text-slate-300 mb-2">
-          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block"></span> Ay Başı</span>
-          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span> Ödenen</span>
-          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-blue-500 inline-block"></span> Alınan</span>
-          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block"></span> Güncel/Son</span>
+        <!-- Lejant (Sadece 2 Sütun: Ay Başı & Ay Sonu) -->
+        <div class="flex items-center justify-center gap-6 text-[11px] font-bold text-slate-700 dark:text-slate-200 mb-2">
+          <span class="flex items-center gap-2"><span class="w-3 h-3 rounded-md bg-amber-500 inline-block shadow-sm"></span> Ay Başı Borç</span>
+          <span class="flex items-center gap-2"><span class="w-3 h-3 rounded-md bg-rose-500 inline-block shadow-sm"></span> Ay Sonu Borç</span>
         </div>
 
         <div class="w-full h-64 relative flex items-center justify-center">
@@ -7663,74 +7661,122 @@
       const suppliers = appState.kahveBorclari || [];
       const payments = appState.supplierPayments || [];
 
-      // Seçili dönem içindeki ödemeler
+      // Seçili 16-15 dönemi içindeki Supabase ödemeleri
       const periodPayments = payments.filter(p => {
         const d = (p.date || '').substring(0, 10);
         return d >= pInfo.startDateISO && d <= pInfo.endDateISO;
       });
 
-      // Her toptancı için verileri birleştir
+      // Her toptancı / kişi için verileri hesapla
       const supplierStats = suppliers.map(s => {
         const supplierName = s.supplierName || 'İsimsiz Toptancı';
-        const currentDebt = Number(s.debtAmount || s.amount || 0);
-        
-        // Bu dönemde bu toptancıya yapılan ödemeler
+        const supNameLower = supplierName.trim().toLowerCase();
+        const currentDebt = Number(s.debtAmount !== undefined ? s.debtAmount : (s.amount || 0));
+
+        // Supabase coffee_suppliers ile eşleşen toptancı kaydı
+        const linkedCoffeeSup = (appState.coffeeSuppliers || []).find(cs => (cs.name || '').trim().toLowerCase() === supNameLower);
+        const linkedCoffeeSupId = linkedCoffeeSup ? linkedCoffeeSup.id : null;
+
+        // Ay başından beri bu kişiye Supabase verilerinden yapılan ödemeler
         const paidThisPeriod = periodPayments
-          .filter(p => (p.supplierId === s.id || (p.notes && p.notes.includes(supplierName))))
+          .filter(p => {
+            if (p.supplierId && (p.supplierId === s.id || p.supplierId === linkedCoffeeSupId)) return true;
+            if (p.notes && p.notes.toLowerCase().includes(supNameLower)) return true;
+            return false;
+          })
           .reduce((sum, p) => sum + (Number(p.amount) || 0), 0);
 
-        // Ay başı borcu: s.initialDebt varsa o, yoksa s.debtAmount
-        const initialDebt = s.initialDebt !== undefined ? Number(s.initialDebt) : currentDebt;
+        // Ay Başı Borcu:
+        // Eğer s.initialDebt tanımlıysa onu al;
+        // Eğer henüz girilmemişse, ödeme yapılmışsa (güncel borç + ödenen) ya da güncel borcu başlangıç kabul et
+        let initialDebt = (s.initialDebt !== undefined && s.initialDebt !== null && s.initialDebt !== '')
+          ? Number(s.initialDebt)
+          : (paidThisPeriod > 0 ? (currentDebt + paidThisPeriod) : currentDebt);
 
-        // Ay başından beri alınan yeni borç:
-        // Formül: Güncel Borç = Ay Başı Borç - Ödenen + Alınan => Alınan = Güncel + Ödenen - Ay Başı
-        const borrowedThisPeriod = Math.max(0, currentDebt + paidThisPeriod - initialDebt);
+        // Net Değişim: (Ay Sonu Borç - Ay Başı Borç)
+        const netDiff = currentDebt - initialDebt;
+
+        // Yüzdelik Değişim Hesabı (% Arttı veya Azaldı)
+        let pctChangeStr = '%0 Değişmedi';
+        let changeType = 'neutral'; // 'increased', 'decreased', 'neutral'
+        if (initialDebt > 0) {
+          const pct = Math.abs((netDiff / initialDebt) * 100).toFixed(1);
+          if (netDiff > 0) {
+            pctChangeStr = `+%${pct} Arttı`;
+            changeType = 'increased';
+          } else if (netDiff < 0) {
+            pctChangeStr = `-%${pct} Azaldı`;
+            changeType = 'decreased';
+          }
+        } else {
+          if (currentDebt > 0) {
+            pctChangeStr = '+%100 Arttı';
+            changeType = 'increased';
+          }
+        }
 
         return {
           id: s.id,
           supplierName,
           phone: s.phone || '',
           initialDebt,
+          currentDebt,
           paidThisPeriod,
-          borrowedThisPeriod,
-          currentDebt
+          netDiff,
+          pctChangeStr,
+          changeType
         };
       });
 
-      // 4 Özet Kartı
+      // 4 Üst Özet Kartı
       let totalInitial = 0;
       let totalPaid = 0;
-      let totalBorrowed = 0;
       let totalEnd = 0;
 
       supplierStats.forEach(st => {
         totalInitial += st.initialDebt;
         totalPaid += st.paidThisPeriod;
-        totalBorrowed += st.borrowedThisPeriod;
         totalEnd += st.currentDebt;
       });
 
+      const totalNetDiff = totalEnd - totalInitial;
+      let totalPctStr = '%0';
+      if (totalInitial > 0) {
+        const pct = Math.abs((totalNetDiff / totalInitial) * 100).toFixed(1);
+        totalPctStr = totalNetDiff > 0 ? `+%${pct} Arttı` : (totalNetDiff < 0 ? `-%${pct} Azaldı` : '%0 Değişmedi');
+      } else if (totalEnd > 0) {
+        totalPctStr = '+%100 Arttı';
+      }
+
       const elInitial = document.getElementById('kahveBorcuMonthlyInitialTotal');
       const elPaid = document.getElementById('kahveBorcuMonthlyPaidTotal');
-      const elBorrowed = document.getElementById('kahveBorcuMonthlyBorrowedTotal');
       const elEnd = document.getElementById('kahveBorcuMonthlyEndTotal');
+      const elNetChange = document.getElementById('kahveBorcuMonthlyNetChange');
+      const elNetChangeSub = document.getElementById('kahveBorcuMonthlyNetChangeSub');
 
       if (elInitial) elInitial.textContent = formatCurrency(totalInitial);
       if (elPaid) elPaid.textContent = formatCurrency(totalPaid);
-      if (elBorrowed) elBorrowed.textContent = formatCurrency(totalBorrowed);
       if (elEnd) elEnd.textContent = formatCurrency(totalEnd);
+      if (elNetChange) {
+        elNetChange.textContent = totalNetDiff > 0 ? ('+' + formatCurrency(totalNetDiff)) : (totalNetDiff < 0 ? ('-' + formatCurrency(Math.abs(totalNetDiff))) : '0 ₺');
+        elNetChange.className = `text-xs sm:text-sm font-black font-mono block mt-1 truncate ${totalNetDiff > 0 ? 'text-rose-600 dark:text-rose-400' : (totalNetDiff < 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-600 dark:text-slate-400')}`;
+      }
+      if (elNetChangeSub) {
+        elNetChangeSub.textContent = totalPctStr;
+      }
 
-      // Sütun Grafiği Çiz (Sayfalamalı)
+      // Sütun Grafiği Çiz (HER KİŞİ İÇİN 2 SÜTUN: AY BAŞI & AY SONU)
       try {
         drawKahveBorcuMonthlyChart(supplierStats);
       } catch (err) {
         console.warn('drawKahveBorcuMonthlyChart hatası:', err);
       }
 
-      // Detaylı Kartlar Listesi
-      renderKahveBorcuMonthlyDetails(supplierStats, totalPaid, totalBorrowed);
+      // Detaylı Liste (SADECE: AY BAŞI, AY SONU, ÖDENEN, ARTAN/AZALAN & YÜZDELİK)
+      renderKahveBorcuMonthlyDetails(supplierStats, totalPaid);
     }
 
+    // HER KİŞİ İÇİN İKİ SÜTUN (AY BAŞI VE AY SONU)
     function drawKahveBorcuMonthlyChart(stats) {
       const canvas = document.getElementById('kahveBorcuMonthlyChart');
       if (!canvas || typeof Chart === 'undefined') return;
@@ -7753,15 +7799,11 @@
 
       const labels = pageItems.map(item => item.supplierName);
       const dataInitial = pageItems.map(item => item.initialDebt);
-      const dataPaid = pageItems.map(item => item.paidThisPeriod);
-      const dataBorrowed = pageItems.map(item => item.borrowedThisPeriod);
       const dataEnd = pageItems.map(item => item.currentDebt);
 
       if (labels.length === 0) {
         labels.push('Kayıt Yok');
         dataInitial.push(0);
-        dataPaid.push(0);
-        dataBorrowed.push(0);
         dataEnd.push(0);
       }
 
@@ -7775,26 +7817,16 @@
             {
               label: 'Ay Başı Borç',
               data: dataInitial,
-              backgroundColor: '#f59e0b',
-              borderRadius: 6
+              backgroundColor: isDark ? '#f59e0b' : '#d97706',
+              borderRadius: 8,
+              borderSkipped: false
             },
             {
-              label: 'Ödenen Borç',
-              data: dataPaid,
-              backgroundColor: '#10b981',
-              borderRadius: 6
-            },
-            {
-              label: 'Alınan Yeni Borç',
-              data: dataBorrowed,
-              backgroundColor: '#3b82f6',
-              borderRadius: 6
-            },
-            {
-              label: 'Güncel / Ay Sonu Borç',
+              label: 'Ay Sonu Borç',
               data: dataEnd,
-              backgroundColor: '#f43f5e',
-              borderRadius: 6
+              backgroundColor: isDark ? '#f43f5e' : '#e11d48',
+              borderRadius: 8,
+              borderSkipped: false
             }
           ]
         },
@@ -7835,7 +7867,8 @@
       });
     }
 
-    function renderKahveBorcuMonthlyDetails(stats, totalPaid, totalBorrowed) {
+    // SADECE: AY BAŞI, AY SONU, ÖDENEN, ARTAN/AZALAN VE YÜZDELİK DEĞİŞİM
+    function renderKahveBorcuMonthlyDetails(stats, totalPaid) {
       const container = document.getElementById('kahveBorcuMonthlyDetailsList');
       const badge = document.getElementById('kahveBorcuMonthlyListBadge');
       if (!container) return;
@@ -7853,41 +7886,74 @@
       }
 
       container.innerHTML = stats.map(st => {
+        const isIncreased = st.netDiff > 0;
+        const isDecreased = st.netDiff < 0;
+
+        const diffLabel = isIncreased ? 'Artan' : (isDecreased ? 'Azalan' : 'Fark');
+        const diffFormatted = isIncreased ? ('+' + formatCurrency(st.netDiff)) : (isDecreased ? ('-' + formatCurrency(Math.abs(st.netDiff))) : '0 ₺');
+
+        const diffBoxClass = isIncreased ? 'bg-rose-500/10 dark:bg-rose-500/15' : (isDecreased ? 'bg-emerald-500/10 dark:bg-emerald-500/15' : 'bg-slate-200/50 dark:bg-white/5');
+        const diffTextClass = isIncreased ? 'text-rose-600 dark:text-rose-400' : (isDecreased ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-600 dark:text-slate-400');
+
+        const changeBadgeClass = isIncreased ? 'bg-rose-500/15 text-rose-600 dark:text-rose-400' :
+                                 (isDecreased ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400' :
+                                 'bg-slate-200/70 dark:bg-white/10 text-slate-600 dark:text-slate-300');
+
+        const changeIcon = isIncreased ? 'fa-arrow-trend-up' : (isDecreased ? 'fa-arrow-trend-down' : 'fa-minus');
+
         return `
           <div class="p-3.5 rounded-2xl bg-white/70 dark:bg-white/5 border border-white/80 dark:border-white/10 space-y-2.5 transition hover:bg-white dark:hover:bg-white/10 shadow-sm">
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-2">
-                <div class="w-8 h-8 rounded-xl bg-orange-500/10 text-orange-600 dark:text-orange-400 flex items-center justify-center text-xs">
-                  <i class="fa-solid fa-truck"></i>
+                <div class="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xs">
+                  <i class="fa-solid fa-user-tag"></i>
                 </div>
                 <div>
                   <span class="font-black text-xs text-slate-900 dark:text-white block">${escapeHtml(st.supplierName)}</span>
                   <span class="text-[10px] text-slate-400">${st.phone ? st.phone : 'Telefon kaydı yok'}</span>
                 </div>
               </div>
-              <button onclick="promptEditInitialDebt('${st.id}', ${st.initialDebt})" class="px-2 py-1 rounded-lg glass-icon-box text-[10px] font-bold text-slate-600 dark:text-slate-300 hover:text-slate-900 active:scale-95 transition" title="Ay Başı Borcunu Belirle">
-                <i class="fa-solid fa-pen-to-square mr-1"></i> Ay Başı Düzenle
-              </button>
+              
+              <!-- Yüzdelik Ne Kadar Arttı veya Azaldı -->
+              <div>
+                <span class="px-2.5 py-1 rounded-xl text-[10px] font-extrabold flex items-center gap-1 ${changeBadgeClass}">
+                  <i class="fa-solid ${changeIcon}"></i> ${st.pctChangeStr}
+                </span>
+              </div>
             </div>
 
-            <!-- 4'lü Değer Matrisi -->
+            <!-- SADECE İSTENEN 4 DEĞER: AY BAŞI, AY SONU, ÖDENEN, ARTAN/AZALAN -->
             <div class="grid grid-cols-4 gap-1.5 text-center pt-1 border-t border-slate-200/60 dark:border-white/10">
-              <div class="p-1.5 rounded-xl bg-amber-500/10 dark:bg-amber-500/15">
-                <span class="text-[9px] text-amber-700 dark:text-amber-300 font-medium block">Ay Başı</span>
-                <span class="font-mono font-black text-[11px] text-amber-600 dark:text-amber-400 block mt-0.5">${formatCurrency(st.initialDebt)}</span>
+              <!-- 1. AY BAŞI -->
+              <div class="p-2 rounded-xl bg-amber-500/10 dark:bg-amber-500/15">
+                <span class="text-[9px] text-amber-700 dark:text-amber-300 font-bold block uppercase">Ay Başı</span>
+                <span class="font-mono font-black text-xs text-amber-600 dark:text-amber-400 block mt-0.5">${formatCurrency(st.initialDebt)}</span>
               </div>
-              <div class="p-1.5 rounded-xl bg-emerald-500/10 dark:bg-emerald-500/15">
-                <span class="text-[9px] text-emerald-700 dark:text-emerald-300 font-medium block">Ödenen</span>
-                <span class="font-mono font-black text-[11px] text-emerald-600 dark:text-emerald-400 block mt-0.5">${formatCurrency(st.paidThisPeriod)}</span>
+
+              <!-- 2. AY SONU -->
+              <div class="p-2 rounded-xl bg-rose-500/10 dark:bg-rose-500/15">
+                <span class="text-[9px] text-rose-700 dark:text-rose-300 font-bold block uppercase">Ay Sonu</span>
+                <span class="font-mono font-black text-xs text-rose-600 dark:text-rose-400 block mt-0.5">${formatCurrency(st.currentDebt)}</span>
               </div>
-              <div class="p-1.5 rounded-xl bg-blue-500/10 dark:bg-blue-500/15">
-                <span class="text-[9px] text-blue-700 dark:text-blue-300 font-medium block">Alınan</span>
-                <span class="font-mono font-black text-[11px] text-blue-600 dark:text-blue-400 block mt-0.5">${formatCurrency(st.borrowedThisPeriod)}</span>
+
+              <!-- 3. ÖDENEN -->
+              <div class="p-2 rounded-xl bg-emerald-500/10 dark:bg-emerald-500/15">
+                <span class="text-[9px] text-emerald-700 dark:text-emerald-300 font-bold block uppercase">Ödenen</span>
+                <span class="font-mono font-black text-xs text-emerald-600 dark:text-emerald-400 block mt-0.5">${formatCurrency(st.paidThisPeriod)}</span>
               </div>
-              <div class="p-1.5 rounded-xl bg-rose-500/10 dark:bg-rose-500/15">
-                <span class="text-[9px] text-rose-700 dark:text-rose-300 font-medium block">Güncel Borç</span>
-                <span class="font-mono font-black text-[11px] text-rose-600 dark:text-rose-400 block mt-0.5">${formatCurrency(st.currentDebt)}</span>
+
+              <!-- 4. ARTAN / AZALAN -->
+              <div class="p-2 rounded-xl ${diffBoxClass}">
+                <span class="text-[9px] ${diffTextClass} font-bold block uppercase">${diffLabel}</span>
+                <span class="font-mono font-black text-xs ${diffTextClass} block mt-0.5">${diffFormatted}</span>
               </div>
+            </div>
+
+            <!-- Ay başı düzenleme mini butonu -->
+            <div class="flex justify-end pt-0.5">
+              <button onclick="promptEditInitialDebt('${st.id}', ${st.initialDebt})" class="text-[10px] text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 flex items-center gap-1 transition">
+                <i class="fa-solid fa-pen text-[9px]"></i> Ay başı borcunu düzenle
+              </button>
             </div>
           </div>
         `;
