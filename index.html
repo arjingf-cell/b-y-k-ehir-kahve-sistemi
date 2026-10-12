@@ -7219,6 +7219,7 @@
             id: k.id,
             supplierName: k.supplier_name,
             debtAmount: Number(k.debt_amount),
+            initialDebt: (k.initial_debt !== undefined && k.initial_debt !== null) ? Number(k.initial_debt) : undefined,
             phone: k.phone || '',
             notes: k.notes || '',
             updatedAt: k.updated_at
@@ -7383,6 +7384,7 @@
               id: k.id,
               supplier_name: k.supplierName,
               debt_amount: Number(k.debtAmount),
+              initial_debt: (k.initialDebt !== undefined && k.initialDebt !== null) ? Number(k.initialDebt) : 0,
               phone: k.phone || '',
               notes: k.notes || '',
               updated_at: k.updatedAt || new Date().toISOString()
