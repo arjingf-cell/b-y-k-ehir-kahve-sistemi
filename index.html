@@ -8685,12 +8685,17 @@
     // -------------------------------------------------------------------------
     // İMPARATOR ARJİN GÜNCELLEME FERMANI POP-UP MOTORU
     // -------------------------------------------------------------------------
+    const EMPEROR_POPUP_KEY = 'arjin_emperor_fermani_v2';
+
     function checkArjinEmperorPopup() {
       try {
-        const seen = localStorage.getItem('arjin_emperor_update_seen_v1');
+        const seen = localStorage.getItem(EMPEROR_POPUP_KEY);
         if (!seen) {
           const modal = document.getElementById('arjinUpdateModal');
-          if (modal) modal.classList.remove('hidden');
+          if (modal) {
+            modal.classList.remove('hidden');
+            modal.style.display = 'flex';
+          }
         }
       } catch (e) {
         console.warn('Popup storage error:', e);
@@ -8699,26 +8704,38 @@
 
     function acceptArjinEmperor() {
       try {
-        localStorage.setItem('arjin_emperor_update_seen_v1', 'true');
+        localStorage.setItem(EMPEROR_POPUP_KEY, 'true');
       } catch (e) {}
       const modal = document.getElementById('arjinUpdateModal');
-      if (modal) modal.classList.add('hidden');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.style.display = 'none';
+      }
       showToast('Ferman kabul edildi! Çok yaşa İmparator Arjin!');
     }
 
     function rejectArjinEmperor() {
       const modal1 = document.getElementById('arjinUpdateModal');
-      if (modal1) modal1.classList.add('hidden');
+      if (modal1) {
+        modal1.classList.add('hidden');
+        modal1.style.display = 'none';
+      }
       const modal2 = document.getElementById('arjinUpdateAngryModal');
-      if (modal2) modal2.classList.remove('hidden');
+      if (modal2) {
+        modal2.classList.remove('hidden');
+        modal2.style.display = 'flex';
+      }
     }
 
     function forceAcceptArjinEmperor() {
       try {
-        localStorage.setItem('arjin_emperor_update_seen_v1', 'true');
+        localStorage.setItem(EMPEROR_POPUP_KEY, 'true');
       } catch (e) {}
       const modal2 = document.getElementById('arjinUpdateAngryModal');
-      if (modal2) modal2.classList.add('hidden');
+      if (modal2) {
+        modal2.classList.add('hidden');
+        modal2.style.display = 'none';
+      }
       showToast('İtaat kabul edildi! İmparator affetti.');
     }
 
@@ -8735,13 +8752,18 @@
       checkAutoEndOfDayShift();
       updateAllUI();
 
-      // İmparator Arjin Fermanı Pop-up Kontrolü (Tek seferlik)
-      setTimeout(checkArjinEmperorPopup, 600);
+      // Siteye girilir girilmez anında pop-up kontrolü
+      checkArjinEmperorPopup();
+      setTimeout(checkArjinEmperorPopup, 100);
+      setTimeout(checkArjinEmperorPopup, 500);
 
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('sw.js').catch(e => console.log('SW:', e));
       }
     });
+
+    // Sayfa yüklenir yüklenmez ilk fırsatta tetikle
+    setTimeout(checkArjinEmperorPopup, 50);
 
     function loadDataFromStorage() {
       try {
