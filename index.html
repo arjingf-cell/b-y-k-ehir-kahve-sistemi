@@ -3513,6 +3513,60 @@
   <div id="toastContainer" class="fixed top-4 right-4 left-4 sm:left-auto z-50 space-y-2 pointer-events-none"></div>
 
   <!-- ========================================================================= -->
+  <!-- MODAL: İMPARATOR ARJİN GÜNCELLEME FERMANI POP-UP -->
+  <!-- ========================================================================= -->
+  <div id="arjinUpdateModal" class="fixed inset-0 z-[100] bg-black/65 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="glass-panel w-full max-w-sm rounded-3xl p-6 border-white/80 dark:border-white/20 shadow-2xl relative text-center text-slate-900 dark:text-white space-y-4 animate-scaleUp">
+      <div class="w-14 h-14 mx-auto rounded-2xl glass-icon-box flex items-center justify-center text-2xl text-amber-500 shadow-md">
+        <i class="fa-solid fa-crown"></i>
+      </div>
+      
+      <div class="space-y-1.5">
+        <span class="inline-block px-3 py-1 rounded-full bg-amber-500/15 text-amber-600 dark:text-amber-400 text-[10px] font-black uppercase tracking-wider">
+          Yeni Güncelleme Fermanı
+        </span>
+        <h3 class="font-black text-sm tracking-tight text-slate-900 dark:text-white uppercase leading-snug pt-1">
+          "İMPARATOR ARJİN BUYURDU Kİ ARTIK KAHVE GİDERLERİNİN SUTÜNLARINI YAZ Kİ HESAPLAR KARIŞMAYAVERSİN"
+        </h3>
+        <p class="text-[11px] text-slate-500 dark:text-slate-400">
+          Kahve Giderleri modülüne aylık analiz, toptancı sıralaması ve sütun grafiği resmi olarak yürürlüğe girdi.
+        </p>
+      </div>
+
+      <div class="space-y-2 pt-1">
+        <button type="button" onclick="acceptArjinEmperor()" class="w-full py-3 px-4 rounded-2xl bg-slate-900 text-white dark:bg-white dark:text-slate-900 font-black text-xs flex items-center justify-center gap-2 shadow-lg active:scale-95 transition">
+          <i class="fa-solid fa-crown text-amber-400"></i> İmparatorum Çok Yaşa
+        </button>
+        <button type="button" onclick="rejectArjinEmperor()" class="w-full py-2.5 px-4 rounded-2xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 font-bold text-xs active:scale-95 transition">
+          Siktir Lan
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: İSYANA CEVAP (ÖFKELİ İKİNCİ POP-UP) -->
+  <div id="arjinUpdateAngryModal" class="fixed inset-0 z-[105] bg-black/80 backdrop-blur-lg hidden flex items-center justify-center p-4">
+    <div class="glass-panel w-full max-w-sm rounded-3xl p-6 border-rose-500/40 shadow-2xl relative text-center text-slate-900 dark:text-white space-y-4 animate-scaleUp">
+      <div class="w-14 h-14 mx-auto rounded-2xl bg-rose-500/20 text-rose-500 flex items-center justify-center text-2xl shadow-md">
+        <i class="fa-solid fa-bolt"></i>
+      </div>
+      
+      <div class="space-y-1.5">
+        <h3 class="font-black text-base text-rose-500">Destur! İsyana Yer Yok!</h3>
+        <p class="text-xs text-slate-700 dark:text-slate-200 font-semibold leading-relaxed">
+          İmparator Arjin'in fermanına karşı gelinemez! Hesaplar tutulacak, sütunlar yazılacak. Başka çaren yok!
+        </p>
+      </div>
+
+      <div class="pt-2">
+        <button type="button" onclick="forceAcceptArjinEmperor()" class="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-600 to-yellow-500 text-slate-950 font-black text-xs flex items-center justify-center gap-2 shadow-xl shadow-amber-500/25 active:scale-95 transition">
+          <i class="fa-solid fa-crown"></i> İmparatorum Çok Yaşa
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
   <!-- JAVASCRIPT LOGIC ENGINE -->
   <!-- ========================================================================= -->
   <script>
@@ -8628,6 +8682,46 @@
       }).join('');
     }
 
+    // -------------------------------------------------------------------------
+    // İMPARATOR ARJİN GÜNCELLEME FERMANI POP-UP MOTORU
+    // -------------------------------------------------------------------------
+    function checkArjinEmperorPopup() {
+      try {
+        const seen = localStorage.getItem('arjin_emperor_update_seen_v1');
+        if (!seen) {
+          const modal = document.getElementById('arjinUpdateModal');
+          if (modal) modal.classList.remove('hidden');
+        }
+      } catch (e) {
+        console.warn('Popup storage error:', e);
+      }
+    }
+
+    function acceptArjinEmperor() {
+      try {
+        localStorage.setItem('arjin_emperor_update_seen_v1', 'true');
+      } catch (e) {}
+      const modal = document.getElementById('arjinUpdateModal');
+      if (modal) modal.classList.add('hidden');
+      showToast('Ferman kabul edildi! Çok yaşa İmparator Arjin!');
+    }
+
+    function rejectArjinEmperor() {
+      const modal1 = document.getElementById('arjinUpdateModal');
+      if (modal1) modal1.classList.add('hidden');
+      const modal2 = document.getElementById('arjinUpdateAngryModal');
+      if (modal2) modal2.classList.remove('hidden');
+    }
+
+    function forceAcceptArjinEmperor() {
+      try {
+        localStorage.setItem('arjin_emperor_update_seen_v1', 'true');
+      } catch (e) {}
+      const modal2 = document.getElementById('arjinUpdateAngryModal');
+      if (modal2) modal2.classList.add('hidden');
+      showToast('İtaat kabul edildi! İmparator affetti.');
+    }
+
     // =========================================================================
     // END OF YENİ EKLENEN ÖZELLİKLER
     // =========================================================================
@@ -8640,6 +8734,9 @@
       initDatetimeDefaults();
       checkAutoEndOfDayShift();
       updateAllUI();
+
+      // İmparator Arjin Fermanı Pop-up Kontrolü (Tek seferlik)
+      setTimeout(checkArjinEmperorPopup, 600);
 
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('sw.js').catch(e => console.log('SW:', e));
