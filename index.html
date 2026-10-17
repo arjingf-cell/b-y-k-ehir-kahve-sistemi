@@ -1014,22 +1014,111 @@
         </div>
 
 
-        <!-- KULLANICI TALEBİ: 16'SI GELDİKTEN SONRA OTOMATİK HESAPLANAN DÖNEM KÂR RAPORLARI LİSTESİ -->
-        <div class="glass-panel rounded-3xl p-4 border border-white/80 dark:border-white/10 space-y-3 shadow-sm">
-          <div class="flex items-center justify-between">
+        <!-- ========================================================================= -->
+        <!-- AYDAN AYA FİNANSAL ANALİZ & KÂR/ZARAR PANELİ (15'TEN 15'E 12 AYLIK ANALİZ) -->
+        <!-- ========================================================================= -->
+        <div class="glass-panel rounded-3xl p-4 sm:p-5 border border-white/80 dark:border-white/10 space-y-4 shadow-sm" id="aydanAyaFinansalPanel">
+          
+          <!-- Panel Başlığı ve Özet İstatistikler -->
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5 pb-2 border-b border-slate-200/60 dark:border-white/10">
             <div>
-              <h4 class="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
-                <i class="fa-solid fa-clock-rotate-left"></i> 16 - 15 Dönem Kâr Raporları Arşivi
-              </h4>
-              <p class="text-[10px] text-slate-400">Ayın 16'sında otomatik kapanan mali dönem kârları</p>
+              <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-xl bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-sm shadow-xs">
+                  <i class="fa-solid fa-chart-column"></i>
+                </div>
+                <div>
+                  <h3 class="font-bold text-sm text-slate-900 dark:text-white">Aydan Aya Finansal Analiz & Kâr/Zarar Paneli</h3>
+                  <p class="text-[10px] text-slate-500 dark:text-slate-400">15'ten 15'e Son 12 Aylık Ciro, Gider & Net Kâr Seyri</p>
+                </div>
+              </div>
             </div>
-            <span class="text-[10px] px-2 py-0.5 rounded-full bg-slate-200 dark:bg-white/10 text-slate-800 dark:text-white font-bold" id="monthlyArchiveCountBadge">0 Rapor</span>
+
+            <!-- Hızlı Özet 12 Ay Metrik Rozetleri -->
+            <div class="flex items-center gap-2">
+              <div class="px-2.5 py-1 rounded-xl bg-white/70 dark:bg-white/5 border border-slate-200/60 dark:border-white/10 text-right">
+                <span class="text-[8px] uppercase tracking-wider text-slate-400 font-bold block">12 Ay Toplam Ciro</span>
+                <span class="font-mono font-bold text-xs text-indigo-600 dark:text-indigo-400" id="monthlyPanelTotalCiroBadge">0 ₺</span>
+              </div>
+              <div class="px-2.5 py-1 rounded-xl bg-white/70 dark:bg-white/5 border border-slate-200/60 dark:border-white/10 text-right">
+                <span class="text-[8px] uppercase tracking-wider text-slate-400 font-bold block">12 Ay Net Kâr</span>
+                <span class="font-mono font-bold text-xs" id="monthlyPanelTotalNetProfitBadge">0 ₺</span>
+              </div>
+            </div>
           </div>
 
-          <!-- Dynamic Monthly Reports History Cards -->
-          <div id="monthlyProfitHistoryList" class="space-y-2.5 max-h-96 overflow-y-auto glass-scroll pr-1">
-            <!-- Dynamic cards with "+XX.XXX ₺ Kâr Ettiniz" and [ Detayları Görüntüle ] -->
+          <!-- 2. ÜST KISIM: SAYFALAMALI / KAYDIRILABİLİR SÜTUN GRAFİĞİ (BAR CHART) -->
+          <div class="space-y-2.5">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              
+              <!-- Lejant -->
+              <div class="flex items-center gap-3 text-[11px] font-semibold text-slate-600 dark:text-slate-300">
+                <div class="flex items-center gap-1.5">
+                  <span class="w-3 h-3 rounded-md bg-indigo-500 inline-block shadow-xs"></span>
+                  <span>Ciro (Gelir)</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <span class="w-3 h-3 rounded-md bg-emerald-500 inline-block shadow-xs"></span>
+                  <span>Net Kâr / Zarar</span>
+                </div>
+              </div>
+
+              <!-- Sayfalama ve Görünüm Kontrolleri -->
+              <div class="flex items-center gap-1.5">
+                <!-- Sayfalı / Tüm Yıl Mod Seçici -->
+                <div class="flex items-center p-0.5 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200/60 dark:border-white/10 text-[10px] font-bold">
+                  <button type="button" onclick="setMonthlyChartMode('paged')" id="btnMonthlyChartModePaged" class="px-2 py-1 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-xs transition">
+                    6 Ay (Sayfalı)
+                  </button>
+                  <button type="button" onclick="setMonthlyChartMode('all')" id="btnMonthlyChartModeAll" class="px-2 py-1 rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 transition">
+                    Tüm Yıl (12 Ay)
+                  </button>
+                </div>
+
+                <!-- Sayfa Ok Butonları -->
+                <div class="flex items-center gap-1" id="monthlyChartPaginationControls">
+                  <button type="button" onclick="navigateMonthlyChartPage(-1)" id="btnMonthlyChartPrev" class="w-7 h-7 rounded-xl glass-icon-box flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition disabled:opacity-30 disabled:pointer-events-none" title="Önceki 6 Ay">
+                    <i class="fa-solid fa-chevron-left text-[10px]"></i>
+                  </button>
+                  <span class="text-[10px] font-mono font-bold text-slate-500 dark:text-slate-400 px-1" id="monthlyChartPageIndicator">2/2</span>
+                  <button type="button" onclick="navigateMonthlyChartPage(1)" id="btnMonthlyChartNext" class="w-7 h-7 rounded-xl glass-icon-box flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition disabled:opacity-30 disabled:pointer-events-none" title="Sonraki 6 Ay">
+                    <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Grafik Konteyneri (Yatay Kaydırmalı & Responsive Canvas) -->
+            <div class="rounded-2xl p-2.5 bg-white/50 dark:bg-white/[0.03] border border-slate-200/50 dark:border-white/5">
+              <div class="w-full overflow-x-auto glass-scroll py-1" id="monthlyChartScrollContainer">
+                <div id="monthlyChartInnerWrapper" class="relative w-full" style="min-width: 100%; height: 230px;">
+                  <canvas id="monthlyFinancialBarChartCanvas"></canvas>
+                </div>
+              </div>
+              <div class="flex items-center justify-between pt-1 px-1 text-[9px] text-slate-400">
+                <span class="flex items-center gap-1"><i class="fa-solid fa-hand-pointer text-[8px]"></i> Grafikteki sütunlara tıklayarak aya ait kırılımı açabilirsiniz</span>
+                <span id="monthlyChartRangeDescription" class="font-medium text-slate-500 dark:text-slate-400">Son 6 Ay Gösteriliyor</span>
+              </div>
+            </div>
           </div>
+
+          <!-- 3. ORTA KISIM: 12 AYLIK KART / TABLO LİSTESİ -->
+          <div class="space-y-2 pt-1">
+            <div class="flex items-center justify-between">
+              <h4 class="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
+                <i class="fa-solid fa-calendar-days text-[11px] text-indigo-500"></i> 12 Aylık Kar / Zarar Tablosu
+              </h4>
+              <span class="text-[10px] text-slate-400">Aya tıklayıp detaylı hesap dökümünü görün</span>
+            </div>
+
+            <!-- Tablo / Kart Listesi Konteyneri -->
+            <div id="monthlyFinancialCardsList" class="space-y-2 max-h-[480px] overflow-y-auto glass-scroll pr-1">
+              <!-- Dinamik 12 Ay Kartları JS Tarafından Render Edilecek -->
+            </div>
+          </div>
+
+          <!-- Eski Arşiv Container'ı Geriye Uyumluluk İçin Korunuyor -->
+          <div id="monthlyProfitHistoryList" class="hidden"></div>
+          <span id="monthlyArchiveCountBadge" class="hidden"></span>
         </div>
 
         <div class="glass-panel rounded-3xl p-4">
@@ -3644,6 +3733,9 @@
       if (iconEl) iconEl.className = `fa-solid ${chosen.icon}`;
       localStorage.setItem('kiraathane_glass_theme', idx);
       if (showNotification) showToast(`Tema: ${chosen.label}`);
+      if (typeof renderMonthlyFinancialBarChart === 'function') {
+        renderMonthlyFinancialBarChart();
+      }
     }
 
     // DRAWER CONTROLS (5 SEKMELİ YENİ SİSTEM)
@@ -8877,6 +8969,9 @@
         }
       } else if (tabId === 'raporlar') {
         renderPeriodProfitReport();
+        if (typeof renderMonthlyFinancialPanel === 'function') {
+          renderMonthlyFinancialPanel();
+        }
       }
     }
 
@@ -9507,6 +9602,9 @@
         btnAy.className = 'flex-1 py-1.5 rounded-xl text-xs font-bold bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-sm transition';
         btnGun.className = 'flex-1 py-1.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-300 transition';
         renderPeriodProfitReport();
+        if (typeof renderMonthlyFinancialPanel === 'function') {
+          renderMonthlyFinancialPanel();
+        }
       } else {
         panelAy.classList.add('hidden');
         panelGun.classList.remove('hidden');
@@ -9543,13 +9641,23 @@
 
       const netProfit = totalCiro - totalGider;
 
-      document.getElementById('reportTotalCiro').textContent = formatCurrency(totalCiro);
-      document.getElementById('reportTotalGider').textContent = formatCurrency(totalGider);
-      document.getElementById('reportTotalRent').textContent = formatCurrency(totalRent);
+      const elTotalCiro = document.getElementById('reportTotalCiro');
+      if (elTotalCiro) elTotalCiro.textContent = formatCurrency(totalCiro);
+
+      const elKahveGider = document.getElementById('reportKahveGider');
+      if (elKahveGider) elKahveGider.textContent = formatCurrency(totalGider);
+
+      const elTotalGider = document.getElementById('reportTotalGider');
+      if (elTotalGider) elTotalGider.textContent = formatCurrency(totalGider);
+
+      const elTotalRent = document.getElementById('reportTotalRent');
+      if (elTotalRent) elTotalRent.textContent = formatCurrency(totalRent);
 
       const netProfitEl = document.getElementById('reportNetProfitAmount');
-      netProfitEl.textContent = formatCurrency(netProfit);
-      netProfitEl.className = 'text-xl font-black font-mono text-slate-900 dark:text-white';
+      if (netProfitEl) {
+        netProfitEl.textContent = formatCurrency(netProfit);
+        netProfitEl.className = 'text-xl font-black font-mono text-slate-900 dark:text-white';
+      }
 
       const breakdownEl = document.getElementById('expenseCategoryBreakdown');
       breakdownEl.innerHTML = '';
@@ -9754,6 +9862,9 @@
       renderDebtsList();
       renderPeriodProfitReport();
       renderMonthlyProfitHistoryList();
+      if (typeof renderMonthlyFinancialPanel === 'function') {
+        renderMonthlyFinancialPanel();
+      }
       renderDrawerData();
       updateBillCountBadge();
       updateMainScreenCards();
@@ -10636,6 +10747,715 @@
       window.print();
     }
 
+    // =========================================================================
+    // AYDAN AYA FİNANSAL ANALİZ & KÂR/ZARAR PANELİ MOTORU (15'TEN 15'E 12 AY)
+    // =========================================================================
+    let monthlyFinancialPeriodsData = [];
+    let monthlyChartPageMode = 'paged'; // 'paged' (6 ay) | 'all' (12 ay)
+    let monthlyChartPageIndex = 1; // 0: İlk 6 ay, 1: Son 6 ay
+    let monthlyFinancialChartInstance = null;
+    let activeFinancialDetailPeriod = null;
+
+    /**
+     * GEREKSİNİM 1: Tarih Kuralı (15'ten 15'e) & 12 Ay Döngüsü Yardımcı Fonksiyonu
+     * Her ay döngüsü önceki ayın 16'sı 00:00 ile cari ayın 15'i 23:59 arasını kapsar.
+     * (Örn: 16 Eylül - 15 Ekim = "Ekim Ayı" çünkü 15 Ekim'de biter).
+     * Son 12 dönemi en eskiden en yeniye (kronolojik) sıralı döndürür.
+     */
+    function get12MonthsFinancialPeriods(refDate = new Date()) {
+      const periods = [];
+      const now = new Date(refDate);
+      const currentDay = now.getDate();
+
+      // Cari mali dönemin bitiş ayı (15'in ait olduğu ay):
+      // Eğer ayın 16'sı veya sonrası ise, bu dönem gelecek ayın 15'inde biter (örn. 17 Ekim -> Kasım Dönemi).
+      // Eğer ayın 15'i veya öncesi ise, bu dönem cari ayın 15'inde biter (örn. 5 Ekim -> Ekim Dönemi).
+      let endMonthIndex = now.getMonth();
+      let endYear = now.getFullYear();
+      if (currentDay >= 16) {
+        endMonthIndex += 1;
+        if (endMonthIndex > 11) {
+          endMonthIndex = 0;
+          endYear += 1;
+        }
+      }
+
+      const monthNames = [
+        'Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
+        'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'
+      ];
+
+      // Son 12 dönemi hesapla (11 ay öncesinden cari döneme kadar)
+      for (let i = 11; i >= 0; i--) {
+        let targetEndMonth = endMonthIndex - i;
+        let targetEndYear = endYear;
+        while (targetEndMonth < 0) {
+          targetEndMonth += 12;
+          targetEndYear -= 1;
+        }
+
+        let targetStartMonth = targetEndMonth - 1;
+        let targetStartYear = targetEndYear;
+        if (targetStartMonth < 0) {
+          targetStartMonth = 11;
+          targetStartYear -= 1;
+        }
+
+        const startDate = new Date(targetStartYear, targetStartMonth, 16, 0, 0, 0, 0);
+        const endDate = new Date(targetEndYear, targetEndMonth, 15, 23, 59, 59, 999);
+        const startDateISO = formatDateToISO(startDate);
+        const endDateISO = formatDateToISO(endDate);
+
+        const monthName = monthNames[targetEndMonth];
+        const startMonthName = monthNames[targetStartMonth];
+        const monthYearLabel = `${monthName} ${targetEndYear}`;
+        const rangeLabel = `16 ${startMonthName} - 15 ${monthName} ${targetEndYear}`;
+        const periodId = `mperiod_${targetEndYear}_${String(targetEndMonth + 1).padStart(2, '0')}`;
+
+        const isCurrentActive = (now >= startDate && now <= endDate);
+        const isConcluded = (now > endDate);
+
+        // Bu dönemdeki tüm günleri üret
+        const days = [];
+        let cur = new Date(startDate);
+        while (cur <= endDate) {
+          days.push(new Date(cur));
+          cur.setDate(cur.getDate() + 1);
+        }
+
+        periods.push({
+          periodId,
+          monthName,
+          year: targetEndYear,
+          monthYearLabel,
+          rangeLabel,
+          shortLabel: `${monthName.slice(0, 3)} '${String(targetEndYear).slice(-2)}`,
+          startDate,
+          endDate,
+          startDateISO,
+          endDateISO,
+          days,
+          isCurrentActive,
+          isConcluded
+        });
+      }
+
+      return periods;
+    }
+
+    /**
+     * Mali Hesaplama Motoru:
+     * - Toplam Kahve Gelirleri (+)
+     * - Kahve Giderleri (-)
+     * - Kişisel Giderler (-)
+     * - [EŞİTTİR] => Ay Sonu Net Kar (Gelir - Kahve Gideri - Kişisel Gider)
+     */
+    function calculatePeriodFinancials(period) {
+      // 1. Toplam Kahve Gelirleri (+)
+      let totalGelir = 0;
+      const gelirItems = [];
+
+      // A) Manuel Günlük Ciro Defteri
+      const dailyMap = appState.manualDailyCiro || {};
+      period.days.forEach(d => {
+        const dISO = formatDateToISO(d);
+        const val = dailyMap[dISO];
+        if (val !== undefined && val !== null && !isNaN(val) && Number(val) > 0) {
+          const amt = Number(val);
+          totalGelir += amt;
+          gelirItems.push({
+            date: dISO,
+            title: `${formatDateTr(dISO)} Günlük Hasılatı`,
+            subtitle: 'Kahve Gelir Defteri Kaydı',
+            amount: amt,
+            icon: 'fa-cash-register'
+          });
+        }
+      });
+
+      // B) Kasa Hareketleri (Gelir / Ciro İşlemleri)
+      (appState.transactions || []).forEach(t => {
+        if (t.type === 'ciro' || t.type === 'gelir') {
+          const tDate = new Date(t.date);
+          if (tDate >= period.startDate && tDate <= period.endDate) {
+            const amt = Number(t.amount || 0);
+            if (amt > 0) {
+              totalGelir += amt;
+              gelirItems.push({
+                date: (t.date || '').slice(0, 10),
+                title: t.description || t.category || 'Kasa Gelir Hareketi',
+                subtitle: `${t.category || 'Gelir'} • ${t.paymentMethod || 'Nakit'}`,
+                amount: amt,
+                icon: 'fa-arrow-trend-up'
+              });
+            }
+          }
+        }
+      });
+
+      // 2. Kahve Giderleri (-)
+      let totalKahveGider = 0;
+      const kahveGiderItems = [];
+
+      // A) Toptancı Ödemeleri
+      (appState.supplierPayments || []).forEach(sp => {
+        const spDateStr = sp.date + (sp.date.includes('T') ? '' : 'T12:00:00');
+        const spDate = new Date(spDateStr);
+        if (spDate >= period.startDate && spDate <= period.endDate) {
+          const amt = Number(sp.amount || 0);
+          totalKahveGider += amt;
+          const sup = (appState.coffeeSuppliers || []).find(s => s.id === sp.supplierId);
+          const supName = sup ? sup.name : (sp.supplierName || 'Toptancı');
+          kahveGiderItems.push({
+            date: (sp.date || '').slice(0, 10),
+            title: supName,
+            subtitle: `${sp.method || 'Ödeme'}${sp.notes ? ' • ' + sp.notes : ''}`,
+            amount: amt,
+            icon: 'fa-truck'
+          });
+        }
+      });
+
+      // B) Dükkan / Toptancı / Kahve Malzeme Kasa Hareketleri
+      (appState.transactions || []).forEach(t => {
+        if (t.type === 'gider' && (t.category === 'Toptancı & Malzeme' || t.category === 'Çay & Şeker' || t.category === 'Meşrubat' || t.category === 'Dükkan Kirası' || t.category === 'Personel Yevmiye' || t.category === 'Fatura & Elektrik')) {
+          const tDate = new Date(t.date);
+          if (tDate >= period.startDate && tDate <= period.endDate) {
+            const amt = Number(t.amount || 0);
+            totalKahveGider += amt;
+            kahveGiderItems.push({
+              date: (t.date || '').slice(0, 10),
+              title: t.description || t.category,
+              subtitle: `${t.category} • ${t.paymentMethod || 'Kasa Gideri'}`,
+              amount: amt,
+              icon: 'fa-box-open'
+            });
+          }
+        }
+      });
+
+      // 3. Kişisel Giderler (-)
+      let totalKisiselGider = 0;
+      const kisiselGiderItems = [];
+
+      (appState.personalExpenses || []).forEach(pe => {
+        const peDateStr = pe.date + (pe.date.includes('T') ? '' : 'T12:00:00');
+        const peDate = new Date(peDateStr);
+        if (peDate >= period.startDate && peDate <= period.endDate) {
+          const amt = Number(pe.amount || 0);
+          totalKisiselGider += amt;
+          kisiselGiderItems.push({
+            date: (pe.date || '').slice(0, 10),
+            title: pe.category || 'Şahsi Gider',
+            subtitle: pe.notes || 'Kişisel Harcama',
+            amount: amt,
+            icon: 'fa-wallet'
+          });
+        }
+      });
+
+      // 4. [EŞİTTİR] FORMÜL: Ay Sonu Net Kar = Toplam Gelir - Kahve Gideri - Kişisel Gider
+      const netProfit = totalGelir - totalKahveGider - totalKisiselGider;
+
+      return {
+        ...period,
+        totalGelir,
+        totalKahveGider,
+        totalKisiselGider,
+        netProfit,
+        gelirItems: gelirItems.sort((a, b) => b.date.localeCompare(a.date)),
+        kahveGiderItems: kahveGiderItems.sort((a, b) => b.date.localeCompare(a.date)),
+        kisiselGiderItems: kisiselGiderItems.sort((a, b) => b.date.localeCompare(a.date))
+      };
+    }
+
+    /**
+     * Ana Paneli Yenileyen ve Render Eden Fonksiyon
+     */
+    function renderMonthlyFinancialPanel() {
+      const panel = document.getElementById('aydanAyaFinansalPanel');
+      if (!panel) return;
+
+      const rawPeriods = get12MonthsFinancialPeriods();
+      monthlyFinancialPeriodsData = rawPeriods.map(p => calculatePeriodFinancials(p));
+
+      // 12 Ay Toplam Ciro ve Net Kâr Rozetleri
+      const total12Ciro = monthlyFinancialPeriodsData.reduce((s, p) => s + p.totalGelir, 0);
+      const total12NetProfit = monthlyFinancialPeriodsData.reduce((s, p) => s + p.netProfit, 0);
+
+      const elTotalCiro = document.getElementById('monthlyPanelTotalCiroBadge');
+      const elTotalProfit = document.getElementById('monthlyPanelTotalNetProfitBadge');
+      if (elTotalCiro) elTotalCiro.textContent = formatCurrency(total12Ciro);
+      if (elTotalProfit) {
+        elTotalProfit.textContent = (total12NetProfit >= 0 ? '+' : '') + formatCurrency(total12NetProfit);
+        elTotalProfit.className = `font-mono font-bold text-xs ${total12NetProfit >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}`;
+      }
+
+      // Sütun Grafiğini Çiz
+      renderMonthlyFinancialBarChart();
+
+      // 12 Aylık Kart Listesini Render Et
+      renderMonthlyFinancialCards();
+    }
+
+    /**
+     * GEREKSİNİM 2: Sayfalamalı/Kaydırılabilir Sütun Grafiği (Bar Chart)
+     * - Son 12 ayın "Ciro" (Gelir) ve "Net Kar" değerlerini yan yana sütunlar halinde gösterir.
+     * - Grafik konteyneri yatay kaydırmalı (horizontal scroll) ve sağ/sol ok butonlarıyla sayfalara (pagination) ayrılabilir.
+     */
+    function renderMonthlyFinancialBarChart() {
+      const canvas = document.getElementById('monthlyFinancialBarChartCanvas');
+      if (!canvas || typeof Chart === 'undefined') return;
+
+      if (monthlyFinancialPeriodsData.length === 0) {
+        monthlyFinancialPeriodsData = get12MonthsFinancialPeriods().map(p => calculatePeriodFinancials(p));
+      }
+
+      const allPeriods = monthlyFinancialPeriodsData;
+      let viewPeriods = [];
+
+      const innerWrapper = document.getElementById('monthlyChartInnerWrapper');
+      const pageIndicator = document.getElementById('monthlyChartPageIndicator');
+      const prevBtn = document.getElementById('btnMonthlyChartPrev');
+      const nextBtn = document.getElementById('btnMonthlyChartNext');
+      const rangeDesc = document.getElementById('monthlyChartRangeDescription');
+      const paginationControls = document.getElementById('monthlyChartPaginationControls');
+
+      if (monthlyChartPageMode === 'paged') {
+        if (paginationControls) paginationControls.classList.remove('hidden');
+        if (monthlyChartPageIndex === 0) {
+          viewPeriods = allPeriods.slice(0, 6);
+          if (pageIndicator) pageIndicator.textContent = '1/2';
+          if (prevBtn) prevBtn.disabled = true;
+          if (nextBtn) nextBtn.disabled = false;
+          if (rangeDesc) rangeDesc.textContent = `İlk 6 Ay (${viewPeriods[0].shortLabel} - ${viewPeriods[viewPeriods.length - 1].shortLabel})`;
+        } else {
+          viewPeriods = allPeriods.slice(6, 12);
+          if (pageIndicator) pageIndicator.textContent = '2/2';
+          if (prevBtn) prevBtn.disabled = false;
+          if (nextBtn) nextBtn.disabled = true;
+          if (rangeDesc) rangeDesc.textContent = `Son 6 Ay (${viewPeriods[0].shortLabel} - ${viewPeriods[viewPeriods.length - 1].shortLabel})`;
+        }
+        if (innerWrapper) innerWrapper.style.minWidth = '100%';
+      } else {
+        // Tüm Yıl (12 Ay) Modu
+        if (paginationControls) paginationControls.classList.add('hidden');
+        viewPeriods = allPeriods;
+        if (rangeDesc) rangeDesc.textContent = `Tüm 12 Ay (${viewPeriods[0].shortLabel} - ${viewPeriods[viewPeriods.length - 1].shortLabel}) • Yatay Kaydırılabilir`;
+        if (innerWrapper) innerWrapper.style.minWidth = '620px';
+      }
+
+      const labels = viewPeriods.map(p => p.shortLabel);
+      const dataCiro = viewPeriods.map(p => p.totalGelir);
+      const dataNetProfit = viewPeriods.map(p => p.netProfit);
+
+      const isDark = document.documentElement.classList.contains('dark');
+
+      if (monthlyFinancialChartInstance) {
+        monthlyFinancialChartInstance.destroy();
+      }
+
+      const ctx = canvas.getContext('2d');
+      monthlyFinancialChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [
+            {
+              label: 'Ciro (Gelir)',
+              data: dataCiro,
+              backgroundColor: isDark ? 'rgba(99, 102, 241, 0.85)' : 'rgba(79, 70, 229, 0.85)',
+              borderColor: isDark ? '#818cf8' : '#4f46e5',
+              borderWidth: 1,
+              borderRadius: 6,
+              borderSkipped: false,
+              barPercentage: 0.85,
+              categoryPercentage: 0.78
+            },
+            {
+              label: 'Net Kâr',
+              data: dataNetProfit,
+              backgroundColor: dataNetProfit.map(v => v >= 0
+                ? (isDark ? 'rgba(16, 185, 129, 0.85)' : 'rgba(16, 185, 129, 0.9)')
+                : (isDark ? 'rgba(244, 63, 94, 0.85)' : 'rgba(225, 29, 72, 0.9)')
+              ),
+              borderColor: dataNetProfit.map(v => v >= 0 ? '#10b981' : '#f43f5e'),
+              borderWidth: 1,
+              borderRadius: 6,
+              borderSkipped: false,
+              barPercentage: 0.85,
+              categoryPercentage: 0.78
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: { duration: 300 },
+          interaction: {
+            mode: 'index',
+            intersect: false
+          },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: isDark ? 'rgba(15, 23, 42, 0.94)' : 'rgba(255, 255, 255, 0.96)',
+              titleColor: isDark ? '#f8fafc' : '#0f172a',
+              bodyColor: isDark ? '#cbd5e1' : '#334155',
+              borderColor: isDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.1)',
+              borderWidth: 1,
+              padding: 10,
+              cornerRadius: 12,
+              displayColors: true,
+              callbacks: {
+                title: function(items) {
+                  if (!items || !items.length) return '';
+                  const idx = items[0].dataIndex;
+                  const p = viewPeriods[idx];
+                  return p ? `${p.monthYearLabel} (${p.rangeLabel})` : '';
+                },
+                label: function(ctx) {
+                  const val = ctx.raw || 0;
+                  const prefix = (ctx.datasetIndex === 1 && val > 0) ? '+' : '';
+                  return ` ${ctx.dataset.label}: ${prefix}${formatCurrency(val)}`;
+                }
+              }
+            }
+          },
+          onClick: function(e, elements) {
+            if (elements && elements.length > 0) {
+              const idx = elements[0].index;
+              const p = viewPeriods[idx];
+              if (p) openMonthlyFinancialDetail(p.periodId);
+            }
+          },
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: {
+                font: { size: 10, family: 'Inter, Outfit, sans-serif', weight: '600' },
+                color: isDark ? '#94a3b8' : '#64748b'
+              }
+            },
+            y: {
+              grid: {
+                color: isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.05)'
+              },
+              ticks: {
+                font: { size: 9, family: 'Inter, Outfit, sans-serif' },
+                color: isDark ? '#64748b' : '#94a3b8',
+                callback: function(val) {
+                  if (Math.abs(val) >= 1000) {
+                    return (val / 1000).toFixed(0) + 'k ₺';
+                  }
+                  return val + ' ₺';
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function setMonthlyChartMode(mode) {
+      monthlyChartPageMode = mode;
+      const btnPaged = document.getElementById('btnMonthlyChartModePaged');
+      const btnAll = document.getElementById('btnMonthlyChartModeAll');
+
+      if (mode === 'paged') {
+        if (btnPaged) btnPaged.className = 'px-2 py-1 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-xs transition';
+        if (btnAll) btnAll.className = 'px-2 py-1 rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 transition';
+      } else {
+        if (btnAll) btnAll.className = 'px-2 py-1 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-xs transition';
+        if (btnPaged) btnPaged.className = 'px-2 py-1 rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 transition';
+      }
+
+      renderMonthlyFinancialBarChart();
+    }
+
+    function navigateMonthlyChartPage(delta) {
+      monthlyChartPageIndex = Math.max(0, Math.min(1, monthlyChartPageIndex + delta));
+      renderMonthlyFinancialBarChart();
+    }
+
+    /**
+     * GEREKSİNİM 3: Orta Kısım: 12 Aylık Kart/Tablo Listesi
+     * - 12 ay alt alta listelenir.
+     * - Her satırda: Ay Adı, Toplam Ciro, Net Kar ve Durum Rozeti (Pozitif/Negatif) yer alır.
+     */
+    function renderMonthlyFinancialCards() {
+      const container = document.getElementById('monthlyFinancialCardsList');
+      if (!container) return;
+
+      if (monthlyFinancialPeriodsData.length === 0) {
+        monthlyFinancialPeriodsData = get12MonthsFinancialPeriods().map(p => calculatePeriodFinancials(p));
+      }
+
+      // En güncel aydan eskiye doğru listele
+      const sortedPeriods = [...monthlyFinancialPeriodsData].reverse();
+
+      container.innerHTML = sortedPeriods.map(p => {
+        const isProfit = p.netProfit > 0;
+        const isLoss = p.netProfit < 0;
+
+        let badgeHTML = '';
+        if (isProfit) {
+          badgeHTML = `<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800/60 flex items-center gap-1 shadow-xs"><i class="fa-solid fa-arrow-trend-up text-[9px]"></i> Pozitif (Kârda)</span>`;
+        } else if (isLoss) {
+          badgeHTML = `<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-rose-100 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300 border border-rose-300 dark:border-rose-800/60 flex items-center gap-1 shadow-xs"><i class="fa-solid fa-arrow-trend-down text-[9px]"></i> Negatif (Zararda)</span>`;
+        } else {
+          badgeHTML = `<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700 dark:bg-white/10 dark:text-slate-300 border border-slate-300 dark:border-white/10 flex items-center gap-1"><i class="fa-solid fa-scale-balanced text-[9px]"></i> Dengede</span>`;
+        }
+
+        const profitColor = isProfit ? 'text-emerald-600 dark:text-emerald-400' : (isLoss ? 'text-rose-600 dark:text-rose-400' : 'text-slate-600 dark:text-slate-300');
+        const profitPrefix = isProfit ? '+' : '';
+
+        return `
+          <div onclick="openMonthlyFinancialDetail('${p.periodId}')" class="group p-3 rounded-2xl bg-white/70 dark:bg-white/5 border border-slate-200/70 dark:border-white/10 hover:border-indigo-400/60 dark:hover:border-indigo-500/60 hover:bg-white dark:hover:bg-white/10 cursor-pointer active:scale-[0.99] transition shadow-xs flex items-center justify-between gap-2.5">
+            
+            <!-- Sol: Ay Adı & Dönem Döngüsü -->
+            <div class="flex items-center gap-2.5 min-w-0">
+              <div class="w-9 h-9 rounded-xl ${isProfit ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-400' : (isLoss ? 'bg-rose-50 text-rose-600 dark:bg-rose-950/40 dark:text-rose-400' : 'bg-slate-100 text-slate-600 dark:bg-white/5 dark:text-slate-300')} flex items-center justify-center text-sm font-bold shrink-0 shadow-xs">
+                <i class="fa-solid ${isProfit ? 'fa-arrow-trend-up' : (isLoss ? 'fa-arrow-trend-down' : 'fa-scale-balanced')}"></i>
+              </div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <h4 class="font-bold text-xs text-slate-900 dark:text-white truncate">${escapeHtml(p.monthYearLabel)}</h4>
+                  ${p.isCurrentActive ? '<span class="text-[9px] px-1.5 py-0.5 rounded-md bg-indigo-100 text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300 font-bold">Aktif Dönem</span>' : ''}
+                </div>
+                <p class="text-[10px] text-slate-400 truncate mt-0.5">${escapeHtml(p.rangeLabel)}</p>
+              </div>
+            </div>
+
+            <!-- Sağ: Toplam Ciro, Net Kâr ve Rozet -->
+            <div class="flex items-center gap-2 sm:gap-3 shrink-0 text-right">
+              <div class="text-right">
+                <div class="text-[10px] text-slate-500 dark:text-slate-400 font-mono">
+                  <span class="text-[8px] uppercase tracking-wider opacity-75">Ciro:</span> <span class="font-bold text-slate-800 dark:text-slate-200">${formatCurrency(p.totalGelir)}</span>
+                </div>
+                <div class="font-mono font-black text-xs ${profitColor} mt-0.5">
+                  <span class="text-[8px] uppercase tracking-wider opacity-75 font-sans font-semibold">Net:</span> ${profitPrefix}${formatCurrency(p.netProfit)}
+                </div>
+              </div>
+
+              <div>
+                ${badgeHTML}
+              </div>
+
+              <div class="text-slate-300 dark:text-slate-600 group-hover:text-indigo-500 dark:group-hover:text-indigo-400 transition pl-1">
+                <i class="fa-solid fa-chevron-right text-xs"></i>
+              </div>
+            </div>
+
+          </div>
+        `;
+      }).join('');
+    }
+
+    /**
+     * GEREKSİNİM 4: Tıklama & Detay Çekmecesi/Modali (Aylık Kırılım)
+     * Bir aya tıklandığında açılan alt görünümde:
+     *   * Toplam Kahve Gelirleri (+)
+     *   * Kahve Giderleri (-)
+     *   * Kişisel Giderler (-)
+     *   * [EŞİTTİR] => Ay Sonu Net Kar (Gelir - Kahve Gideri - Kişisel Gider)
+     *   Gelir/Gider kalemleri özet liste olarak detaylandırılır.
+     */
+    function openMonthlyFinancialDetail(periodId) {
+      if (monthlyFinancialPeriodsData.length === 0) {
+        monthlyFinancialPeriodsData = get12MonthsFinancialPeriods().map(p => calculatePeriodFinancials(p));
+      }
+
+      const p = monthlyFinancialPeriodsData.find(x => x.periodId === periodId) || monthlyFinancialPeriodsData[monthlyFinancialPeriodsData.length - 1];
+      if (!p) return;
+
+      activeFinancialDetailPeriod = p;
+
+      // Modal Başlığı ve Tarihler
+      document.getElementById('monthlyDetailModalTitle').textContent = `${p.monthYearLabel} Finansal Kırılımı`;
+      document.getElementById('monthlyDetailModalDates').textContent = `15'ten 15'e Mali Dönemi: ${p.rangeLabel}`;
+
+      const statusBadge = document.getElementById('monthlyDetailModalStatusBadge');
+      if (statusBadge) {
+        if (p.isCurrentActive) {
+          statusBadge.textContent = 'Aktif Dönem (Devam Ediyor)';
+          statusBadge.className = 'text-[9px] px-2 py-0.5 rounded-full font-bold uppercase bg-indigo-100 text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300';
+        } else {
+          statusBadge.textContent = '15\'inde Arşivlendi';
+          statusBadge.className = 'text-[9px] px-2 py-0.5 rounded-full font-bold uppercase bg-slate-200 text-slate-700 dark:bg-white/10 dark:text-slate-300';
+        }
+      }
+
+      // 1. [EŞİTTİR] FORMÜL DEĞERLERİ
+      const elGelirVal = document.getElementById('monthlyDetailKahveGelirVal');
+      const elKahveGiderVal = document.getElementById('monthlyDetailKahveGiderVal');
+      const elKisiselGiderVal = document.getElementById('monthlyDetailKisiselGiderVal');
+      const elNetProfitVal = document.getElementById('monthlyDetailNetProfitVal');
+      const elProfitStatusBadge = document.getElementById('monthlyDetailProfitStatusBadge');
+      const elResultSubtitle = document.getElementById('monthlyDetailResultSubtitle');
+
+      if (elGelirVal) elGelirVal.textContent = `+ ${formatCurrency(p.totalGelir)}`;
+      if (elKahveGiderVal) elKahveGiderVal.textContent = `- ${formatCurrency(p.totalKahveGider)}`;
+      if (elKisiselGiderVal) elKisiselGiderVal.textContent = `- ${formatCurrency(p.totalKisiselGider)}`;
+
+      const isProfit = p.netProfit > 0;
+      const isLoss = p.netProfit < 0;
+
+      if (elNetProfitVal) {
+        elNetProfitVal.textContent = (isProfit ? '+' : '') + formatCurrency(p.netProfit);
+        elNetProfitVal.className = `font-mono font-black text-xl ${isProfit ? 'text-emerald-600 dark:text-emerald-400' : (isLoss ? 'text-rose-600 dark:text-rose-400' : 'text-slate-700 dark:text-slate-200')}`;
+      }
+
+      if (elProfitStatusBadge) {
+        if (isProfit) {
+          elProfitStatusBadge.textContent = 'Pozitif (Net Kâr)';
+          elProfitStatusBadge.className = 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300';
+        } else if (isLoss) {
+          elProfitStatusBadge.textContent = 'Negatif (Zarar)';
+          elProfitStatusBadge.className = 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-100 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300';
+        } else {
+          elProfitStatusBadge.textContent = 'Dengede';
+          elProfitStatusBadge.className = 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 dark:bg-white/10 dark:text-slate-300';
+        }
+      }
+
+      if (elResultSubtitle) {
+        elResultSubtitle.textContent = isProfit ? 'Toplam Pozitif Kâr Elde Edildi' : (isLoss ? 'Dönem Sonu Zarar Oluştu' : 'Gelir ve Gider Eşitlendi');
+      }
+
+      // Rozet Toplamları
+      document.getElementById('monthlyDetailGelirTotalBadge').textContent = formatCurrency(p.totalGelir);
+      document.getElementById('monthlyDetailKahveGiderTotalBadge').textContent = formatCurrency(p.totalKahveGider);
+      document.getElementById('monthlyDetailKisiselGiderTotalBadge').textContent = formatCurrency(p.totalKisiselGider);
+
+      // 2. ÖZET KALEM LİSTELERİ
+      // A) Toplam Kahve Gelirleri Kalemleri
+      const listGelir = document.getElementById('monthlyDetailGelirList');
+      if (listGelir) {
+        if (p.gelirItems.length === 0) {
+          listGelir.innerHTML = '<p class="text-slate-400 py-3 text-center text-[11px]">Bu mali dönemde kayıtlı kahve hasılatı bulunmuyor.</p>';
+        } else {
+          listGelir.innerHTML = p.gelirItems.map(item => `
+            <div class="p-2 rounded-xl bg-white/70 dark:bg-white/5 border border-slate-200/60 dark:border-white/5 flex items-center justify-between">
+              <div class="flex items-center gap-2 min-w-0">
+                <div class="w-6 h-6 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-[10px] shrink-0">
+                  <i class="fa-solid ${item.icon || 'fa-cash-register'}"></i>
+                </div>
+                <div class="min-w-0">
+                  <span class="font-bold text-slate-800 dark:text-slate-200 block truncate text-xs">${escapeHtml(item.title)}</span>
+                  <span class="text-[10px] text-slate-400">${formatDateTr(item.date)} • ${escapeHtml(item.subtitle)}</span>
+                </div>
+              </div>
+              <span class="font-mono font-bold text-emerald-600 dark:text-emerald-400 text-xs shrink-0 pl-2">+${formatCurrency(item.amount)}</span>
+            </div>
+          `).join('');
+        }
+      }
+
+      // B) Kahve Giderleri Kalemleri (Toptancı Ödemeleri)
+      const listKahveGider = document.getElementById('monthlyDetailKahveGiderList');
+      if (listKahveGider) {
+        if (p.kahveGiderItems.length === 0) {
+          listKahveGider.innerHTML = '<p class="text-slate-400 py-3 text-center text-[11px]">Bu mali dönemde yapılan toptancı ödemesi bulunmuyor.</p>';
+        } else {
+          listKahveGider.innerHTML = p.kahveGiderItems.map(item => `
+            <div class="p-2 rounded-xl bg-white/70 dark:bg-white/5 border border-slate-200/60 dark:border-white/5 flex items-center justify-between">
+              <div class="flex items-center gap-2 min-w-0">
+                <div class="w-6 h-6 rounded-lg bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 flex items-center justify-center text-[10px] shrink-0">
+                  <i class="fa-solid ${item.icon || 'fa-truck'}"></i>
+                </div>
+                <div class="min-w-0">
+                  <span class="font-bold text-slate-800 dark:text-slate-200 block truncate text-xs">${escapeHtml(item.title)}</span>
+                  <span class="text-[10px] text-slate-400">${formatDateTr(item.date)} • ${escapeHtml(item.subtitle)}</span>
+                </div>
+              </div>
+              <span class="font-mono font-bold text-rose-600 dark:text-rose-400 text-xs shrink-0 pl-2">-${formatCurrency(item.amount)}</span>
+            </div>
+          `).join('');
+        }
+      }
+
+      // C) Kişisel Giderler Kalemleri
+      const listKisiselGider = document.getElementById('monthlyDetailKisiselGiderList');
+      if (listKisiselGider) {
+        if (p.kisiselGiderItems.length === 0) {
+          listKisiselGider.innerHTML = '<p class="text-slate-400 py-3 text-center text-[11px]">Bu mali dönemde kayıtlı kişisel harcama bulunmuyor.</p>';
+        } else {
+          listKisiselGider.innerHTML = p.kisiselGiderItems.map(item => `
+            <div class="p-2 rounded-xl bg-white/70 dark:bg-white/5 border border-slate-200/60 dark:border-white/5 flex items-center justify-between">
+              <div class="flex items-center gap-2 min-w-0">
+                <div class="w-6 h-6 rounded-lg bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 flex items-center justify-center text-[10px] shrink-0">
+                  <i class="fa-solid ${item.icon || 'fa-wallet'}"></i>
+                </div>
+                <div class="min-w-0">
+                  <span class="font-bold text-slate-800 dark:text-slate-200 block truncate text-xs">${escapeHtml(item.title)}</span>
+                  <span class="text-[10px] text-slate-400">${formatDateTr(item.date)} ${item.subtitle ? '• ' + escapeHtml(item.subtitle) : ''}</span>
+                </div>
+              </div>
+              <span class="font-mono font-bold text-amber-600 dark:text-amber-400 text-xs shrink-0 pl-2">-${formatCurrency(item.amount)}</span>
+            </div>
+          `).join('');
+        }
+      }
+
+      // Modalı Aç
+      document.getElementById('monthlyFinancialDetailModal').classList.remove('hidden');
+    }
+
+    function closeMonthlyFinancialDetail() {
+      const modal = document.getElementById('monthlyFinancialDetailModal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function printCurrentMonthlyFinancialDetail() {
+      if (!activeFinancialDetailPeriod) return;
+      const p = activeFinancialDetailPeriod;
+      const isProfit = p.netProfit > 0;
+
+      const printArea = document.getElementById('printArea');
+      printArea.innerHTML = `
+        <div style="font-family: sans-serif; padding: 20px; max-width: 500px; margin: 0 auto; color: #111;">
+          <div style="text-align: center; border-bottom: 2px solid #333; padding-bottom: 12px; margin-bottom: 15px;">
+            <h2 style="margin: 0; font-size: 18px;">${escapeHtml(appState.settings.cafeName || 'Kıraathane')}</h2>
+            <h3 style="margin: 6px 0 2px 0; font-size: 15px; font-weight: bold;">${escapeHtml(p.monthYearLabel)} MALİ KIRILIM RAPORU</h3>
+            <p style="margin: 0; font-size: 11px; color: #666;">15'ten 15'e Dönem Döngüsü: ${escapeHtml(p.rangeLabel)}</p>
+          </div>
+
+          <div style="background: #f4f4f4; padding: 12px; border-radius: 8px; margin-bottom: 15px;">
+            <h4 style="margin: 0 0 8px 0; font-size: 12px; text-transform: uppercase;">Net Kâr Hesap Formülü</h4>
+            <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; color: #047857;">
+              <span>(+) Toplam Kahve Gelirleri:</span>
+              <strong>+${formatCurrency(p.totalGelir)}</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; color: #be123c;">
+              <span>(-) Kahve Giderleri:</span>
+              <strong>-${formatCurrency(p.totalKahveGider)}</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 8px; color: #b45309;">
+              <span>(-) Kişisel Giderler:</span>
+              <strong>-${formatCurrency(p.totalKisiselGider)}</strong>
+            </div>
+            <div style="border-top: 1px dashed #999; padding-top: 6px; display: flex; justify-content: space-between; font-size: 14px;">
+              <strong>(=) Ay Sonu Net Kâr:</strong>
+              <strong>${isProfit ? '+' : ''}${formatCurrency(p.netProfit)}</strong>
+            </div>
+          </div>
+
+          <div style="font-size: 11px;">
+            <p style="font-weight: bold; margin: 10px 0 4px 0; border-bottom: 1px solid #ccc;">Gelir Kalemleri (${p.gelirItems.length} Kayıt)</p>
+            ${p.gelirItems.map(g => `<div style="display:flex; justify-content:space-between; margin:2px 0;"><span>${formatDateTr(g.date)} ${escapeHtml(g.title)}</span><strong>+${formatCurrency(g.amount)}</strong></div>`).join('')}
+
+            <p style="font-weight: bold; margin: 10px 0 4px 0; border-bottom: 1px solid #ccc;">Kahve Giderleri Kalemleri (${p.kahveGiderItems.length} Kayıt)</p>
+            ${p.kahveGiderItems.map(g => `<div style="display:flex; justify-content:space-between; margin:2px 0;"><span>${formatDateTr(g.date)} ${escapeHtml(g.title)}</span><strong>-${formatCurrency(g.amount)}</strong></div>`).join('')}
+
+            <p style="font-weight: bold; margin: 10px 0 4px 0; border-bottom: 1px solid #ccc;">Kişisel Giderler Kalemleri (${p.kisiselGiderItems.length} Kayıt)</p>
+            ${p.kisiselGiderItems.map(g => `<div style="display:flex; justify-content:space-between; margin:2px 0;"><span>${formatDateTr(g.date)} ${escapeHtml(g.title)}</span><strong>-${formatCurrency(g.amount)}</strong></div>`).join('')}
+          </div>
+        </div>
+      `;
+      window.print();
+    }
+
 </script>
 
   <!-- ========================================================================= -->
@@ -10736,6 +11556,149 @@
       <!-- Modal Footer -->
       <div class="pt-3 border-t border-slate-200/60 dark:border-white/15 flex justify-end">
         <button onclick="closePeriodReportDetail()" class="px-5 py-2 rounded-xl text-xs font-bold bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow active:scale-95 transition">
+          Kapat
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL / ÇEKMECE: 15'TEN 15'E AYLIK FİNANSAL KIRILIM & NET KÂR HESAPLAMASI -->
+  <!-- ========================================================================= -->
+  <div id="monthlyFinancialDetailModal" class="fixed inset-0 z-[75] bg-black/60 backdrop-blur-md hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="glass-panel w-full sm:max-w-lg rounded-t-3xl sm:rounded-3xl p-5 border-white/80 dark:border-white/20 shadow-2xl relative text-slate-900 dark:text-white flex flex-col max-h-[92vh] transition-all">
+      
+      <!-- Mobil Çekmece Tutamağı -->
+      <div class="w-12 h-1 rounded-full bg-slate-300 dark:bg-white/20 mx-auto mb-2 sm:hidden"></div>
+
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between pb-3 border-b border-slate-200/60 dark:border-white/15">
+        <div class="flex items-center gap-2.5">
+          <div class="w-10 h-10 rounded-2xl glass-icon-box flex items-center justify-center text-indigo-600 dark:text-indigo-400 text-base shadow-xs" id="monthlyDetailModalIcon">
+            <i class="fa-solid fa-calculator"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="font-bold text-sm text-slate-900 dark:text-white" id="monthlyDetailModalTitle">Ay Finansal Kırılımı</h3>
+              <span class="text-[9px] px-2 py-0.5 rounded-full font-bold uppercase" id="monthlyDetailModalStatusBadge">Aktif</span>
+            </div>
+            <span class="text-[10px] text-slate-500 dark:text-slate-400 block mt-0.5" id="monthlyDetailModalDates">16 Önceki Ay - 15 Cari Ay</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="printCurrentMonthlyFinancialDetail()" class="w-8 h-8 rounded-xl glass-icon-box flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white" title="Yazdır">
+            <i class="fa-solid fa-print text-xs"></i>
+          </button>
+          <button onclick="closeMonthlyFinancialDetail()" class="w-8 h-8 rounded-xl glass-icon-box flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
+            <i class="fa-solid fa-xmark text-xs"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Scrollable Modal Body -->
+      <div class="flex-1 overflow-y-auto space-y-4 py-3 glass-scroll pr-1 text-xs">
+        
+        <!-- 1. [EŞİTTİR] FORMÜL KARTI: HESAPLAMA ADIMLARI -->
+        <div class="p-4 rounded-2xl bg-white/70 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 shadow-xs space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Net Kâr Hesaplama Formülü</span>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full" id="monthlyDetailProfitStatusBadge">Durum</span>
+          </div>
+
+          <div class="space-y-2">
+            <!-- Adım 1: Toplam Kahve Gelirleri (+) -->
+            <div class="flex items-center justify-between p-2 rounded-xl bg-emerald-50/70 dark:bg-emerald-950/30 border border-emerald-200/70 dark:border-emerald-800/40">
+              <div class="flex items-center gap-2 text-emerald-800 dark:text-emerald-300">
+                <span class="w-5 h-5 rounded-md bg-emerald-500 text-white flex items-center justify-center text-[10px] font-bold shadow-xs">+</span>
+                <div>
+                  <span class="font-bold text-xs block">Toplam Kahve Gelirleri</span>
+                  <span class="text-[9px] text-emerald-700/70 dark:text-emerald-400/70">16-15 Günlük Ciro & Kasa Gelirleri</span>
+                </div>
+              </div>
+              <span class="font-mono font-bold text-sm text-emerald-700 dark:text-emerald-300" id="monthlyDetailKahveGelirVal">+ 0 ₺</span>
+            </div>
+
+            <!-- Adım 2: Kahve Giderleri (-) -->
+            <div class="flex items-center justify-between p-2 rounded-xl bg-rose-50/70 dark:bg-rose-950/30 border border-rose-200/70 dark:border-rose-800/40">
+              <div class="flex items-center gap-2 text-rose-800 dark:text-rose-300">
+                <span class="w-5 h-5 rounded-md bg-rose-500 text-white flex items-center justify-center text-[10px] font-bold shadow-xs">-</span>
+                <div>
+                  <span class="font-bold text-xs block">Kahve Giderleri</span>
+                  <span class="text-[9px] text-rose-700/70 dark:text-rose-400/70">Toptancı Ödemeleri & Dükkan Giderleri</span>
+                </div>
+              </div>
+              <span class="font-mono font-bold text-sm text-rose-700 dark:text-rose-300" id="monthlyDetailKahveGiderVal">- 0 ₺</span>
+            </div>
+
+            <!-- Adım 3: Kişisel Giderler (-) -->
+            <div class="flex items-center justify-between p-2 rounded-xl bg-amber-50/70 dark:bg-amber-950/30 border border-amber-200/70 dark:border-amber-800/40">
+              <div class="flex items-center gap-2 text-amber-800 dark:text-amber-300">
+                <span class="w-5 h-5 rounded-md bg-amber-500 text-white flex items-center justify-center text-[10px] font-bold shadow-xs">-</span>
+                <div>
+                  <span class="font-bold text-xs block">Kişisel Giderler</span>
+                  <span class="text-[9px] text-amber-700/70 dark:text-amber-400/70">Şahsi Harcamalar & Özel Ödemeler</span>
+                </div>
+              </div>
+              <span class="font-mono font-bold text-sm text-amber-700 dark:text-amber-300" id="monthlyDetailKisiselGiderVal">- 0 ₺</span>
+            </div>
+          </div>
+
+          <!-- Adım 4: [EŞİTTİR] AY SONU NET KÂR -->
+          <div class="pt-3 border-t border-slate-200/80 dark:border-white/10 flex items-center justify-between" id="monthlyDetailFormulaResultBox">
+            <div class="flex items-center gap-2">
+              <span class="w-7 h-7 rounded-xl bg-slate-900 text-white dark:bg-white dark:text-slate-900 flex items-center justify-center text-xs font-black shadow-xs">=</span>
+              <div>
+                <span class="text-[9px] uppercase font-bold text-slate-400 block tracking-wider">Ay Sonu Net Kâr / Zarar</span>
+                <span class="font-extrabold text-xs text-slate-800 dark:text-slate-200" id="monthlyDetailResultSubtitle">Dönem Sonu Bakiye</span>
+              </div>
+            </div>
+            <div class="text-right">
+              <span class="font-mono font-black text-xl" id="monthlyDetailNetProfitVal">0 ₺</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. GELİR & GİDER KALEMLERİ ÖZET LİSTESİ -->
+        <div class="space-y-3">
+          
+          <!-- Bölüm A: Toplam Kahve Gelirleri Kalemleri -->
+          <div class="p-3.5 rounded-2xl bg-white/70 dark:bg-white/5 border border-slate-200/60 dark:border-white/10 space-y-2">
+            <div class="flex items-center justify-between font-bold text-slate-900 dark:text-white text-xs">
+              <span class="flex items-center gap-1.5"><i class="fa-solid fa-cash-register text-emerald-500"></i> Toplam Kahve Gelirleri Kalemleri</span>
+              <span class="font-mono text-emerald-600 dark:text-emerald-400 font-bold" id="monthlyDetailGelirTotalBadge">0 ₺</span>
+            </div>
+            <div id="monthlyDetailGelirList" class="space-y-1.5 max-h-44 overflow-y-auto glass-scroll pr-1"></div>
+          </div>
+
+          <!-- Bölüm B: Kahve Giderleri Kalemleri (Toptancı Ödemeleri) -->
+          <div class="p-3.5 rounded-2xl bg-white/70 dark:bg-white/5 border border-slate-200/60 dark:border-white/10 space-y-2">
+            <div class="flex items-center justify-between font-bold text-slate-900 dark:text-white text-xs">
+              <span class="flex items-center gap-1.5"><i class="fa-solid fa-truck text-rose-500"></i> Kahve Giderleri Kalemleri (Toptancı vb.)</span>
+              <span class="font-mono text-rose-600 dark:text-rose-400 font-bold" id="monthlyDetailKahveGiderTotalBadge">0 ₺</span>
+            </div>
+            <div id="monthlyDetailKahveGiderList" class="space-y-1.5 max-h-44 overflow-y-auto glass-scroll pr-1"></div>
+          </div>
+
+          <!-- Bölüm C: Kişisel Giderler Kalemleri -->
+          <div class="p-3.5 rounded-2xl bg-white/70 dark:bg-white/5 border border-slate-200/60 dark:border-white/10 space-y-2">
+            <div class="flex items-center justify-between font-bold text-slate-900 dark:text-white text-xs">
+              <span class="flex items-center gap-1.5"><i class="fa-solid fa-wallet text-amber-500"></i> Kişisel Giderler Kalemleri</span>
+              <span class="font-mono text-amber-600 dark:text-amber-400 font-bold" id="monthlyDetailKisiselGiderTotalBadge">0 ₺</span>
+            </div>
+            <div id="monthlyDetailKisiselGiderList" class="space-y-1.5 max-h-44 overflow-y-auto glass-scroll pr-1"></div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="pt-3 border-t border-slate-200/60 dark:border-white/15 flex items-center justify-between">
+        <button onclick="printCurrentMonthlyFinancialDetail()" class="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-slate-200 hover:bg-slate-200 transition flex items-center gap-1.5 active:scale-95">
+          <i class="fa-solid fa-print"></i> Raporu Yazdır
+        </button>
+        <button onclick="closeMonthlyFinancialDetail()" class="px-6 py-2 rounded-xl text-xs font-bold bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow active:scale-95 transition">
           Kapat
         </button>
       </div>

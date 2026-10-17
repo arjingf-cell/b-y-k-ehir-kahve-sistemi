@@ -1,5 +1,5 @@
 // Service Worker for Kıraathane Finans PWA
-const CACHE_NAME = 'kiraathane-finans-v4';
+const CACHE_NAME = 'kiraathane-finans-v5';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
