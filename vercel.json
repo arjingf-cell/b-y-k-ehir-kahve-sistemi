@@ -1,7 +1,13 @@
 {
   "version": 2,
   "name": "kiraathane-finans",
-  "cleanUrls": true,
+  "cleanUrls": false,
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",

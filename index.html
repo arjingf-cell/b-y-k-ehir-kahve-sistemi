@@ -880,6 +880,9 @@
               <button id="navVerilenSortOldestBtn" onclick="setNavVerilenSort('oldest')" class="px-3 py-1.5 rounded-xl text-xs font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white bg-white/70 dark:bg-white/5 border border-slate-200 dark:border-white/10 whitespace-nowrap transition">
                 <i class="fa-regular fa-clock text-[10px] mr-1"></i> En Uzun Zamandır Ödemeyenler
               </button>
+              <button id="navVerilenSortSettledBtn" onclick="setNavVerilenSort('settled')" class="px-3 py-1.5 rounded-xl text-xs font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white bg-white/70 dark:bg-white/5 border border-slate-200 dark:border-white/10 whitespace-nowrap transition">
+                <i class="fa-solid fa-check-double text-[10px] mr-1"></i> Ödenenler (Kapananlar)
+              </button>
             </div>
             <!-- Search Bar -->
             <div class="relative">
@@ -2747,6 +2750,74 @@
           </button>
           <button type="submit" class="px-4 py-1.5 rounded-xl text-xs font-bold bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow transition active:scale-95">
             Değişiklikleri Kaydet
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: DOĞRUDAN TOPTANCI ÖDEMESİ YAP (BORÇ DÜŞÜR VE AY SONUNA GİDER EKLE) -->
+  <!-- ========================================================================= -->
+  <div id="directPayToptanciModal" class="fixed inset-0 z-[75] bg-black/60 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="glass-panel w-full max-w-sm rounded-3xl p-5 border-white/80 dark:border-white/20 shadow-2xl relative text-slate-900 dark:text-white">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-200/60 dark:border-white/15">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xs font-bold">
+            <i class="fa-solid fa-hand-holding-dollar"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-sm text-slate-900 dark:text-white">Toptancıya Ödeme Yap</h3>
+            <span class="text-[10px] text-slate-500 dark:text-slate-400">Borçtan Düş & Ay Sonu Giderine Ekle</span>
+          </div>
+        </div>
+        <button onclick="closeDirectPayToptanciModal()" class="w-8 h-8 rounded-xl glass-icon-box flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
+          <i class="fa-solid fa-xmark text-xs"></i>
+        </button>
+      </div>
+
+      <form id="directPayToptanciForm" onsubmit="handleDirectPayToptanciSubmit(event)" class="space-y-3 mt-3.5">
+        <input type="hidden" id="directPayToptanciId">
+
+        <div class="p-2.5 rounded-2xl bg-slate-100/80 dark:bg-white/5 border border-slate-200/60 dark:border-white/10">
+          <span class="text-[10px] text-slate-400 uppercase font-bold block">Seçilen Toptancı</span>
+          <div class="flex items-center justify-between mt-0.5">
+            <span class="font-bold text-xs text-slate-900 dark:text-white" id="directPayToptanciNameLabel">-</span>
+            <span class="font-mono font-bold text-xs text-rose-600 dark:text-rose-400" id="directPayToptanciDebtLabel">0 ₺</span>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-semibold text-slate-700 dark:text-slate-200 mb-1">Ödenecek Tutar (₺) *</label>
+          <input type="number" id="directPayToptanciAmountInput" step="any" required placeholder="0.00" class="w-full glass-input rounded-2xl px-4 py-2.5 text-lg font-mono font-black text-slate-900 dark:text-white">
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-700 dark:text-slate-200 mb-1">Ödeme Tarihi</label>
+            <input type="date" id="directPayToptanciDateInput" class="w-full glass-input rounded-xl px-2.5 py-1.5 text-xs font-medium text-slate-900 dark:text-white">
+          </div>
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-700 dark:text-slate-200 mb-1">Ödeme Türü</label>
+            <select id="directPayToptanciMethodInput" class="w-full glass-input rounded-xl px-2.5 py-1.5 text-xs font-medium text-slate-900 dark:text-white">
+              <option value="Banka / Havale">Banka / Havale</option>
+              <option value="Elden Nakit">Elden Nakit</option>
+              <option value="Kredi Kartı">Kredi Kartı</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-semibold text-slate-700 dark:text-slate-200 mb-1">Not / Açıklama</label>
+          <input type="text" id="directPayToptanciNotesInput" placeholder="Örn: 1. taksit ödemesi..." class="w-full glass-input rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-white">
+        </div>
+
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="closeDirectPayToptanciModal()" class="px-3 py-1.5 rounded-xl text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">
+            Vazgeç
+          </button>
+          <button type="submit" class="px-4 py-1.5 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow transition active:scale-95 flex items-center gap-1.5">
+            <i class="fa-solid fa-check"></i> Ödemeyi Kaydet
           </button>
         </div>
       </form>
@@ -5501,11 +5572,13 @@
       const debts = appState.givenDebts || [];
       let totalRemaining = 0;
       let totalCollected = 0;
+      let activeDebtorCount = 0;
 
       debts.forEach(d => {
         const amt = Number(d.amount) || 0;
         const paid = Number(d.paidAmount) || 0;
         const remaining = Math.max(0, amt - paid);
+        if (remaining > 0.001) activeDebtorCount++;
         totalRemaining += remaining;
         totalCollected += paid;
       });
@@ -5514,7 +5587,7 @@
       if (totalEl) totalEl.textContent = formatCurrency(totalRemaining);
 
       const countEl = document.getElementById('verilenBorcDebtorCount');
-      if (countEl) countEl.textContent = `${debts.length} Kişi`;
+      if (countEl) countEl.textContent = `${activeDebtorCount} Kişi`;
 
       const collectedEl = document.getElementById('verilenBorcCollectedTotal');
       if (collectedEl) collectedEl.textContent = formatCurrency(totalCollected);
@@ -5592,7 +5665,11 @@
       if (!container) return;
 
       const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
-      let list = (appState.givenDebts || []).slice();
+      let list = (appState.givenDebts || []).filter(d => {
+        const amt = Number(d.amount !== undefined ? d.amount : (d.debtAmount || 0));
+        const paid = Number(d.paidAmount || 0);
+        return (amt - paid) > 0.001;
+      });
 
       if (query) {
         list = list.filter(d => (d.personName || '').toLowerCase().includes(query) || (d.phone || '').includes(query));
@@ -5751,6 +5828,8 @@
       saveDataToStorage();
       closeAddDebtorPersonModal();
       renderVerilenBorcSection();
+      if (typeof renderNavVerilenBorc === 'function') renderNavVerilenBorc();
+      if (typeof renderNavVerilenBorcList === 'function') renderNavVerilenBorcList();
       updateMainScreenCards();
       showToast(`"${name}" borçlu listesine eklendi.`);
       // Doğrudan borç girmesi için borç ekle ekranını aç
@@ -5858,6 +5937,7 @@
       resetAddDebtImages();
       closeAddGivenDebtModal();
       renderVerilenBorcSection();
+      if (typeof renderNavVerilenBorc === 'function') renderNavVerilenBorc();
       if (typeof renderNavVerilenBorcList === 'function') renderNavVerilenBorcList();
       updateMainScreenCards();
       showToast(`${personName} için ${formatCurrency(amount)} borç kaydedildi.`);
@@ -5898,12 +5978,13 @@
 
       d.paidAmount = (Number(d.paidAmount) || 0) + collectAmt;
       const collectDateVal = (document.getElementById('collectDebtDateInput') && document.getElementById('collectDebtDateInput').value) ? document.getElementById('collectDebtDateInput').value : formatDateToISO(new Date());
+      const remainingAmt = Math.max(0, (Number(d.amount) || 0) - (Number(d.paidAmount) || 0));
       const newTx = {
         id: 'vbtx_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
         debtId: d.id,
         personName: d.personName,
         amount: collectAmt,
-        remainingAmount: Math.max(0, (Number(d.amount) || 0) - (Number(d.paidAmount) || 0)),
+        remainingAmount: remainingAmt,
         date: collectDateVal,
         timestamp: new Date().toISOString(),
         type: 'tahsilat',
@@ -5911,9 +5992,32 @@
       };
       if (!appState.debtTransactions) appState.debtTransactions = [];
       appState.debtTransactions.unshift(newTx);
+
+      // Supabase'e anında tekil upsert ve işlem logu kaydet
+      if (supabaseClient) {
+        supabaseClient.from('given_debts').upsert([{
+          id: d.id,
+          person_name: d.personName,
+          phone: d.phone || '',
+          amount: Number(d.amount),
+          paid_amount: Number(d.paidAmount || 0),
+          date: d.date,
+          notes: d.notes || '',
+          image_url: d.imageUrl || '',
+          images: getDebtorImages(d)
+        }]).then(({ error }) => {
+          if (error) console.warn('Supabase given_debts güncelleme hatası:', error);
+        });
+        supabaseClient.from('given_debt_transactions').insert([newTx]).then(({ error }) => {
+          if (error) console.warn('Supabase given_debt_transactions ekleme hatası:', error);
+        });
+      }
+
       saveDataToStorage();
       closeCollectGivenDebtModal();
       renderVerilenBorcSection();
+      if (typeof renderNavVerilenBorc === 'function') renderNavVerilenBorc();
+      if (typeof renderNavVerilenBorcList === 'function') renderNavVerilenBorcList();
       updateMainScreenCards();
       showToast(`${d.personName} adına ${formatCurrency(collectAmt)} tahsilat kaydedildi.`);
     }
@@ -5984,6 +6088,7 @@
       saveDataToStorage();
       closeEditGivenDebtModal();
       renderVerilenBorcSection();
+      if (typeof renderNavVerilenBorc === 'function') renderNavVerilenBorc();
       if (typeof renderNavVerilenBorcList === 'function') renderNavVerilenBorcList();
       updateMainScreenCards();
       showToast('Borç kaydı başarıyla güncellendi.');
@@ -5992,8 +6097,15 @@
     function deleteGivenDebt(debtId) {
       if (!confirm('Bu borçlu kaydını silmek istediğinize emin misiniz?')) return;
       appState.givenDebts = (appState.givenDebts || []).filter(x => x.id !== debtId);
+      if (supabaseClient) {
+        supabaseClient.from('given_debts').delete().eq('id', debtId).then(({ error }) => {
+          if (error) console.warn('Supabase given_debts silme hatası:', error);
+        });
+      }
       saveDataToStorage();
       renderVerilenBorcSection();
+      if (typeof renderNavVerilenBorc === 'function') renderNavVerilenBorc();
+      if (typeof renderNavVerilenBorcList === 'function') renderNavVerilenBorcList();
       updateMainScreenCards();
       showToast('Borç kaydı silindi.');
     }
@@ -6003,13 +6115,14 @@
     // -------------------------------------------------------------
     function renderKahveBorcuSection() {
       const borclar = appState.kahveBorclari || [];
-      const totalDebt = borclar.reduce((s, b) => s + (Number(b.debtAmount) || 0), 0);
+      const activeBorclar = borclar.filter(b => (Number(b.debtAmount !== undefined ? b.debtAmount : (b.amount || 0))) > 0.001);
+      const totalDebt = activeBorclar.reduce((s, b) => s + (Number(b.debtAmount !== undefined ? b.debtAmount : (b.amount || 0))), 0);
 
       const totalEl = document.getElementById('kahveBorcuTotalAmount');
       if (totalEl) totalEl.textContent = formatCurrency(totalDebt);
 
       const countEl = document.getElementById('kahveBorcuSupplierCount');
-      if (countEl) countEl.textContent = `${borclar.length} Toptancı`;
+      if (countEl) countEl.textContent = `${activeBorclar.length} Toptancı`;
 
       // Sütun Grafiğini Çiz (7 kişi sayfalamalı)
       try {
@@ -6133,14 +6246,14 @@
       if (!container) return;
 
       const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
-      let list = (appState.kahveBorclari || []).slice();
+      let list = (appState.kahveBorclari || []).filter(b => (Number(b.debtAmount !== undefined ? b.debtAmount : (b.amount || 0))) > 0.001);
 
       if (query) {
         list = list.filter(b => (b.supplierName || '').toLowerCase().includes(query) || (b.notes || '').toLowerCase().includes(query));
       }
 
       // KULLANICI TALEBİ: En çok borç olandan en az borcu olana doğru sıralı
-      list.sort((a, b) => (Number(b.debtAmount) || 0) - (Number(a.debtAmount) || 0));
+      list.sort((a, b) => (Number(b.debtAmount !== undefined ? b.debtAmount : (b.amount || 0))) - (Number(a.debtAmount !== undefined ? a.debtAmount : (a.amount || 0))));
 
       if (badge) badge.textContent = `${list.length} Toptancı`;
       container.innerHTML = '';
@@ -6171,7 +6284,11 @@
                 <span class="font-mono font-black text-slate-900 dark:text-white text-xs block">-${formatCurrency(b.debtAmount)}</span>
                 <span class="text-[8px] text-slate-400">Toptancı Borcu</span>
               </div>
-              <!-- KULLANICI TALEBİ: Borç listesinin yanında düzenle tuşu (İsim ve borç düzenlenebilir) -->
+              <!-- KULLANICI TALEBİ: Toptancıya hızlı ödeme yap, borçtan düş ve ay sonu hesabına gider ekle -->
+              <button onclick="openPayToptanciBorcuDirect('${b.id}')" class="px-2.5 py-1 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[10px] flex items-center gap-1 active:scale-90 transition shadow-sm" title="Ödeme Yap ve Ay Sonu Giderine Ekle">
+                <i class="fa-solid fa-hand-holding-dollar text-[9px]"></i> Öde
+              </button>
+              <!-- Borç listesinin yanında düzenle tuşu (İsim ve borç düzenlenebilir) -->
               <button onclick="openEditKahveBorcuModal('${b.id}')" class="px-2.5 py-1 rounded-xl bg-slate-200/80 dark:bg-white/10 text-slate-800 dark:text-white font-bold text-[10px] flex items-center gap-1 hover:bg-slate-300 dark:hover:bg-white/20 active:scale-90 transition shadow-sm" title="İsim ve Borcu Düzenle">
                 <i class="fa-solid fa-pen text-[9px]"></i> Düzenle
               </button>
@@ -6224,6 +6341,8 @@
       saveDataToStorage();
       closeAddKahveBorcuModal();
       renderKahveBorcuSection();
+      if (typeof renderNavKahveBorcu === 'function') renderNavKahveBorcu();
+      if (typeof renderNavKahveBorcuList === 'function') renderNavKahveBorcuList();
       updateMainScreenCards();
       showToast(`${name} toptancı borcu kaydedildi.`);
     }
@@ -6246,6 +6365,98 @@
       document.getElementById('editKahveBorcuModal').classList.add('hidden');
     }
 
+    // -------------------------------------------------------------
+    // DOĞRUDAN TOPTANCIYA ÖDEME YAPMA (BORÇ DÜŞ & AY SONU GİDERİNE EKLE)
+    // -------------------------------------------------------------
+    function openPayToptanciBorcuDirect(debtId) {
+      const b = (appState.kahveBorclari || []).find(x => x.id === debtId);
+      if (!b) return;
+
+      const currentDebt = Number(b.debtAmount !== undefined ? b.debtAmount : (b.amount || 0));
+
+      document.getElementById('directPayToptanciId').value = debtId;
+      document.getElementById('directPayToptanciNameLabel').textContent = b.supplierName || 'Toptancı';
+      document.getElementById('directPayToptanciDebtLabel').textContent = `Mevcut Borç: ${formatCurrency(currentDebt)}`;
+      document.getElementById('directPayToptanciAmountInput').value = '';
+      document.getElementById('directPayToptanciDateInput').value = formatDateToISO(new Date());
+      document.getElementById('directPayToptanciMethodInput').value = 'Banka / Havale';
+      document.getElementById('directPayToptanciNotesInput').value = `${b.supplierName} Ödemesi`;
+
+      document.getElementById('directPayToptanciModal').classList.remove('hidden');
+      setTimeout(() => document.getElementById('directPayToptanciAmountInput').focus(), 150);
+    }
+
+    function closeDirectPayToptanciModal() {
+      document.getElementById('directPayToptanciModal').classList.add('hidden');
+    }
+
+    function handleDirectPayToptanciSubmit(e) {
+      if (e) e.preventDefault();
+      const debtId = document.getElementById('directPayToptanciId').value;
+      const amount = parseFloat(document.getElementById('directPayToptanciAmountInput').value);
+      const date = document.getElementById('directPayToptanciDateInput').value || formatDateToISO(new Date());
+      const method = document.getElementById('directPayToptanciMethodInput').value;
+      const notes = document.getElementById('directPayToptanciNotesInput').value.trim();
+
+      if (isNaN(amount) || amount <= 0) {
+        showToast('Lütfen geçerli bir ödeme tutarı girin.');
+        return;
+      }
+
+      const b = (appState.kahveBorclari || []).find(x => x.id === debtId);
+      if (!b) return;
+
+      const currentDebt = Number(b.debtAmount !== undefined ? b.debtAmount : (b.amount || 0));
+      const newDebt = Math.max(0, currentDebt - amount);
+
+      // 1. Toptancı borcundan ödenen tutarı düş
+      b.debtAmount = newDebt;
+      b.updatedAt = date;
+
+      // 2. Ay sonu hesabı ve kahve giderlerine (supplierPayments) yeni ödeme ekle
+      const newPayment = {
+        id: 'sp_' + Date.now(),
+        supplierId: b.id,
+        amount: amount,
+        date: date,
+        method: method,
+        notes: notes || `${b.supplierName} Ödemesi`,
+        createdAt: new Date().toISOString()
+      };
+
+      if (!appState.supplierPayments) appState.supplierPayments = [];
+      appState.supplierPayments.unshift(newPayment);
+
+      // 3. Supabase ile canlı senkronizasyon
+      if (supabaseClient) {
+        supabaseClient.from('supplier_payments').insert([newPayment]).then(({ error }) => {
+          if (error) console.warn('Supabase supplier payment ekleme hatası:', error);
+        });
+        supabaseClient.from('kahve_borclari').upsert([{
+          id: b.id,
+          supplier_name: b.supplierName,
+          debt_amount: b.debtAmount,
+          phone: b.phone || '',
+          notes: b.notes || '',
+          updated_at: new Date().toISOString()
+        }]).then(({ error }) => {
+          if (error) console.warn('Supabase kahve borcu güncelleme hatası:', error);
+        });
+      }
+
+      saveDataToStorage();
+      closeDirectPayToptanciModal();
+      renderKahveBorcuSection();
+      if (typeof renderNavKahveBorcu === 'function') renderNavKahveBorcu();
+      if (typeof renderNavKahveBorcuList === 'function') renderNavKahveBorcuList();
+      updateMainScreenCards();
+      if (typeof renderPeriodProfitReport === 'function') renderPeriodProfitReport();
+      if (typeof renderMonthlyFinancialPanel === 'function') renderMonthlyFinancialPanel();
+      if (typeof renderBilancoSection === 'function') renderBilancoSection();
+
+      showToast(`${b.supplierName} toptancısına ${formatCurrency(amount)} ödendi ve ay sonu hesabına gider olarak eklendi!`);
+    }
+
     function handleEditKahveBorcuSubmit(e) {
       if (e) e.preventDefault();
       const debtId = document.getElementById('editKahveBorcuTargetId').value;
@@ -6262,27 +6473,66 @@
       const b = (appState.kahveBorclari || []).find(x => x.id === debtId);
       if (!b) return;
 
+      const oldAmt = Number(b.debtAmount !== undefined ? b.debtAmount : (b.amount || 0));
+
       b.supplierName = newName;
       b.debtAmount = newAmt;
       b.phone = newPhone;
       b.notes = newNotes;
       b.updatedAt = formatDateToISO(new Date());
 
+      // KULLANICI TALEBİ: Toptancı borcunda ödeme yapıldıysa (borç azaltıldıysa),
+      // bu ödenen tutarı ay sonu hesabına ve giderlere (supplierPayments) otomatik ekle!
+      if (newAmt < oldAmt) {
+        const paidDiff = oldAmt - newAmt;
+        const newPayment = {
+          id: 'sp_' + Date.now(),
+          supplierId: b.id,
+          amount: paidDiff,
+          date: formatDateToISO(new Date()),
+          method: 'Banka / Havale',
+          notes: `${newName} Ödemesi (Borç Düşümü)`,
+          createdAt: new Date().toISOString()
+        };
+        if (!appState.supplierPayments) appState.supplierPayments = [];
+        appState.supplierPayments.unshift(newPayment);
+
+        // Supabase ile anında eşitle
+        if (supabaseClient) {
+          supabaseClient.from('supplier_payments').insert([newPayment]).then(({ error }) => {
+            if (error) console.warn('Supabase supplier payment ekleme hatası:', error);
+          });
+        }
+      }
+
       saveDataToStorage();
       closeEditKahveBorcuModal();
       renderKahveBorcuSection();
+      if (typeof renderNavKahveBorcu === 'function') renderNavKahveBorcu();
+      if (typeof renderNavKahveBorcuList === 'function') renderNavKahveBorcuList();
       updateMainScreenCards();
+      if (typeof renderPeriodProfitReport === 'function') renderPeriodProfitReport();
+      if (typeof renderMonthlyFinancialPanel === 'function') renderMonthlyFinancialPanel();
+      if (typeof renderBilancoSection === 'function') renderBilancoSection();
       showToast('Toptancı borcu başarıyla güncellendi.');
     }
 
     function deleteKahveBorcu(debtId) {
       if (!confirm('Bu toptancı borç kaydını silmek istediğinize emin misiniz?')) return;
       appState.kahveBorclari = (appState.kahveBorclari || []).filter(x => x.id !== debtId);
+      if (supabaseClient) {
+        supabaseClient.from('kahve_borclari').delete().eq('id', debtId).then(({ error }) => {
+          if (error) console.warn('Supabase kahve_borclari silme hatası:', error);
+        });
+      }
       saveDataToStorage();
       renderKahveBorcuSection();
+      if (typeof renderNavKahveBorcu === 'function') renderNavKahveBorcu();
+      if (typeof renderNavKahveBorcuList === 'function') renderNavKahveBorcuList();
       updateMainScreenCards();
       showToast('Toptancı borç kaydı silindi.');
     }
+    window.deleteKahveBorcuItem = deleteKahveBorcu;
 
     // -------------------------------------------------------------
     // ANA EKRAN KARTLARI VE KAHVE GELİR GÜNLÜK CİRO LİSTESİ
@@ -6343,7 +6593,7 @@
         const amt = Number(d.amount !== undefined ? d.amount : (d.debtAmount || 0));
         const paid = Number(d.paidAmount || 0);
         const rem = Math.max(0, amt - paid);
-        if (rem > 0 || amt > 0) {
+        if (rem > 0.001) {
           totalVerilenKalan += rem;
           givenDebtorCount++;
         }
@@ -6388,7 +6638,7 @@
 
       kahveBorclariList.forEach(b => {
         const amt = Number(b.debtAmount !== undefined ? b.debtAmount : (b.amount !== undefined ? b.amount : 0));
-        if (amt > 0) {
+        if (amt > 0.001) {
           totalKahveBorcu += amt;
           kahveBorcuCount++;
         }
@@ -6402,7 +6652,7 @@
       } else {
         if (elKahveBorcuTotal) elKahveBorcuTotal.textContent = formatCurrency(totalKahveBorcu);
       }
-      if (elKahveBorcuCount) elKahveBorcuCount.textContent = `${kahveBorcuCount || kahveBorclariList.length} Toptancı`;
+      if (elKahveBorcuCount) elKahveBorcuCount.textContent = `${kahveBorcuCount} Toptancı`;
     }
 
     function renderMainDailyCiroList() {
@@ -9616,17 +9866,36 @@
 
     function renderPeriodProfitReport() {
       const period = get16To15Period(new Date());
-      document.getElementById('reportCycleLabel').textContent = `${period.periodLabel} Mali Dönemi`;
+      const labelEl = document.getElementById('reportCycleLabel');
+      if (labelEl) labelEl.textContent = `${period.periodLabel} Mali Dönemi`;
 
-      const periodTx = appState.transactions.filter(t => {
-        const d = new Date(t.date);
-        return d >= period.startDate && d <= period.endDate;
-      });
+      const startISO = formatDateToISO(period.startDate);
+      const endISO = formatDateToISO(period.endDate);
 
       let totalCiro = 0;
+      let totalKahveGider = 0;
+      let totalKisiselGider = 0;
       let totalGider = 0;
       let totalRent = 0;
       const catExpenses = {};
+
+      // 1. GÜNLÜK MANUEL CİRO DEFTERİ (16-15 DÖNEMİ KAHVE GELİRLERİ)
+      const dailyMap = appState.manualDailyCiro || {};
+      let cur = new Date(period.startDate);
+      while (cur <= period.endDate) {
+        const dISO = formatDateToISO(cur);
+        const val = dailyMap[dISO];
+        if (val !== undefined && val !== null && !isNaN(val)) {
+          totalCiro += Number(val);
+        }
+        cur.setDate(cur.getDate() + 1);
+      }
+
+      // 2. KASA HAREKETLERİ (Varsa Ciro / Gelir / Giderler)
+      const periodTx = (appState.transactions || []).filter(t => {
+        const d = new Date(t.date);
+        return d >= period.startDate && d <= period.endDate;
+      });
 
       periodTx.forEach(t => {
         const amt = Number(t.amount) || 0;
@@ -9634,18 +9903,55 @@
           totalCiro += amt;
         } else if (t.type === 'gider') {
           totalGider += amt;
+          totalKahveGider += amt;
           if (t.category === 'Dükkan Kirası') totalRent += amt;
           catExpenses[t.category] = (catExpenses[t.category] || 0) + amt;
         }
       });
 
-      const netProfit = totalCiro - totalGider;
+      // 3. TOPTANCI ÖDEMELERİ (KAHVE GİDERLERİ)
+      const supPayments = (appState.supplierPayments || []).filter(p => {
+        const d = (p.date || '').slice(0, 10);
+        return d >= startISO && d <= endISO;
+      });
+
+      supPayments.forEach(p => {
+        const amt = Number(p.amount) || 0;
+        totalKahveGider += amt;
+        totalGider += amt;
+
+        // Toptancı ismini bul
+        const sup = (appState.coffeeSuppliers || []).find(s => s.id === p.supplierId);
+        const supName = sup ? sup.name : (p.notes || 'Toptancı Ödemesi');
+        const catKey = `Toptancı: ${supName}`;
+        catExpenses[catKey] = (catExpenses[catKey] || 0) + amt;
+      });
+
+      // 4. KİŞİSEL GİDERLER
+      const perExpenses = (appState.personalExpenses || []).filter(e => {
+        const d = (e.date || '').slice(0, 10);
+        return d >= startISO && d <= endISO;
+      });
+
+      perExpenses.forEach(e => {
+        const amt = Number(e.amount) || 0;
+        totalKisiselGider += amt;
+        totalGider += amt;
+        const catKey = `Kişisel: ${e.category || 'Diğer'}`;
+        catExpenses[catKey] = (catExpenses[catKey] || 0) + amt;
+      });
+
+      // 5. AY SONU NET KÂR / ZARAR = TOPLAM GELİR - KAHVE GİDERİ - KİŞİSEL GİDER
+      const netProfit = totalCiro - totalKahveGider - totalKisiselGider;
 
       const elTotalCiro = document.getElementById('reportTotalCiro');
       if (elTotalCiro) elTotalCiro.textContent = formatCurrency(totalCiro);
 
       const elKahveGider = document.getElementById('reportKahveGider');
-      if (elKahveGider) elKahveGider.textContent = formatCurrency(totalGider);
+      if (elKahveGider) elKahveGider.textContent = formatCurrency(totalKahveGider);
+
+      const elKisiselGider = document.getElementById('reportKisiselGider');
+      if (elKisiselGider) elKisiselGider.textContent = formatCurrency(totalKisiselGider);
 
       const elTotalGider = document.getElementById('reportTotalGider');
       if (elTotalGider) elTotalGider.textContent = formatCurrency(totalGider);
@@ -9655,31 +9961,33 @@
 
       const netProfitEl = document.getElementById('reportNetProfitAmount');
       if (netProfitEl) {
-        netProfitEl.textContent = formatCurrency(netProfit);
-        netProfitEl.className = 'text-xl font-black font-mono text-slate-900 dark:text-white';
+        netProfitEl.textContent = (netProfit < 0 ? '-' : '') + formatCurrency(Math.abs(netProfit)) + (netProfit >= 0 ? ' (Net Kâr)' : ' (Zarar)');
+        netProfitEl.className = `text-xl font-black font-mono ${netProfit >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}`;
       }
 
       const breakdownEl = document.getElementById('expenseCategoryBreakdown');
-      breakdownEl.innerHTML = '';
-      const entries = Object.entries(catExpenses).sort((a, b) => b[1] - a[1]);
+      if (breakdownEl) {
+        breakdownEl.innerHTML = '';
+        const entries = Object.entries(catExpenses).sort((a, b) => b[1] - a[1]);
 
-      if (entries.length === 0) {
-        breakdownEl.innerHTML = '<p class="text-slate-400 py-2 text-center text-xs">Bu dönemde gider kaydı yok.</p>';
-      } else {
-        entries.forEach(([cat, amt]) => {
-          const pct = totalGider > 0 ? Math.round((amt / totalGider) * 100) : 0;
-          breakdownEl.innerHTML += `
-            <div>
-              <div class="flex justify-between text-[11px] mb-1">
-                <span class="text-slate-700 dark:text-slate-300 font-medium">${cat}</span>
-                <span class="font-mono font-bold text-slate-900 dark:text-white">${formatCurrency(amt)} (%${pct})</span>
+        if (entries.length === 0) {
+          breakdownEl.innerHTML = '<p class="text-slate-400 py-2 text-center text-xs">Bu dönemde gider kaydı yok.</p>';
+        } else {
+          entries.forEach(([cat, amt]) => {
+            const pct = totalGider > 0 ? Math.round((amt / totalGider) * 100) : 0;
+            breakdownEl.innerHTML += `
+              <div>
+                <div class="flex justify-between text-[11px] mb-1">
+                  <span class="text-slate-700 dark:text-slate-300 font-medium">${cat}</span>
+                  <span class="font-mono font-bold text-slate-900 dark:text-white">${formatCurrency(amt)} (%${pct})</span>
+                </div>
+                <div class="h-1.5 w-full bg-slate-200/80 dark:bg-white/10 rounded-full overflow-hidden">
+                  <div class="h-full bg-slate-800 dark:bg-white" style="width: ${pct}%"></div>
+                </div>
               </div>
-              <div class="h-1.5 w-full bg-slate-200/80 dark:bg-white/10 rounded-full overflow-hidden">
-                <div class="h-full bg-slate-800 dark:bg-white" style="width: ${pct}%"></div>
-              </div>
-            </div>
-          `;
-        });
+            `;
+          });
+        }
       }
     }
 
@@ -10139,6 +10447,7 @@
       const btnAll = document.getElementById('navVerilenSortAllBtn');
       const btnMax = document.getElementById('navVerilenSortMaxBtn');
       const btnOld = document.getElementById('navVerilenSortOldestBtn');
+      const btnSettled = document.getElementById('navVerilenSortSettledBtn');
 
       const activeClass = 'px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-900 text-white dark:bg-white dark:text-slate-900 whitespace-nowrap shadow-sm transition';
       const inactiveClass = 'px-3 py-1.5 rounded-xl text-xs font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white bg-white/70 dark:bg-white/5 border border-slate-200 dark:border-white/10 whitespace-nowrap transition';
@@ -10146,6 +10455,7 @@
       if (btnAll) btnAll.className = (mode === 'all') ? activeClass : inactiveClass;
       if (btnMax) btnMax.className = (mode === 'max') ? activeClass : inactiveClass;
       if (btnOld) btnOld.className = (mode === 'oldest') ? activeClass : inactiveClass;
+      if (btnSettled) btnSettled.className = (mode === 'settled') ? activeClass : inactiveClass;
 
       renderNavVerilenBorcList();
     }
@@ -10154,7 +10464,7 @@
       const debts = (appState.givenDebts || []).filter(d => {
         const amt = Number(d.amount !== undefined ? d.amount : (d.debtAmount || 0));
         const paid = Number(d.paidAmount || 0);
-        return (amt - paid) > 0 || amt > 0;
+        return (amt - paid) > 0.001;
       });
 
       let totalRemaining = 0;
@@ -10244,7 +10554,11 @@
       let list = (appState.givenDebts || []).filter(d => {
         const amt = Number(d.amount !== undefined ? d.amount : (d.debtAmount || 0));
         const paid = Number(d.paidAmount || 0);
-        return (amt - paid) > 0 || amt > 0;
+        const rem = amt - paid;
+        if (currentNavVerilenSort === 'settled') {
+          return rem <= 0.001;
+        }
+        return rem > 0.001;
       });
 
       if (q) {
@@ -10259,12 +10573,19 @@
         });
       } else if (currentNavVerilenSort === 'oldest') {
         list.sort((a, b) => new Date(a.date || '2000-01-01') - new Date(b.date || '2000-01-01'));
+      } else if (currentNavVerilenSort === 'settled') {
+        list.sort((a, b) => new Date(b.date || '2000-01-01') - new Date(a.date || '2000-01-01'));
       }
 
-      if (badge) badge.textContent = `${list.length} borçlu`;
+      if (badge) {
+        badge.textContent = currentNavVerilenSort === 'settled' ? `${list.length} kapanan` : `${list.length} borçlu`;
+      }
 
       if (list.length === 0) {
-        container.innerHTML = '<div class="text-center py-8 text-slate-400 text-xs">Kayıtlı borç bulunamadı.</div>';
+        const emptyMsg = currentNavVerilenSort === 'settled' 
+          ? 'Kapanmış / tamamen ödenmiş borç bulunmuyor.' 
+          : 'Aktif borçlu bulunamadı. "+ Borç Ekle" butonundan yeni borç ekleyebilirsiniz.';
+        container.innerHTML = `<div class="text-center py-8 text-slate-400 text-xs">${emptyMsg}</div>`;
         return;
       }
 
@@ -10272,13 +10593,19 @@
         const totalAmt = Number(debt.amount !== undefined ? debt.amount : (debt.debtAmount || 0));
         const paidAmt = Number(debt.paidAmount || 0);
         const remainingAmt = Math.max(0, totalAmt - paidAmt);
+        const isSettled = remainingAmt <= 0.001;
         const debtImages = getDebtorImages(debt);
 
         return `
-          <div class="p-3 rounded-2xl bg-white/70 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 flex items-center justify-between hover:bg-white dark:hover:bg-white/10 transition shadow-sm">
+          <div class="p-3 rounded-2xl ${isSettled ? 'bg-emerald-500/5 dark:bg-emerald-500/10 border-emerald-500/30' : 'bg-white/70 dark:bg-white/5 border-slate-200/80 dark:border-white/10'} border flex items-center justify-between hover:bg-white dark:hover:bg-white/10 transition shadow-sm">
             <div class="space-y-0.5">
               <div class="flex items-center gap-2">
                 <span class="font-bold text-xs text-slate-900 dark:text-white">${escapeHtml(debt.personName)}</span>
+                ${isSettled ? `
+                  <span class="text-[9px] font-bold px-1.5 py-0.5 rounded-md bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
+                    <i class="fa-solid fa-check text-[8px]"></i> KAPANDI
+                  </span>
+                ` : ''}
                 ${debtImages.length > 0 ? `
                   <button onclick="openDebtorPhotosModal('${debt.id}')" title="Fiş ve Fotoğrafları İncele (${debtImages.length})" class="px-2 py-0.5 rounded-lg bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 border border-blue-300/30 text-[9px] font-bold flex items-center gap-1 hover:bg-blue-100 dark:hover:bg-blue-900/50 active:scale-95 transition">
                     <i class="fa-solid fa-camera text-[8px]"></i> ${debtImages.length} Fiş (${formatShortDateTr(debtImages[debtImages.length - 1].addedAt || debt.date)})
@@ -10297,12 +10624,18 @@
             </div>
             <div class="flex items-center gap-2">
               <div class="text-right">
-                <span class="font-mono font-black text-sm text-slate-900 dark:text-white block">${formatCurrency(remainingAmt)}</span>
-                ${paidAmt > 0 ? `<span class="text-[9px] text-slate-400 font-mono">Tahsil: ${formatCurrency(paidAmt)}</span>` : ''}
+                <span class="font-mono font-black text-sm ${isSettled ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-900 dark:text-white'} block">${formatCurrency(isSettled ? totalAmt : remainingAmt)}</span>
+                <span class="text-[9px] text-slate-400 font-mono">${isSettled ? 'Tamamı Ödendi' : (paidAmt > 0 ? 'Tahsil: ' + formatCurrency(paidAmt) : 'Kalan')}</span>
               </div>
-              <button onclick="openCollectGivenDebtModal('${debt.id}')" title="Tahsil Et" class="px-2.5 py-1.5 bg-slate-900 hover:bg-black text-white dark:bg-white dark:hover:bg-slate-100 dark:text-slate-900 text-xs font-bold rounded-xl active:scale-95 transition">
-                Tahsil
-              </button>
+              ${!isSettled ? `
+                <button onclick="openCollectGivenDebtModal('${debt.id}')" title="Tahsil Et" class="px-2.5 py-1.5 bg-slate-900 hover:bg-black text-white dark:bg-white dark:hover:bg-slate-100 dark:text-slate-900 text-xs font-bold rounded-xl active:scale-95 transition">
+                  Tahsil
+                </button>
+              ` : `
+                <button onclick="openAddGivenDebtModal('${escapeHtml(debt.personName)}')" title="Bu Kişiye Tekrar Borç Ekle" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/15 text-slate-800 dark:text-white text-xs font-semibold rounded-xl active:scale-95 transition">
+                  + Borç
+                </button>
+              `}
               <button onclick="openEditGivenDebtModal('${debt.id}')" title="Düzenle" class="w-8 h-8 rounded-xl bg-slate-100 dark:bg-white/10 hover:bg-slate-200 dark:hover:bg-white/20 text-slate-700 dark:text-slate-200 flex items-center justify-center active:scale-95 transition">
                 <i class="fa-solid fa-pen text-xs"></i>
               </button>
@@ -10435,10 +10768,13 @@
             </div>
             <div class="flex items-center gap-2">
               <span class="font-mono font-black text-sm text-slate-900 dark:text-white">${formatCurrency(amt)}</span>
-              <button onclick="openEditKahveBorcuModal('${item.id}')" class="px-2.5 py-1.5 rounded-xl bg-slate-900 text-white dark:bg-white dark:text-slate-900 text-xs font-bold flex items-center gap-1 active:scale-95 transition shadow-sm">
+              <button onclick="openPayToptanciBorcuDirect('${item.id}')" class="px-2.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1 active:scale-95 transition shadow-sm" title="Ödeme Yap ve Borçtan Düş">
+                <i class="fa-solid fa-hand-holding-dollar text-[10px]"></i> Öde
+              </button>
+              <button onclick="openEditKahveBorcuModal('${item.id}')" class="px-2.5 py-1.5 rounded-xl bg-slate-900 text-white dark:bg-white dark:text-slate-900 text-xs font-bold flex items-center gap-1 active:scale-95 transition shadow-sm" title="Düzenle">
                 <i class="fa-solid fa-pen text-[10px]"></i> Düzenle
               </button>
-              <button onclick="deleteKahveBorcuItem('${item.id}')" class="w-8 h-8 rounded-xl bg-slate-200/70 hover:bg-slate-300 dark:bg-white/10 dark:hover:bg-white/20 text-slate-700 dark:text-white flex items-center justify-center active:scale-95 transition">
+              <button onclick="deleteKahveBorcu('${item.id}')" class="w-8 h-8 rounded-xl bg-slate-200/70 hover:bg-slate-300 dark:bg-white/10 dark:hover:bg-white/20 text-slate-700 dark:text-white flex items-center justify-center active:scale-95 transition" title="Sil">
                 <i class="fa-solid fa-trash text-xs"></i>
               </button>
             </div>
