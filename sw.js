@@ -1,5 +1,5 @@
 // Service Worker for Kıraathane Finans PWA
-const CACHE_NAME = 'kiraathane-finans-v8';
+const CACHE_NAME = 'kiraathane-finans-v9';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -36,6 +36,11 @@ self.addEventListener('fetch', (event) => {
   // 2. Harici origin isteklerini (Supabase, Google Fonts, CDN vb.) doğrudan tarayıcı düzeyine bırak
   const requestUrl = new URL(event.request.url);
   if (requestUrl.origin !== self.location.origin) {
+    return;
+  }
+
+  // 2b. Supabase proxy (/sb) isteklerini service worker'dan geçirme
+  if (requestUrl.pathname.startsWith('/sb/')) {
     return;
   }
 

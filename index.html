@@ -7439,7 +7439,9 @@
     // =========================================================================
     // SUPABASE BULUT VERİTABANI ENTEGRASYONU
     // =========================================================================
-    const SUPABASE_URL = 'https://zxpzaefolghypbzrgtxg.supabase.co';
+    const SUPABASE_DIRECT_URL = 'https://zxpzaefolghypbzrgtxg.supabase.co';
+    // Vercel'de yayınlandığında istekler /sb proxy'si üzerinden gider (operatör engeline karşı)
+    const SUPABASE_URL = /\.vercel\.app$/.test(location.hostname) ? location.origin + '/sb' : SUPABASE_DIRECT_URL;
     const SUPABASE_ANON_KEY = 'sb_publishable_hIJv7izMIW0HPTz0kWSZgg_d3Vd4vSF';
     let supabaseClient = null;
     let isSupabaseSyncing = false;

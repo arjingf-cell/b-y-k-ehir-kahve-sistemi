@@ -4,6 +4,10 @@
   "cleanUrls": false,
   "rewrites": [
     {
+      "source": "/sb/:path*",
+      "destination": "https://zxpzaefolghypbzrgtxg.supabase.co/:path*"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
